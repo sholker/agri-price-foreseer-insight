@@ -3,10 +3,12 @@ import { ResearchOverview } from "@/components/ResearchOverview";
 import { ResearchResults } from "@/components/ResearchResults";
 import { Methodology } from "@/components/Methodology";
 import { Footer } from "@/components/Footer";
+import Navigation from "@/components/Navigation";
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-background">
+      <Navigation />
       <Hero />
       <ResearchOverview />
       <ResearchResults />

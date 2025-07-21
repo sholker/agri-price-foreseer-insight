@@ -2,20 +2,36 @@ import { Mail, Linkedin, Github } from "lucide-react";
 
 export const Footer = () => {
   return (
-    <footer className="bg-foreground text-background py-12">
-      <div className="container mx-auto px-6">
+    <footer id="contact" className="bg-gradient-space relative overflow-hidden py-12 border-t border-primary/20">
+      {/* Subtle starfield background */}
+      <div className="absolute inset-0">
+        {Array.from({ length: 30 }).map((_, i) => (
+          <div
+            key={i}
+            className="absolute w-0.5 h-0.5 bg-primary rounded-full animate-pulse"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              animationDelay: `${Math.random() * 3}s`,
+              animationDuration: `${2 + Math.random() * 2}s`
+            }}
+          />
+        ))}
+      </div>
+      
+      <div className="container mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">על המחקר</h3>
-            <p className="text-background/80 leading-relaxed">
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">על המחקר</h3>
+            <p className="text-muted-foreground leading-relaxed">
               מחקר חדשני בתחום ניתוח וחיזוי מחירי המזון החקלאי 
-              באמצעות טכנולוגיות למידת מכונה מתקדמות.
+              באמצעות טכנולוגיות למידת מכונה מתקדמות בסביבה גלובלית.
             </p>
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-4">נושאי מחקר</h3>
-            <ul className="space-y-2 text-background/80">
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">נושאי מחקר</h3>
+            <ul className="space-y-2 text-muted-foreground">
               <li>• ניתוח נתוני ביג דאטה חקלאיים</li>
               <li>• למידת מכונה וחיזוי</li>
               <li>• ביטחון תזונתי עולמי</li>
@@ -24,22 +40,22 @@ export const Footer = () => {
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-4">צור קשר</h3>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">צור קשר</h3>
             <div className="flex gap-4">
-              <a href="#" className="p-2 bg-background/10 rounded-lg hover:bg-background/20 transition-smooth">
-                <Mail className="w-5 h-5" />
+              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
+                <Mail className="w-5 h-5 text-primary" />
               </a>
-              <a href="#" className="p-2 bg-background/10 rounded-lg hover:bg-background/20 transition-smooth">
-                <Linkedin className="w-5 h-5" />
+              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
+                <Linkedin className="w-5 h-5 text-primary" />
               </a>
-              <a href="#" className="p-2 bg-background/10 rounded-lg hover:bg-background/20 transition-smooth">
-                <Github className="w-5 h-5" />
+              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
+                <Github className="w-5 h-5 text-primary" />
               </a>
             </div>
           </div>
         </div>
         
-        <div className="border-t border-background/20 mt-8 pt-8 text-center text-background/60">
+        <div className="border-t border-primary/30 mt-8 pt-8 text-center text-muted-foreground">
           <p>&copy; 2024 מחקר ניתוח וחיזוי מחירי המזון החקלאי. כל הזכויות שמורות.</p>
         </div>
       </div>
