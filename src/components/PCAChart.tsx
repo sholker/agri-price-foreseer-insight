@@ -4445,7 +4445,7 @@ nterface PCAData {
   pc1: number[];
   pc2: number[];
   pc3: number[];
-  area: string[];
+  Area: string[];
   hovertext: string[];
 }
 
@@ -4458,7 +4458,7 @@ export const PCAChart = () => {
       pc1: [],
       pc2: [],
       pc3: [],
-      area: [],
+      Area: [],
       hovertext: []
     };
 
@@ -4469,7 +4469,7 @@ export const PCAChart = () => {
       data.pc1.push(parseFloat(values[8])); // PC1 is at index 8
       data.pc2.push(parseFloat(values[9])); // PC2 is at index 9
       data.pc3.push(parseFloat(values[10])); // PC3 is at index 10
-      data.area.push(area);
+      data.Area.push(area);
       data.hovertext.push(`${area} - ${year}`);
     }
     return data;
@@ -4490,7 +4490,7 @@ export const PCAChart = () => {
       type: 'scatter3d',
       marker: {
         size: 6,
-        color: pcaData3D.area, // Use the area array for color
+        color: pcaData3D.Area, // Use the area array for color
         opacity: 0.8
         // Removed colorscale and colorbar for categorical data
       }
