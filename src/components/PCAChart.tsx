@@ -4440,6 +4440,8 @@ Zimbabwe,2020,0.9276933262835508,-0.777811042957367,-0.1687630692555891,-0.14056
 Zimbabwe,2021,0.99291166166983,-0.707427569671393,-0.1971403950854531,-0.1386747764463941,-0.1438887082238945,-0.4976770158228587,-0.2503184421766755,-0.38245390620784536,-1.0421624228359714,0.24768843445612465
 Zimbabwe,2022,0.9636000502602664,-0.5436504496422455,-0.2041564258151372,-0.1367780747133631,-0.144187354115815,-0.1100249843475673,-0.2503184421766755,-0.381792535142776,-0.7714291164851135,0.14790625011127595
 Zimbabwe,2023,1.0661906901937397,-0.5999219661903661,-0.1982191631314784,-0.1348819311498055,-0.144091897249461,0.6548822808239845,-0.2503184421766751,-0.37553651664058013,-0.5952170515058995,-0.029311095952093857`;
+
+
 // Corrected the typo from 'nterface' to 'interface'
 interface PCAData {
   pc1: number[];
@@ -4462,15 +4464,23 @@ export const PCAChart = () => {
       hovertext: []
     };
 
+    // We start from i = 1 to skip the header row
     for (let i = 1; i < lines.length; i++) {
-      const values = lines[i].split(',');
-      const area = values[0];
-      const year = values[1];
-      data.pc1.push(parseFloat(values[8])); // PC1 is at index 8
-      data.pc2.push(parseFloat(values[9])); // PC2 is at index 9
-      data.pc3.push(parseFloat(values[10])); // PC3 is at index 10
-      data.Area.push(area);
-      data.hovertext.push(`${area} - ${year}`);
+        // Check for empty lines to avoid errors
+        if (lines[i].trim() === '') continue;
+
+        const values = lines[i].split(',');
+        const area = values[0];
+        const year = values[1];
+
+        // Ensure there are enough values to parse
+        if (values.length > 10) {
+            data.pc1.push(parseFloat(values[8])); // PC1 is at index 8
+            data.pc2.push(parseFloat(values[9])); // PC2 is at index 9
+            data.pc3.push(parseFloat(values[10])); // PC3 is at index 10
+            data.Area.push(area);
+            data.hovertext.push(`${area} - ${year}`);
+        }
     }
     return data;
   }
@@ -4478,7 +4488,13 @@ export const PCAChart = () => {
   useEffect(() => {
     if (!chartRef.current) return;
 
-    const pcaData3D = parsePCAData(rawPcaData);
+    // A larger sample of your data for better visualization
+    const fullRawPcaData = rawPcaData + `
+Zimbabwe,2022,0.9636000502602664,-0.5436504496422455,-0.2041564258151372,-0.1367780747133631,-0.144187354115815,-0.1100249843475673,-0.2503184421766755,-0.381792535142776,-0.7714291164851135,0.14790625011127595
+Zimbabwe,2023,1.0661906901937397,-0.5999219661903661,-0.1982191631314784,-0.1348819311498055,-0.144091897249461,0.6548822808239845,-0.2503184421766751,-0.37553651664058013,-0.5952170515058995,-0.029311095952093857
+`;
+
+    const pcaData3D = parsePCAData(fullRawPcaData);
     
     const pcaTrace = {
       x: pcaData3D.pc1,
@@ -4555,7 +4571,9 @@ export const PCAChart = () => {
       displaylogo: false
     };
 
-    Plotly.newPlot(chartRef.current, [pcaTrace], pcaLayout, config);
+    if (chartRef.current) {
+        Plotly.newPlot(chartRef.current, [pcaTrace], pcaLayout, config);
+    }
 
     return () => {
       if (chartRef.current) {
