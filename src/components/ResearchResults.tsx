@@ -33,10 +33,11 @@ export const ResearchResults = () => {
         </div>
 
         <Tabs defaultValue="pca" className="max-w-7xl mx-auto">
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
+          <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">ניתוח PCA תלת-ממדי</TabsTrigger>
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מדד ייצור מזון</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מטריצת קורלציה</TabsTrigger>
+            <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">למידת מכונה וחיזוי</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pca" className="space-y-6">
@@ -127,6 +128,130 @@ export const ResearchResults = () => {
                       🔗 תובנה מרכזית: קיימים קשרים חזקים בין גורמים דמוגרפיים, כלכליים וסביבתיים
                     </p>
                   </div>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="ml" className="space-y-6">
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* ARIMA Model */}
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <img 
+                      src="/lovable-uploads/60c9ba67-08ac-4e98-b94e-ec327f04e2cb.png" 
+                      alt="ARIMA Forecast for Israel"
+                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
+                    />
+                    <h3 className="text-xl font-semibold text-card-foreground">
+                      מודל ARIMA
+                    </h3>
+                    <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">
+                      ישראל
+                    </Badge>
+                  </div>
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-blue-800">RMSE:</span>
+                      <span className="font-bold text-lg text-blue-900">2.15</span>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    מודל ARIMA (1,1,1) מבוסס על נתונים היסטוריים ומספק חיזוי ליניארי לטווח קצר.
+                  </p>
+                </div>
+              </Card>
+
+              {/* TabPFN Model */}
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <img 
+                      src="/lovable-uploads/1785a728-3266-4093-b1e4-6419a62212b9.png" 
+                      alt="TabPFN Food Value Prediction for Israel"
+                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
+                    />
+                    <h3 className="text-xl font-semibold text-card-foreground">
+                      מודל TabPFN
+                    </h3>
+                    <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">
+                      ישראל
+                    </Badge>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-green-800">RMSE:</span>
+                      <span className="font-bold text-lg text-green-900">0.0386</span>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    מודל TabPFN מציג דיוק גבוה במיוחד בזכות שיטת למידה מתקדמת ואופטימיזציה.
+                  </p>
+                </div>
+              </Card>
+
+              {/* Blended Model */}
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+                <div className="space-y-4">
+                  <div className="text-center">
+                    <img 
+                      src="/lovable-uploads/67843f81-dc27-4d47-924a-534be56721e4.png" 
+                      alt="Model Prediction Comparison for Israel"
+                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
+                    />
+                    <h3 className="text-xl font-semibold text-card-foreground">
+                      מודל משולב (Blended)
+                    </h3>
+                    <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">
+                      ישראל
+                    </Badge>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <div className="flex justify-between items-center">
+                      <span className="font-semibold text-purple-800">RMSE:</span>
+                      <span className="font-bold text-lg text-purple-900">0.1155</span>
+                    </div>
+                  </div>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    שילוב של ARIMA ו-TabPFN המאזן בין יציבות ודיוק לחיזוי אופטימלי.
+                  </p>
+                </div>
+              </Card>
+            </div>
+
+            <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+              <div className="space-y-4">
+                <h3 className="text-2xl font-semibold text-card-foreground text-center">
+                  השוואת ביצועי המודלים
+                </h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                    <div className="text-center">
+                      <h4 className="font-semibold text-blue-800 mb-2">ARIMA</h4>
+                      <div className="text-2xl font-bold text-blue-900">2.15</div>
+                      <div className="text-sm text-blue-600">RMSE</div>
+                    </div>
+                  </div>
+                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                    <div className="text-center">
+                      <h4 className="font-semibold text-green-800 mb-2">TabPFN</h4>
+                      <div className="text-2xl font-bold text-green-900">0.0386</div>
+                      <div className="text-sm text-green-600">RMSE</div>
+                    </div>
+                  </div>
+                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                    <div className="text-center">
+                      <h4 className="font-semibold text-purple-800 mb-2">Blended</h4>
+                      <div className="text-2xl font-bold text-purple-900">0.1155</div>
+                      <div className="text-sm text-purple-600">RMSE</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
+                  <p className="text-sm text-primary font-medium text-center">
+                    🎯 המודל המשולב משיג איזון אופטימלי בין דיוק ויציבות, עם RMSE נמוך של 0.1155
+                  </p>
                 </div>
               </div>
             </Card>
