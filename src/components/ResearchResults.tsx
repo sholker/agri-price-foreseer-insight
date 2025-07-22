@@ -229,7 +229,7 @@ export const ResearchResults = () => {
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                     <div className="text-center">
                       <h4 className="font-semibold text-blue-800 mb-2">ARIMA</h4>
-                      <div className="text-2xl font-bold text-blue-900">2.15</div>
+                      <div className="text-2xl font-bold text-blue-900">2.152</div>
                       <div className="text-sm text-blue-600">RMSE</div>
                     </div>
                   </div>
