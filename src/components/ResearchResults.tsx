@@ -196,7 +196,7 @@ export const ResearchResults = () => {
                 <div className="space-y-4">
                   <div className="text-center">
                     <img 
-                      src="/lovable-uploads/67843f81-dc27-4d47-924a-534be56721e4.png" 
+                      src="/lovable-uploads/d615e4ca-8ce5-4c7c-8135-0c63c5f28aee.png" 
                       alt="Model Prediction Comparison for Israel"
                       className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
                     />
