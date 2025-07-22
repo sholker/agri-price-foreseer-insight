@@ -33,10 +33,9 @@ export const ResearchResults = () => {
         </div>
 
         <Tabs defaultValue="pca" className="max-w-7xl mx-auto">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">ניתוח PCA תלת-ממדי</TabsTrigger>
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מדד ייצור מזון</TabsTrigger>
-            <TabsTrigger value="pesticides" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">שימוש בחומרי הדברה</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מטריצת קורלציה</TabsTrigger>
           </TabsList>
 
@@ -100,37 +99,6 @@ export const ResearchResults = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="pesticides" className="space-y-6">
-            <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-              <div className="flex flex-col lg:flex-row gap-6">
-                <div className="lg:w-2/3">
-                  <img 
-                    src="/lovable-uploads/5ae4387d-0301-4475-aa0a-517211b1166e.png" 
-                    alt="Pesticides Use Value Over Time by Area"
-                    className="w-full rounded-lg shadow-glow border border-primary/20"
-                  />
-                </div>
-                <div className="lg:w-1/3 space-y-4">
-                  <h3 className="text-2xl font-semibold text-card-foreground">
-                    שימוש בחומרי הדברה לאורך זמן
-                  </h3>
-                  <Badge variant="secondary" className="text-sm bg-primary/20 text-primary border-primary/30">
-                    164 מדינות
-                  </Badge>
-                  <p className="text-muted-foreground leading-relaxed">
-                    ניתוח השימוש בחומרי הדברה מגלה דפוסים מעניינים: ירידה משמעותית 
-                    במדינות מסוימות (כמו בוליביה ב-2004-2005), יחד עם עלייה הדרגתית 
-                    במדינות אחרות לקראת 2020.
-                  </p>
-                  <div className="bg-destructive/10 p-4 rounded-lg border border-destructive/20 backdrop-blur-sm">
-                    <p className="text-sm text-destructive font-medium">
-                      ⚠️ תובנה חשובה: שינויים משמעותיים בשימוש בחומרי הדברה עשויים להשפיע על איכות ובטיחות המזון
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          </TabsContent>
 
           <TabsContent value="correlation" className="space-y-6">
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
