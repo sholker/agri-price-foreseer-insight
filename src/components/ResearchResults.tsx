@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { PCAChart } from "./PCAChart";
 
 export const ResearchResults = () => {
   return (
@@ -43,11 +44,7 @@ export const ResearchResults = () => {
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
-                  <img 
-                    src="/lovable-uploads/ad0fa8eb-ebcf-4a77-b41e-cf5d55069c02.png" 
-                    alt="Interactive 3D PCA Plot colored by area"
-                    className="w-full rounded-lg shadow-glow border border-primary/20"
-                  />
+                  <PCAChart />
                 </div>
                 <div className="lg:w-1/3 space-y-4">
                   <h3 className="text-2xl font-semibold text-card-foreground">
