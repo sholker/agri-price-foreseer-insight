@@ -53,7 +53,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-primary/30 mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2024 מחקר ניתוח וחיזוי מחירי המזון החקלאי. כל הזכויות שמורות.</p>
+          <p>&copy; 2025 מחקר ניתוח וחיזוי מחירי המזון החקלאי. כל הזכויות שמורות.</p>
         </div>
       </div>
     </footer>
