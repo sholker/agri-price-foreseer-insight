@@ -4480,6 +4480,26 @@ export const PCAChart = () => {
 
     const pcaData3D = parsePCAData(rawPcaData);
     
+    // --- Manually create a color mapping for each area ---
+    // 1. Get a list of unique areas from the data.
+    const uniqueAreas = [...new Set(pcaData3D.area)];
+
+    // 2. Define a color palette to use.
+    const colorPalette = [
+      '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+      '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+    ];
+
+    // 3. Create a map that assigns a color to each unique area.
+    const colorMap = uniqueAreas.reduce((acc, area, index) => {
+      // Cycle through the palette if there are more areas than colors
+      acc[area] = colorPalette[index % colorPalette.length];
+      return acc;
+    }, {} as Record<string, string>);
+
+    // 4. Create an array of colors that corresponds to each data point.
+    const plotColors = pcaData3D.area.map(area => colorMap[area]);
+    
     const pcaTrace = {
       x: pcaData3D.pc1,
       y: pcaData3D.pc2,
@@ -4490,9 +4510,8 @@ export const PCAChart = () => {
       type: 'scatter3d',
       marker: {
         size: 6,
-        color: pcaData3D.area, // Changed to color by area
+        color: plotColors, // Use the generated array of colors
         opacity: 0.8
-        // Removed colorscale and colorbar as they are for numeric data
       }
     };
 
