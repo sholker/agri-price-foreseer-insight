@@ -17,7 +17,12 @@ const Navigation = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0 flex items-center gap-3">
+            <img 
+              src="/lovable-uploads/2549dabe-f1eb-4d6b-a349-8bc5d0e287d8.png" 
+              alt="המרכז האקדמי למשפט ולעסקים" 
+              className="h-10 w-auto"
+            />
             <h1 className="text-xl font-bold text-foreground">מחקר מדד מחירי המזון</h1>
           </div>
 
