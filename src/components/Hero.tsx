@@ -61,9 +61,10 @@ export const Hero = () => {
           
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
             מחקר מתקדם לחיזוי מגמות מחירי המזון החקלאי באמצעות ניתוח נתונים ולמידת מכונה
+                    <p> אורי שי  דניאל רועי  ונטע טבת</p>
           </p>
-          <p> אורי שי  דניאל רועי  ונטע טבת</p>
-          
+
+          </br>
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Button 
               variant="space" 
@@ -86,6 +87,7 @@ export const Hero = () => {
         </div>
         
         {/* Scroll indicator */}
+      </br>
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
           <ArrowDown className="w-8 h-8 text-white/70" />
         </div>
