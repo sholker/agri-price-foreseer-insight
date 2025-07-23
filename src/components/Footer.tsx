@@ -39,19 +39,6 @@ export const Footer = () => {
             </ul>
           </div>
           
-          <div>
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">צור קשר</h3>
-            <div className="flex gap-4">
-              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
-                <Mail className="w-5 h-5 text-primary" />
-              </a>
-              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
-                <Linkedin className="w-5 h-5 text-primary" />
-              </a>
-              <a href="#" className="p-2 bg-card/20 backdrop-blur-md rounded-lg hover:bg-card/30 transition-smooth border border-primary/20 shadow-glow">
-                <Github className="w-5 h-5 text-primary" />
-              </a>
-            </div>
           </div>
         </div>
         
