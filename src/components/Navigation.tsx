@@ -6,10 +6,10 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-    { name: "דף הבית", href: "#home" },
-    { name: "על המחקר", href: "#overview" },
+     { name: "מתודולוגיה", href: "#methodology" },
     { name: "תוצאות", href: "#results" },
-    { name: "מתודולוגיה", href: "#methodology" },
+    { name: "על המחקר", href: "#overview" },
+    { name: "דף הבית", href: "#home" },
   ];
 
   return (
