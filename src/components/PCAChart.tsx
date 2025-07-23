@@ -4490,18 +4490,9 @@ export const PCAChart = () => {
       type: 'scatter3d',
       marker: {
         size: 6,
-        color: pcaData3D.pc1,
-        colorscale: 'Viridis',
-        opacity: 0.8,
-        colorbar: {
-          title: 'PC1 Value',
-          titlefont: {
-            color: '#ffffff'
-          },
-          tickfont: {
-            color: '#ffffff'
-          }
-        }
+        color: pcaData3D.area, // Changed to color by area
+        opacity: 0.8
+        // Removed colorscale and colorbar as they are for numeric data
       }
     };
 
@@ -4548,6 +4539,12 @@ export const PCAChart = () => {
       font: {
         family: 'Inter, sans-serif',
         color: '#ffffff'
+      },
+      showlegend: true, // Added to display the legend
+      legend: {
+        font: {
+          color: '#ffffff' // Ensure legend text is visible on dark background
+        }
       }
     };
 
