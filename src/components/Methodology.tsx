@@ -14,7 +14,7 @@ export const Methodology = () => {
       icon: BarChart3,
       title: "ניתוח רכיבים עיקריים (PCA)",
       description: "הפחתת מימד הנתונים לזיהוי הרכיבים המשפיעים ביותר על מחירי המזון ויצירת הדמיה תלת-ממדית של הנתונים.",
-      details: ["הסבר 81% מהשונות", "3 רכיבים עיקריים", "זיהוי קיבוצים גיאוגרפיים"]
+      details: ["הסבר 85% מהשונות", "3 רכיבים עיקריים", "זיהוי קיבוצים גיאוגרפיים"]
     },
     {
       icon: Brain,
@@ -101,7 +101,7 @@ export const Methodology = () => {
 
           <div className="mt-12 bg-gradient-primary rounded-2xl p-8 text-center text-white shadow-space border border-primary/30">
             <h3 className="text-2xl font-semibold mb-4">
-              דיוק חיזוי של 85%+ • זמן עיבוד מהיר • ניתוח זמן אמת
+              דיוק חיזוי של 82%+ • זמן עיבוד מהיר • ניתוח זמן אמת
             </h3>
             <p className="text-white/90 text-lg">
               המתודולוגיה שפותחה מאפשרת חיזויים מדויקים ומהירים לקובעי מדיניות
