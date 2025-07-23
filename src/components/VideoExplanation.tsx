@@ -10,7 +10,7 @@ export const VideoExplanation = () => {
             סרטון הסבר
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            צפו בסרטון ההסבר המפורט על המחקר ותוצאותיו
+            צפו בסרטון ההסבר המפרט על המחקר ותוצאותיו
           </p>
         </div>
 
