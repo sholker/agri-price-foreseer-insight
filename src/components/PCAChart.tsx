@@ -4539,7 +4539,7 @@ export const PCAChart = () => {
       },
       scene: {
         xaxis: { 
-          title: 'PC1', 
+          title: 'pc1', 
           range: [0, 14],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
@@ -4549,7 +4549,7 @@ export const PCAChart = () => {
           backgroundcolor: "rgb(230, 230,230)",
         },
         yaxis: { 
-          title: 'PC2', 
+          title: 'pc2', 
           range: [-2, 8],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
@@ -4559,7 +4559,7 @@ export const PCAChart = () => {
           backgroundcolor: "rgb(230, 230,230)",
         },
         zaxis: { 
-          title: 'PC3', 
+          title: 'pc3', 
           range: [-4, 10],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
