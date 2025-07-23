@@ -70,7 +70,7 @@ export const Hero = () => {
               onClick={scrollToResults}
               className="text-lg px-8 py-4"
             >
-              <TrendingUp className="ml-2" />
+              <TrendingUp className="mr-2" />
               צפה בתוצאות המחקר
             </Button>
             <Button 
