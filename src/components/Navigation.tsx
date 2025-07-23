@@ -10,7 +10,6 @@ const Navigation = () => {
     { name: "על המחקר", href: "#overview" },
     { name: "תוצאות", href: "#results" },
     { name: "מתודולוגיה", href: "#methodology" },
-    { name: "צור קשר", href: "#contact" }
   ];
 
   return (
