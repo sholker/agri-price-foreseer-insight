@@ -32,7 +32,7 @@ export const ResearchResults = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="ml" className="max-w-7xl mx-auto">
+        <Tabs defaultValue="production" className="max-w-7xl mx-auto">
           <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">חיזוי מדד ייצור המזון</TabsTrigger>
             <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">ניתוח PCA תלת-ממדי</TabsTrigger>
