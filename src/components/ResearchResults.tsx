@@ -91,9 +91,9 @@ export const ResearchResults = () => {
                     באפגניסטן ב-2004, ושינויים דרמטיים במדינות ספציפיות.
                   </p>
                   <div className="bg-accent/10 p-4 rounded-lg border border-accent/20 backdrop-blur-sm">
-                    <p className="text-sm text-accent-foreground font-medium">
-                      📈 עיקר הממצאים: עלייה כללית בייצור המזון העולמי עם תנודות משמעותיות במדינות מסוימות
-                    </p>
+                   <p className="text-sm text-white font-medium">
+                     📈 עיקר הממצאים: עלייה כללית בייצור המזון העולמי עם תנודות משמעותיות במדינות מסוימות
+                   </p>
                   </div>
                 </div>
               </div>
