@@ -4491,7 +4491,6 @@ export const PCAChart = () => {
       acc[area] = colorPalette[index % colorPalette.length];
       return acc;
     }, {} as Record<string, string>);
-    const plotColors = pcaData3D.area.map(area => colorMap[area]);
     
     // Create a different trace for each area to get a proper legend
     const traces = uniqueAreas.map(area => {
@@ -4540,8 +4539,8 @@ export const PCAChart = () => {
       },
       scene: {
         xaxis: { 
-          title: 'Principal Component 1', 
-          autorange: true,
+          title: 'PC1', 
+          range: [0, 14],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
           gridcolor: 'white',
@@ -4550,8 +4549,8 @@ export const PCAChart = () => {
           backgroundcolor: "rgb(230, 230,230)",
         },
         yaxis: { 
-          title: 'Principal Component 2', 
-          autorange: true,
+          title: 'PC2', 
+          range: [-2, 8],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
           gridcolor: 'white',
@@ -4560,8 +4559,8 @@ export const PCAChart = () => {
           backgroundcolor: "rgb(230, 230,230)",
         },
         zaxis: { 
-          title: 'Principal Component 3', 
-          autorange: true,
+          title: 'PC3', 
+          range: [-4, 10],
           titlefont: { color: '#333' },
           tickfont: { color: '#555' },
           gridcolor: 'white',
