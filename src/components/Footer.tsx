@@ -39,6 +39,16 @@ export const Footer = () => {
             </ul>
           </div>
           
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">כותבי המאמר</h3>
+            <ul className="space-y-2 text-muted-foreground">
+              <li>• אורי שי</li>
+              <li>• דניאל רועי</li>
+              <li>• נטע טבת</li>
+              <li>• בהנחית ד״ר אברהם יוסיפוף</li>
+              <li>• פרוייקט גמר - המרכז האקדמי למשפט ולעסקים</li>
+            </ul>
+          </div>
 
         </div>
         
