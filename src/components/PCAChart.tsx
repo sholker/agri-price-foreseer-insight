@@ -4528,21 +4528,21 @@ export const PCAChart = () => {
       scene: {
         xaxis: { 
           title: 'PC1', 
-          range: [-1, 1],
+          range: [0, 14],
           titlefont: { color: '#ffffff' },
           tickfont: { color: '#ffffff' },
           gridcolor: '#444444'
         },
         yaxis: { 
           title: 'PC2', 
-          range: [-1, 1],
+          range: [-2, 8],
           titlefont: { color: '#ffffff' },
           tickfont: { color: '#ffffff' },
           gridcolor: '#444444'
         },
         zaxis: { 
           title: 'PC3', 
-          range: [-1, 1],
+          range: [-4, 10],
           titlefont: { color: '#ffffff' },
           tickfont: { color: '#ffffff' },
           gridcolor: '#444444'
