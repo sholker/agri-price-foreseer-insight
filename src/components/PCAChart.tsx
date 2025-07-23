@@ -4463,6 +4463,7 @@ export const PCAChart = () => {
     };
 
     for (let i = 1; i < lines.length; i++) {
+      if (!lines[i]) continue; // Skip empty lines
       const values = lines[i].split(',');
       const area = values[0];
       const year = values[1];
@@ -4481,89 +4482,114 @@ export const PCAChart = () => {
     const pcaData3D = parsePCAData(rawPcaData);
     
     // --- Manually create a color mapping for each area ---
-    // 1. Get a list of unique areas from the data.
     const uniqueAreas = [...new Set(pcaData3D.area)];
-
-    // 2. Define a color palette to use.
     const colorPalette = [
       '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
       '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
     ];
-
-    // 3. Create a map that assigns a color to each unique area.
     const colorMap = uniqueAreas.reduce((acc, area, index) => {
-      // Cycle through the palette if there are more areas than colors
       acc[area] = colorPalette[index % colorPalette.length];
       return acc;
     }, {} as Record<string, string>);
-
-    // 4. Create an array of colors that corresponds to each data point.
     const plotColors = pcaData3D.area.map(area => colorMap[area]);
     
-    const pcaTrace = {
-      x: pcaData3D.pc1,
-      y: pcaData3D.pc2,
-      z: pcaData3D.pc3,
-      text: pcaData3D.hovertext,
-      hoverinfo: 'text',
-      mode: 'markers',
-      type: 'scatter3d',
-      marker: {
-        size: 6,
-        color: plotColors, // Use the generated array of colors
-        opacity: 0.8
-      }
-    };
+    // Create a different trace for each area to get a proper legend
+    const traces = uniqueAreas.map(area => {
+        const traceData = {
+            x: [] as number[],
+            y: [] as number[],
+            z: [] as number[],
+            text: [] as string[],
+        };
+        
+        pcaData3D.area.forEach((currentArea, index) => {
+            if (currentArea === area) {
+                traceData.x.push(pcaData3D.pc1[index]);
+                traceData.y.push(pcaData3D.pc2[index]);
+                traceData.z.push(pcaData3D.pc3[index]);
+                traceData.text.push(pcaData3D.hovertext[index]);
+            }
+        });
+
+        return {
+            x: traceData.x,
+            y: traceData.y,
+            z: traceData.z,
+            text: traceData.text,
+            name: area,
+            hoverinfo: 'text+name',
+            mode: 'markers',
+            type: 'scatter3d',
+            marker: {
+                size: 6,
+                color: colorMap[area], 
+                opacity: 0.8
+            }
+        };
+    });
 
     const pcaLayout = {
       title: {
-        text: 'ניתוח רכיבים עיקריים תלת-ממדי',
+        text: '3D Principal Component Analysis',
         font: {
           family: 'Inter, sans-serif',
           size: 18,
-          color: '#ffffff'
+          color: '#333'
         },
         y: 0.95
       },
       scene: {
         xaxis: { 
-          title: 'PC1', 
-          range: [0, 14],
-          titlefont: { color: '#ffffff' },
-          tickfont: { color: '#ffffff' },
-          gridcolor: '#444444'
+          title: 'Principal Component 1', 
+          autorange: true,
+          titlefont: { color: '#333' },
+          tickfont: { color: '#555' },
+          gridcolor: 'white',
+          zerolinecolor: 'white',
+          showbackground: true,
+          backgroundcolor: "rgb(230, 230,230)",
         },
         yaxis: { 
-          title: 'PC2', 
-          range: [-2, 8],
-          titlefont: { color: '#ffffff' },
-          tickfont: { color: '#ffffff' },
-          gridcolor: '#444444'
+          title: 'Principal Component 2', 
+          autorange: true,
+          titlefont: { color: '#333' },
+          tickfont: { color: '#555' },
+          gridcolor: 'white',
+          zerolinecolor: 'white',
+          showbackground: true,
+          backgroundcolor: "rgb(230, 230,230)",
         },
         zaxis: { 
-          title: 'PC3', 
-          range: [-4, 10],
-          titlefont: { color: '#ffffff' },
-          tickfont: { color: '#ffffff' },
-          gridcolor: '#444444'
+          title: 'Principal Component 3', 
+          autorange: true,
+          titlefont: { color: '#333' },
+          tickfont: { color: '#555' },
+          gridcolor: 'white',
+          zerolinecolor: 'white',
+          showbackground: true,
+          backgroundcolor: "rgb(230, 230,230)",
         },
-        bgcolor: '#0f0f23',
         camera: {
           eye: { x: 1.5, y: 1.5, z: 1.5 }
         }
       },
       margin: { l: 0, r: 0, b: 0, t: 50 },
-      paper_bgcolor: 'transparent',
-      plot_bgcolor: 'transparent',
+      paper_bgcolor: 'white',
       font: {
         family: 'Inter, sans-serif',
-        color: '#ffffff'
+        color: '#333'
       },
-      showlegend: true, // Added to display the legend
+      showlegend: true,
       legend: {
+        title: {
+          text: 'Area'
+        },
         font: {
-          color: '#ffffff' // Ensure legend text is visible on dark background
-        }
+          color: '#333'
+        },
+        bgcolor: 'rgba(255, 255, 255, 0.7)',
+        bordercolor: '#ccc',
+        borderwidth: 1
       }
     };
 
@@ -4574,7 +4600,7 @@ export const PCAChart = () => {
       displaylogo: false
     };
 
-    Plotly.newPlot(chartRef.current, [pcaTrace], pcaLayout, config);
+    Plotly.newPlot(chartRef.current, traces, pcaLayout, config);
 
     return () => {
       if (chartRef.current) {
@@ -4586,7 +4612,7 @@ export const PCAChart = () => {
   return (
     <div 
       ref={chartRef} 
-      className="w-full h-[500px] rounded-lg border border-primary/20 bg-card/50 backdrop-blur-md"
+      className="w-full h-[500px] rounded-lg border border-gray-200 bg-white"
       style={{ direction: 'ltr' }}
     />
   );
