@@ -1,41 +1,39 @@
 import { Button } from "@/components/ui/button";
 import { ArrowDown, BarChart3, TrendingUp } from "lucide-react";
-
 export const Hero = () => {
   const scrollToResults = () => {
     const resultsSection = document.getElementById('results');
-    resultsSection?.scrollIntoView({ behavior: 'smooth' });
+    resultsSection?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-
   const scrollToMethodology = () => {
     const methodologySection = document.getElementById('methodology');
-    methodologySection?.scrollIntoView({ behavior: 'smooth' });
+    methodologySection?.scrollIntoView({
+      behavior: 'smooth'
+    });
   };
-
-  return (
-    <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-space overflow-hidden">
+  return <section id="home" className="relative min-h-screen flex items-center justify-center bg-gradient-space overflow-hidden">
       {/* Space Background with Stars */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-hero"></div>
         {/* Animated stars */}
-        {Array.from({ length: 100 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full animate-pulse"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 3}s`
-            }}
-          />
-        ))}
+        {Array.from({
+        length: 100
+      }).map((_, i) => <div key={i} className="absolute w-1 h-1 bg-white rounded-full animate-pulse" style={{
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 3}s`,
+        animationDuration: `${2 + Math.random() * 3}s`
+      }} />)}
         
         {/* Central Earth-like globe representing global food systems */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="relative">
             <div className="w-96 h-96 lg:w-[500px] lg:h-[500px] rounded-full bg-gradient-earth opacity-30 blur-sm animate-pulse"></div>
-            <div className="absolute inset-4 rounded-full bg-gradient-earth opacity-20 animate-spin" style={{ animationDuration: '120s' }}></div>
+            <div className="absolute inset-4 rounded-full bg-gradient-earth opacity-20 animate-spin" style={{
+            animationDuration: '120s'
+          }}></div>
           </div>
         </div>
 
@@ -64,22 +62,12 @@ export const Hero = () => {
           </p>
           <p className="text-xl md:text-1xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed"> אורי שי · דניאל רועי · ונטע טבת</p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <Button 
-              variant="space" 
-              size="lg"
-              onClick={scrollToResults}
-              className="text-lg px-8 py-4"
-            >
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 px-[11px] mx-[488px] my-0 py-[31px]">
+            <Button variant="space" size="lg" onClick={scrollToResults} className="text-lg px-8 py-4">
               <TrendingUp className="mr-2" />
               צפה בתוצאות המחקר
             </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              onClick={scrollToMethodology}
-              className="text-lg px-8 py-4 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm"
-            >
+            <Button variant="outline" size="lg" onClick={scrollToMethodology} className="text-lg px-8 py-4 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
               על המתודולוגיה
             </Button>
           </div>
@@ -114,6 +102,5 @@ export const Hero = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
