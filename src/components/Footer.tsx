@@ -39,7 +39,7 @@ export const Footer = () => {
             </ul>
           </div>
           
-          </div>
+
         </div>
         
         <div className="border-t border-primary/30 mt-8 pt-8 text-center text-muted-foreground">
