@@ -1,6 +1,7 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Database, BarChart3, Brain, CheckCircle } from "lucide-react";
+import { MethodologyMindmap } from "./MethodologyMindmap";
 
 export const Methodology = () => {
   const steps = [
@@ -50,16 +51,7 @@ export const Methodology = () => {
 
         <div className="max-w-6xl mx-auto">
           <div className="mb-12">
-            <div className="bg-gradient-card p-8 rounded-xl shadow-space border border-primary/20 backdrop-blur-sm">
-              <img 
-                src="/lovable-uploads/0d571c9e-8f23-4d1c-accb-0df50c8658fe.png" 
-                alt="Research Methodology Workflow"
-                className="w-full h-auto rounded-lg shadow-glow border border-primary/20"
-              />
-              <p className="mt-6 text-center text-muted-foreground">
-                תרשים זרימה של תהליך המחקר - מאיסוף הנתונים הגלובליים ועד לניתוח התוצאות
-              </p>
-            </div>
+            <MethodologyMindmap />
           </div>
 
           <div className="grid md:grid-cols-2 gap-8">
