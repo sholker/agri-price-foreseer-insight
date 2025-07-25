@@ -42,7 +42,7 @@ export const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4 text-card-foreground">Article Authors</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• Uri Shai</li>
+              <li>• Ori Shai</li>
               <li>• Daniel Roei</li>
               <li>• Neta Tevet</li>
               <li>• Supervised by Dr. Abraham Yosipof</li>
