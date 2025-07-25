@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PCAChart } from "./PCAChart";
+import { FoodProductionChart } from "./FoodProductionChart";
 
 export const ResearchResults = () => {
   return (
@@ -72,11 +73,7 @@ export const ResearchResults = () => {
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
-                  <img 
-                    src="/lovable-uploads/f0e8c07e-0aa6-439a-a925-4c53e14bb8c9.png" 
-                    alt="Food Production Index Over Time by Area"
-                    className="w-full rounded-lg shadow-glow border border-primary/20"
-                  />
+                  <FoodProductionChart />
                 </div>
                 <div className="lg:w-1/3 space-y-4">
                   <h3 className="text-2xl font-semibold text-card-foreground">
