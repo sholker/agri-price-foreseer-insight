@@ -58,11 +58,12 @@ const nodeTypes: NodeTypes = {
   methodology: MethodologyNode,
 };
 
+// Updated node positions for a mind-map layout
 const initialNodes: Node[] = [
   {
     id: 'start',
     type: 'methodology',
-    position: { x: 400, y: 50 },
+    position: { x: 350, y: 250 },
     data: {
       label: 'מחקר מחירי מזון עולמיים',
       description: 'מחקר מקיף על השפעת גורמים סביבתיים וכלכליים על מחירי המזון ברחבי העולם',
@@ -74,7 +75,7 @@ const initialNodes: Node[] = [
   {
     id: 'data-collection',
     type: 'methodology',
-    position: { x: 100, y: 200 },
+    position: { x: 350, y: 50 },
     data: {
       label: 'איסוף וניקוי נתונים',
       description: 'איסוף נתונים מ-180+ מדינות מ-2000 עד 2024, כולל מדדי ייצור מזון, שימוש בחומרי הדברה, אמיסות פחמן, נתוני אוכלוסייה ותעסוקה.',
@@ -86,7 +87,7 @@ const initialNodes: Node[] = [
   {
     id: 'pca-analysis',
     type: 'methodology',
-    position: { x: 450, y: 350 },
+    position: { x: 50, y: 250 },
     data: {
       label: 'ניתוח רכיבים עיקריים (PCA)',
       description: 'הפחתת מימד הנתונים לזיהוי הרכיבים המשפיעים ביותר על מחירי המזון ויצירת הדמיה תלת-ממדית של הנתונים.',
@@ -98,7 +99,7 @@ const initialNodes: Node[] = [
   {
     id: 'ml-prediction',
     type: 'methodology',
-    position: { x: 750, y: 200 },
+    position: { x: 650, y: 250 },
     data: {
       label: 'למידת מכונה וחיזוי',
       description: 'פיתוח מודלים מתקדמים לחיזוי מגמות מחירי המזון באמצעות אלגוריתמי Random Forest וטכניקות אנסמבל.',
@@ -110,7 +111,7 @@ const initialNodes: Node[] = [
   {
     id: 'validation',
     type: 'methodology',
-    position: { x: 400, y: 500 },
+    position: { x: 350, y: 450 },
     data: {
       label: 'אימות תוצאות',
       description: 'בדיקת מטריצות קורלציה, ניתוח חשיבות משתנים ואימות התוצאות מול נתונים היסטוריים ידועים.',
@@ -121,42 +122,12 @@ const initialNodes: Node[] = [
   },
 ];
 
+// Updated edges to connect from the central node
 const initialEdges: Edge[] = [
-  {
-    id: 'e1',
-    source: 'start',
-    target: 'data-collection',
-    type: 'smoothstep',
-    style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-  },
-  {
-    id: 'e2',
-    source: 'data-collection',
-    target: 'pca-analysis',
-    type: 'smoothstep',
-    style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-  },
-  {
-    id: 'e3',
-    source: 'start',
-    target: 'ml-prediction',
-    type: 'smoothstep',
-    style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-  },
-  {
-    id: 'e4',
-    source: 'pca-analysis',
-    target: 'validation',
-    type: 'smoothstep',
-    style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-  },
-  {
-    id: 'e5',
-    source: 'ml-prediction',
-    target: 'validation',
-    type: 'smoothstep',
-    style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 },
-  },
+  { id: 'e1', source: 'start', target: 'data-collection', type: 'smoothstep', style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 }, },
+  { id: 'e2', source: 'start', target: 'pca-analysis', type: 'smoothstep', style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 }, },
+  { id: 'e3', source: 'start', target: 'ml-prediction', type: 'smoothstep', style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 }, },
+  { id: 'e4', source: 'start', target: 'validation', type: 'smoothstep', style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 }, },
 ];
 
 export const MethodologyMindmap = () => {
