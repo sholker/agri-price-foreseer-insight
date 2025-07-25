@@ -18,7 +18,7 @@ export const VideoExplanation = () => {
           <Card className="p-6 bg-gradient-card shadow-space border border-primary/20">
             <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
               <iframe
-                src="https://drive.google.com/file/d/1WPg7nrGz5Np9ggwOJ4dVgbZk7mJtQ91B/preview"
+                src="https://drive.google.com/file/d/1lE6Clf-sJA_Qyvl7c5juEJj2AQt8y8TX/preview"
                 width="100%"
                 height="100%"
                 className="absolute inset-0"
