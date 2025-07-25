@@ -1,9 +1,13 @@
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Database, BarChart3, Brain, CheckCircle } from "lucide-react";
+import { Database, BarChart3, Brain, CheckCircle, ChevronDown } from "lucide-react";
 import { MethodologyMindmap } from "./MethodologyMindmap";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Methodology = () => {
+  const [isExpanded, setIsExpanded] = useState(false);
+
   const steps = [
     {
       icon: Database,
@@ -50,46 +54,77 @@ export const Methodology = () => {
         </div>
 
         <div className="max-w-6xl mx-auto">
-          <div className="mb-12">
-            <MethodologyMindmap />
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {steps.map((step, index) => (
-              <Card 
-                key={index}
-                className="p-6 bg-gradient-card shadow-space hover:shadow-glow transition-smooth border border-primary/20 backdrop-blur-sm animate-fade-in"
-                style={{ animationDelay: `${index * 0.1}s` }}
+          <Card className="bg-gradient-card shadow-space hover:shadow-glow transition-smooth border border-primary/20 backdrop-blur-sm overflow-hidden">
+            <div 
+              className="p-6 cursor-pointer flex justify-between items-center"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              <h3 className="text-2xl font-semibold text-card-foreground">
+                הצג את תהליך המחקר האינטראקטיבי
+              </h3>
+              <motion.div
+                animate={{ rotate: isExpanded ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
               >
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-gradient-primary rounded-lg shrink-0 shadow-glow">
-                    <step.icon className="w-6 h-6 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-center gap-3 mb-3">
-                      <h3 className="text-xl font-semibold text-card-foreground">
-                        {step.title}
-                      </h3>
-                      <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                        שלב {index + 1}
-                      </Badge>
+                <ChevronDown className="w-6 h-6 text-primary" />
+              </motion.div>
+            </div>
+            
+            <AnimatePresence>
+              {isExpanded && (
+                <motion.div
+                  key="methodology-content"
+                  initial={{ height: 0, opacity: 0 }}
+                  animate={{ height: "auto", opacity: 1, transition: { height: { duration: 0.4 }, opacity: { duration: 0.3, delay: 0.1 } } }}
+                  exit={{ height: 0, opacity: 0, transition: { height: { duration: 0.4 }, opacity: { duration: 0.2 } } }}
+                  className="overflow-hidden"
+                >
+                  <div className="p-6 border-t border-primary/20">
+                    <div className="mb-12">
+                      <p className="text-center text-muted-foreground mb-4">זוהי מפת חשיבה אינטראקטיבית המציגה את הקשרים בין שלבי המחקר. ניתן ללחוץ, לגרור ולהתמקד בכל שלב.</p>
+                      <MethodologyMindmap />
                     </div>
-                    <p className="text-muted-foreground mb-4 leading-relaxed">
-                      {step.description}
-                    </p>
-                    <div className="space-y-2">
-                      {step.details.map((detail, detailIndex) => (
-                        <div key={detailIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
-                          <div className="w-1.5 h-1.5 bg-primary rounded-full shadow-glow"></div>
-                          {detail}
-                        </div>
+
+                    <div className="grid md:grid-cols-2 gap-8">
+                      {steps.map((step, index) => (
+                        <Card 
+                          key={index}
+                          className="p-6 bg-gradient-card shadow-inner-glow border border-primary/10"
+                        >
+                          <div className="flex items-start gap-4">
+                            <div className="p-3 bg-gradient-primary rounded-lg shrink-0 shadow-glow">
+                              <step.icon className="w-6 h-6 text-white" />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-3 mb-3">
+                                <h3 className="text-xl font-semibold text-card-foreground">
+                                  {step.title}
+                                </h3>
+                                <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                                  שלב {index + 1}
+                                </Badge>
+                              </div>
+                              <p className="text-muted-foreground mb-4 leading-relaxed">
+                                {step.description}
+                              </p>
+                              <div className="space-y-2">
+                                {step.details.map((detail, detailIndex) => (
+                                  <div key={detailIndex} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <div className="w-1.5 h-1.5 bg-primary rounded-full shadow-glow"></div>
+                                    {detail}
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </Card>
                       ))}
                     </div>
                   </div>
-                </div>
-              </Card>
-            ))}
-          </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </Card>
 
           <div className="mt-12 bg-gradient-primary rounded-2xl p-8 text-center text-white shadow-space border border-primary/30">
             <h3 className="text-2xl font-semibold mb-4">
