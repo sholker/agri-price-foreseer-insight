@@ -6,10 +6,10 @@ const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
-     { name: "מתודולוגיה", href: "#methodology" },
-    { name: "תוצאות", href: "#results" },
-    { name: "על המחקר", href: "#overview" },
-    { name: "דף הבית", href: "#home" },
+    { name: "Home", href: "#home" },
+    { name: "About Research", href: "#overview" },
+    { name: "Results", href: "#results" },
+    { name: "Methodology", href: "#methodology" },
   ];
 
   return (
@@ -23,11 +23,11 @@ const Navigation = () => {
               alt="המרכז האקדמי למשפט ולעסקים" 
               className="h-10 w-auto"
             />
-            <h1 className="text-xl font-bold text-foreground">מחקר מדד מחירי המזון</h1>
+            <h1 className="text-xl font-bold text-foreground">Food Price Index Research</h1>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-reverse space-x-8 text-right">
+          <div className="hidden md:flex items-center space-x-8">
             {menuItems.map((item) => (
               <a
                 key={item.name}

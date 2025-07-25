@@ -22,38 +22,38 @@ export const Footer = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="grid md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">על המחקר</h3>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">About the Research</h3>
             <p className="text-muted-foreground leading-relaxed">
-              מחקר חדשני בתחום ניתוח וחיזוי מחירי המזון החקלאי 
-              באמצעות טכנולוגיות למידת מכונה מתקדמות בסביבה גלובלית.
+              Innovative research in the field of agricultural food price analysis and prediction 
+              using advanced machine learning technologies in a global environment.
             </p>
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">נושאי מחקר</h3>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Research Topics</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• ניתוח נתוני ביג דאטה חקלאיים</li>
-              <li>• למידת מכונה וחיזוי</li>
-              <li>• ביטחון תזונתי עולמי</li>
-              <li>• כלכלה חקלאית</li>
+              <li>• Agricultural Big Data Analysis</li>
+              <li>• Machine Learning and Prediction</li>
+              <li>• Global Food Security</li>
+              <li>• Agricultural Economics</li>
             </ul>
           </div>
           
           <div>
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">כותבי המאמר</h3>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Article Authors</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li>• אורי שי</li>
-              <li>• דניאל רועי</li>
-              <li>• נטע טבת</li>
-              <li>• בהנחית ד״ר אברהם יוסיפוף</li>
-              <li>• פרוייקט גמר - המרכז האקדמי למשפט ולעסקים</li>
+              <li>• Uri Shai</li>
+              <li>• Daniel Roei</li>
+              <li>• Neta Tevet</li>
+              <li>• Supervised by Dr. Abraham Yosipof</li>
+              <li>• Final Project - Academic Center for Law and Business</li>
             </ul>
           </div>
 
         </div>
         
         <div className="border-t border-primary/30 mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2025 מחקר ניתוח וחיזוי מחירי המזון החקלאי. כל הזכויות שמורות.</p>
+          <p>&copy; 2025 Agricultural Food Price Analysis and Prediction Research. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -7,10 +7,10 @@ export const VideoExplanation = () => {
       <div className="container mx-auto px-6">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            סרטון הסבר
+            Explanation Video
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            צפו בסרטון ההסבר המפרט על המחקר ותוצאותיו
+            Watch the explanation video detailing the research and its results
           </p>
         </div>
 
@@ -23,14 +23,14 @@ export const VideoExplanation = () => {
                 height="100%"
                 className="absolute inset-0"
                 allow="autoplay"
-                title="סרטון הסבר המחקר"
+                title="Research Explanation Video"
               ></iframe>
             </div>
             
             <div className="mt-6 text-center">
               <div className="inline-flex items-center gap-2 text-muted-foreground">
                 <Play className="w-4 h-4" />
-                <span>סרטון הסבר על מחקר חיזוי מחירי המזון החקלאי</span>
+                <span>Explanation video on agricultural food price prediction research</span>
               </div>
             </div>
           </Card>

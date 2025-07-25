@@ -5,23 +5,23 @@ export const ResearchOverview = () => {
   const objectives = [
     {
       icon: Target,
-      title: "מטרת המחקר",
-      description: "ניתוח מעמיק של מגמות מחירי המזון החקלאי העולמיים ופיתוח מודלים לחיזוי מדויק של שינויים עתידיים במחירים."
+      title: "Research Objective",
+      description: "In-depth analysis of global agricultural food price trends and development of models for accurate prediction of future price changes."
     },
     {
       icon: Globe,
-      title: "חשיבות עולמית",
-      description: "הבנת מגמות מחירי המזון קריטית לביטחון תזונתי עולמי, תכנון חקלאי ויציבות כלכלית במדינות מתפתחות."
+      title: "Global Importance",
+      description: "Understanding food price trends is critical for global food security, agricultural planning, and economic stability in developing countries."
     },
     {
       icon: Brain,
-      title: "טכנולוגיה מתקדמת",
-      description: "שימוש באלגוריתמי למידת מכונה מתקדמים וניתוח רב-משתני לזיהוי דפוסים מורכבים בנתוני המזון העולמיים."
+      title: "Advanced Technology",
+      description: "Using advanced machine learning algorithms and multivariate analysis to identify complex patterns in global food data."
     },
     {
       icon: TrendingUp,
-      title: "השפעה מעשית",
-      description: "התוצאות מסייעות לקובעי מדיניות, חקלאים וארגונים בינלאומיים בקבלת החלטות מושכלות ומבוססות נתונים."
+      title: "Practical Impact",
+      description: "Results help policymakers, farmers, and international organizations make informed and data-driven decisions."
     }
   ];
 
@@ -36,11 +36,11 @@ export const ResearchOverview = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-card-foreground mb-6">
-            על המחקר
+            About the Research
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            מחקר חדשני המשלב ניתוח נתונים מתקדם עם טכנולוגיות למידת מכונה 
-            לחיזוי מגמות מחירי המזון החקלאי ברחבי העולם
+            Innovative research combining advanced data analysis with machine learning technologies 
+            to predict agricultural food price trends worldwide
           </p>
         </div>
 
@@ -70,10 +70,10 @@ export const ResearchOverview = () => {
 
         <div className="mt-16 bg-gradient-primary rounded-2xl p-8 text-center text-white shadow-space border border-primary/30">
           <h3 className="text-2xl font-semibold mb-4">
-            נתונים מ-180+ מדינות • 2000-2024 • 7 משתנים מרכזיים
+            Data from 180+ Countries • 2000-2024 • 7 Key Variables
           </h3>
           <p className="text-white/90 text-lg">
-            ניתוח מקיף של נתוני ייצור מזון, שימוש בחומרי הדברה, פליטת פחמן, צפיפות אוכלוסייה ועוד
+            Comprehensive analysis of food production data, pesticide use, carbon emissions, population density and more
           </p>
         </div>
       </div>

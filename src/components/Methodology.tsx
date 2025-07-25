@@ -7,27 +7,27 @@ export const Methodology = () => {
   const steps = [
     {
       icon: Database,
-      title: "איסוף וניקוי נתונים",
-      description: "איסוף נתונים מ-180+ מדינות מ-2000 עד 2024, כולל מדדי ייצור מזון, שימוש בחומרי הדברה, אמיסות פחמן, נתוני אוכלוסייה ותעסוקה.",
-      details: ["נרמול נתונים לפי Z-score", "טיפול בערכים חסרים", "סינון ותיקוף איכות הנתונים"]
+      title: "Data Collection and Cleaning",
+      description: "Collection of data from 180+ countries from 2000 to 2024, including food production indices, pesticide use, carbon emissions, population and employment data.",
+      details: ["Data normalization by Z-score", "Handling missing values", "Data quality filtering and validation"]
     },
     {
       icon: BarChart3,
-      title: "ניתוח רכיבים עיקריים (PCA)",
-      description: "הפחתת מימד הנתונים לזיהוי הרכיבים המשפיעים ביותר על מחירי המזון ויצירת הדמיה תלת-ממדית של הנתונים.",
-      details: ["הסבר 85% מהשונות", "3 רכיבים עיקריים", "זיהוי קיבוצים גיאוגרפיים"]
+      title: "Principal Component Analysis (PCA)",
+      description: "Dimensionality reduction to identify the most influential components on food prices and create three-dimensional data visualization.",
+      details: ["Explains 85% of variance", "3 main components", "Geographic clustering identification"]
     },
     {
       icon: Brain,
-      title: "למידת מכונה וחיזוי",
-      description: "פיתוח מודלים מתקדמים לחיזוי מגמות מחירי המזון באמצעות אלגוריתמי Random Forest וטכניקות אנסמבל.",
-      details: ["אימות צולב", "אופטימיזציה של היפר-פרמטרים", "הערכת דיוק המודל"]
+      title: "Machine Learning and Prediction",
+      description: "Development of advanced models for predicting food price trends using Random Forest algorithms and ensemble techniques.",
+      details: ["Cross-validation", "Hyperparameter optimization", "Model accuracy assessment"]
     },
     {
       icon: CheckCircle,
-      title: "אימות תוצאות",
-      description: "בדיקת מטריצות קורלציה, ניתוח חשיבות משתנים ואימות התוצאות מול נתונים היסטוריים ידועים.",
-      details: ["מטריצת קורלציה", "ניתוח רגישות", "בדיקת עקביות"]
+      title: "Results Validation",
+      description: "Testing correlation matrices, variable importance analysis, and validating results against known historical data.",
+      details: ["Correlation matrix", "Sensitivity analysis", "Consistency testing"]
     }
   ];
 
@@ -42,10 +42,10 @@ export const Methodology = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-card-foreground mb-6">
-            מתודולוגיית המחקר
+            Research Methodology
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            תהליך מחקר מקיף המשלב טכניקות מתקדמות בביג דאטה ולמידת מכונה
+            Comprehensive research process combining advanced big data and machine learning techniques
           </p>
         </div>
 
@@ -71,7 +71,7 @@ export const Methodology = () => {
                         {step.title}
                       </h3>
                       <Badge variant="outline" className="text-xs border-primary/30 text-primary">
-                        שלב {index + 1}
+                        Step {index + 1}
                       </Badge>
                     </div>
                     <p className="text-muted-foreground mb-4 leading-relaxed">
@@ -93,10 +93,10 @@ export const Methodology = () => {
 
           <div className="mt-12 bg-gradient-primary rounded-2xl p-8 text-center text-white shadow-space border border-primary/30">
             <h3 className="text-2xl font-semibold mb-4">
-              דיוק חיזוי של 82%+ • זמן עיבוד מהיר • ניתוח זמן אמת
+              82%+ Prediction Accuracy • Fast Processing Time • Real-time Analysis
             </h3>
             <p className="text-white/90 text-lg">
-              המתודולוגיה שפותחה מאפשרת חיזויים מדויקים ומהירים לקובעי מדיניות
+              The developed methodology enables accurate and fast predictions for policymakers
             </p>
           </div>
         </div>

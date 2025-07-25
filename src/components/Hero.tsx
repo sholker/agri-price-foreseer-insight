@@ -50,25 +50,25 @@ export const Hero = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight shadow-space">
-            ניתוח וניבוי
+            Analysis and Prediction
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-              מדד מחירי המזון
+              Agricultural Food
             </span>
-            החקלאי
+            Price Index
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
-            מחקר מתקדם לחיזוי מגמות מחירי המזון החקלאי באמצעות ניתוח נתונים ולמידת מכונה
+            Advanced research for predicting agricultural food price trends using data analysis and machine learning
           </p>
-          <p className="text-xl md:text-1xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed"> אוֹרי שי · דניאל רועי · ונטע טבת</p>
+          <p className="text-xl md:text-1xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">Uri Shai · Daniel Roei · Neta Tevet</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 px-[11px] mx-[488px] my-0 py-[31px]">
             <Button variant="space" size="lg" onClick={scrollToResults} className="text-lg px-8 py-4">
               <TrendingUp className="mr-2" />
-              צפה בתוצאות המחקר
+              View Research Results
             </Button>
             <Button variant="outline" size="lg" onClick={scrollToMethodology} className="text-lg px-8 py-4 border-white/30 text-white hover:bg-white/10 hover:border-white/50 backdrop-blur-sm">
-              על המתודולוגיה
+              About Methodology
             </Button>
           </div>
         </div>
