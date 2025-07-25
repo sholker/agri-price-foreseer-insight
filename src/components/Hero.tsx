@@ -60,7 +60,7 @@ export const Hero = () => {
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">
             Advanced research for predicting agricultural food price trends using data analysis and machine learning
           </p>
-          <p className="text-xl md:text-1xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">Uri Shai · Daniel Roei · Neta Tevet</p>
+          <p className="text-xl md:text-1xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">Ori Shai · Daniel Roei · Neta Tevet</p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12 px-[11px] mx-[488px] my-0 py-[31px]">
             <Button variant="space" size="lg" onClick={scrollToResults} className="text-lg px-8 py-4">
