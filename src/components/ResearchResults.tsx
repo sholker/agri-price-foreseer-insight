@@ -216,42 +216,6 @@ export const ResearchResults = () => {
                 </div>
               </Card>
             </div>
-
-            <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-              <div className="space-y-4">
-                <h3 className="text-2xl font-semibold text-card-foreground text-center">
-                  השוואת ביצועי המודלים
-                </h3>
-                <div className="grid gap-4 md:grid-cols-3">
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div className="text-center">
-                      <h4 className="font-semibold text-blue-800 mb-2">ARIMA</h4>
-                      <div className="text-2xl font-bold text-blue-900">2.152</div>
-                      <div className="text-sm text-blue-600">RMSE</div>
-                    </div>
-                  </div>
-                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <div className="text-center">
-                      <h4 className="font-semibold text-green-800 mb-2">TabPFN</h4>
-                      <div className="text-2xl font-bold text-green-900">0.0386</div>
-                      <div className="text-sm text-green-600">RMSE</div>
-                    </div>
-                  </div>
-                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <div className="text-center">
-                      <h4 className="font-semibold text-purple-800 mb-2">Blended</h4>
-                      <div className="text-2xl font-bold text-purple-900">0.1155</div>
-                      <div className="text-sm text-purple-600">RMSE</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
-                  <p className="text-sm text-primary font-medium text-center">
-                    🎯 המודל המשולב משיג איזון אופטימלי בין דיוק ויציבות, עם RMSE נמוך של 0.1155
-                  </p>
-                </div>
-              </div>
-            </Card>
           </TabsContent>
         </Tabs>
       </div>
