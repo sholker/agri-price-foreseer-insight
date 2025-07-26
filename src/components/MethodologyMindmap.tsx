@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -11,7 +11,7 @@ import {
   Position,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Database, BarChart3, Brain, CheckCircle } from 'lucide-react';
+import { Database, BarChart3, Brain, CheckCircle, ChevronRight, ChevronDown } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -22,36 +22,42 @@ interface MethodologyNodeData {
   details: string[];
   icon: React.ComponentType<any>;
   isExpanded: boolean;
+  children?: string[]; // Optional: IDs of child nodes
+  childEdges?: string[]; // Optional: IDs of edges connecting children
 }
 
 // Custom Node Component
 const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
   const Icon = data.icon;
+  const isParent = data.children && data.children.length > 0;
   
   return (
-    // We target the source and target handles for custom positioning
-    // to ensure the flow is always top-to-bottom.
     <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm transition-all duration-300">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
-          <Icon className="w-5 h-5 text-white" />
+      <div className="flex items-center justify-between gap-3 mb-3">
+        <div className="flex items-center gap-3">
+          <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
+            <Icon className="w-5 h-5 text-white" />
+          </div>
+          <h3 className="text-lg font-semibold text-card-foreground">{data.label}</h3>
         </div>
-        <h3 className="text-lg font-semibold text-card-foreground">{data.label}</h3>
+        {isParent && (
+          <div className="text-muted-foreground">
+            {data.isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+          </div>
+        )}
       </div>
       
-      {data.isExpanded && (
+      {(data.isExpanded && (data.description || data.details.length > 0)) && (
         <div className="space-y-3 mt-4 animate-fade-in">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {data.description}
-          </p>
-          <div className="space-y-2">
+          {data.description && <p className="text-sm text-muted-foreground leading-relaxed">{data.description}</p>}
+          {data.details.length > 0 && <div className="space-y-2">
             {data.details.map((detail, index) => (
-              <div key={index} className="flex items-center gap-2 text-xs text-muted-foreground">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full"></div>
-                {detail}
+              <div key={index} className="flex items-start gap-2 text-xs text-muted-foreground">
+                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
+                <span>{detail}</span>
               </div>
             ))}
-          </div>
+          </div>}
         </div>
       )}
     </Card>
@@ -63,112 +69,134 @@ const nodeTypes: NodeTypes = {
   methodology: MethodologyNode,
 };
 
-// Define initial nodes for the flowchart. 
-// Y positions are set to 0 and will be calculated dynamically.
+// Define initial nodes for the new hierarchical flowchart
 const initialNodes: Node<MethodologyNodeData>[] = [
+  // --- Parent Nodes ---
   {
-    id: 'data-collection',
+    id: 'pre-processing',
     type: 'methodology',
-    position: { x: 0, y: 0 },
+    position: { x: -250, y: 200 },
     data: {
-      label: 'שלב 1: איסוף וניקוי נתונים',
-      description: 'איסוף נתונים מ-180+ מדינות מ-2000 עד 2024, כולל מדדי ייצור מזון, שימוש בחומרי הדברה, פליטות פחמן, נתוני אוכלוסייה ותעסוקה.',
-      details: ['נרמול נתונים לפי Z-score', 'טיפול בערכים חסרים', 'סינון ותיקוף איכות הנתונים'],
+      label: 'Pre processing',
       icon: Database,
       isExpanded: false,
+      description: 'Click to expand the pre-processing workflow.',
+      details: [],
+      children: ['loading-data', 'merge-data', 'normalize', 'clean'],
+      childEdges: ['e-pre-load', 'e-load-merge', 'e-merge-norm', 'e-norm-clean'],
     },
-    sourcePosition: Position.Bottom,
-    targetPosition: Position.Top,
   },
   {
-    id: 'pca-analysis',
+    id: 'prediction',
     type: 'methodology',
-    position: { x: 0, y: 0 },
+    position: { x: -250, y: 400 },
     data: {
-      label: 'שלב 2: ניתוח רכיבים עיקריים (PCA)',
-      description: 'הפחתת מימד הנתונים לזיהוי הרכיבים המשפיעים ביותר על מחירי המזון ויצירת הדמיה תלת-ממדית של הנתונים.',
-      details: ['הסבר 85% מהשונות', '3 רכיבים עיקריים', 'זיהוי קיבוצים גיאוגרפיים'],
-      icon: BarChart3,
-      isExpanded: false,
-    },
-    sourcePosition: Position.Bottom,
-    targetPosition: Position.Top,
-  },
-  {
-    id: 'ml-prediction',
-    type: 'methodology',
-    position: { x: 0, y: 0 },
-    data: {
-      label: 'שלב 3: למידת מכונה וחיזוי',
-      description: 'פיתוח מודלים מתקדמים לחיזוי מגמות מחירי המזון באמצעות אלגוריתמי Random Forest וטכניקות אנסמבל.',
-      details: ['אימות צולב (Cross-validation)', 'אופטימיזציה של היפר-פרמטרים', 'הערכת דיוק המודל (R² score)'],
+      label: 'Prediction food production',
       icon: Brain,
       isExpanded: false,
+      description: 'This section would detail the prediction models.',
+      details: [],
     },
-    sourcePosition: Position.Bottom,
-    targetPosition: Position.Top,
+  },
+
+  // --- Pre-processing Child Nodes (initially hidden) ---
+  {
+    id: 'loading-data',
+    type: 'methodology',
+    position: { x: 200, y: 200 },
+    hidden: true,
+    data: { label: 'Loading Data', icon: Database, isExpanded: false, description: '', details:[] },
+    sourcePosition: Position.Right, targetPosition: Position.Left,
   },
   {
-    id: 'validation',
+    id: 'merge-data',
     type: 'methodology',
-    position: { x: 0, y: 0 },
+    position: { x: 650, y: 200 },
+    hidden: true,
+    data: { label: 'Merge All Datasets', icon: Database, isExpanded: false, description: 'Combine all data sources into a single dataset.', details:[] },
+    sourcePosition: Position.Right, targetPosition: Position.Left,
+  },
+  {
+    id: 'normalize',
+    type: 'methodology',
+    position: { x: 1100, y: 200 },
+    hidden: true,
     data: {
-      label: 'שלב 4: אימות תוצאות',
-      description: 'בדיקת מטריצות קורלציה, ניתוח חשיבות משתנים ואימות התוצאות מול נתונים היסטוריים ידועים.',
-      details: ['מטריצת קורלציה', 'ניתוח רגישות המודל', 'בדיקת עקביות התוצאות'],
-      icon: CheckCircle,
-      isExpanded: false,
+      label: 'Normalize by Z-score',
+      icon: BarChart3,
+      isExpanded: true, // Always show formula
+      description: 'z_scores = (data - mean) / std_dev',
+      details: [],
     },
-    sourcePosition: Position.Bottom,
-    targetPosition: Position.Top,
+    sourcePosition: Position.Right, targetPosition: Position.Left,
+  },
+  {
+    id: 'clean',
+    type: 'methodology',
+    position: { x: 1550, y: 200 },
+    hidden: true,
+    data: {
+      label: 'Clean',
+      icon: CheckCircle,
+      isExpanded: false, // User clicks to see details
+      description: 'Click this node to see cleaning steps.',
+      details: [
+        'Drop area rows that do not have data for more than 20% of the years (2000-2024).',
+        'Drop areas that are missing more than 40% of values for any single year.',
+        'Remove areas that do not exist in the food production datasets.',
+        'Remove outliers using mean and standard deviation.',
+      ],
+    },
+    targetPosition: Position.Left,
   },
 ];
 
 // Define edges connecting the nodes sequentially
 const initialEdges: Edge[] = [
-  { id: 'e1', source: 'data-collection', target: 'pca-analysis', type: 'smoothstep', animated: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
-  { id: 'e2', source: 'pca-analysis', target: 'ml-prediction', type: 'smoothstep', animated: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
-  { id: 'e3', source: 'ml-prediction', target: 'validation', type: 'smoothstep', animated: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
+  { id: 'e-pre-load', source: 'pre-processing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
+  { id: 'e-load-merge', source: 'loading-data', target: 'merge-data', type: 'smoothstep', animated: true, hidden: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
+  { id: 'e-merge-norm', source: 'merge-data', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
+  { id: 'e-norm-clean', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: { stroke: 'hsl(var(--primary))', strokeWidth: 2 } },
 ];
 
 export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  // Reusable function to calculate node positions for a vertical layout
-  const layoutNodes = useCallback((nodesToLayout: Node<MethodologyNodeData>[]) => {
-    const PADDING = 50;
-    const COLLAPSED_HEIGHT = 100; // Estimated height for a collapsed node
-    const EXPANDED_HEIGHT = 260;  // Estimated height for an expanded node
-    let yOffset = 0;
-    return nodesToLayout.map((node) => {
-      const nodeHeight = node.data.isExpanded ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT;
-      const updatedNode = { ...node, position: { ...node.position, y: yOffset } };
-      yOffset += nodeHeight + PADDING;
-      return updatedNode;
-    });
-  }, []);
-
-  // Apply layout on initial render
-  useEffect(() => {
-    setNodes((nds) => layoutNodes(nds));
-  }, [setNodes, layoutNodes]);
-
-
-  // Callback to toggle node expansion on click and re-layout
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    setNodes((nds) => {
-      const toggledNodes = nds.map((n) => {
-        if (n.id === clickedNode.id) {
-          return { ...n, data: { ...n.data, isExpanded: !n.data.isExpanded } };
+    setNodes(nds => {
+        // Create a map for efficient updates
+        const nodesMap = new Map(nds.map(n => [n.id, { ...n }]));
+        const updatedNode = nodesMap.get(clickedNode.id)!;
+        
+        // Toggle the isExpanded state for the clicked node
+        updatedNode.data = { ...updatedNode.data, isExpanded: !updatedNode.data.isExpanded };
+        
+        // If the node is a parent, toggle the visibility of its children and their edges
+        const isParent = updatedNode.data.children && updatedNode.data.children.length > 0;
+        if (isParent) {
+            const shouldBeHidden = !updatedNode.data.isExpanded;
+            
+            updatedNode.data.children!.forEach(childId => {
+                const childNode = nodesMap.get(childId);
+                if (childNode) childNode.hidden = shouldBeHidden;
+            });
+
+            setEdges(eds =>
+              eds.map(edge => {
+                if (updatedNode.data.childEdges?.includes(edge.id)) {
+                  return { ...edge, hidden: shouldBeHidden };
+                }
+                return edge;
+              })
+            );
         }
-        return n;
-      });
-      return layoutNodes(toggledNodes);
+        
+        // Return the updated array of nodes
+        return Array.from(nodesMap.values());
     });
-  }, [setNodes, layoutNodes]);
+  }, [setNodes, setEdges]);
   
-  // CSS for animations
   const customStyles = `
     @keyframes fade-in {
       from { opacity: 0; transform: translateY(-10px); }
@@ -179,22 +207,6 @@ export const MethodologyMindmap = () => {
     }
   `;
 
-  // Function to expand all nodes and re-layout
-  const expandAll = () => {
-    setNodes((nds) => {
-      const expanded = nds.map((n) => ({ ...n, data: { ...n.data, isExpanded: true } }));
-      return layoutNodes(expanded);
-    });
-  };
-
-  // Function to collapse all nodes and re-layout
-  const collapseAll = () => {
-    setNodes((nds) => {
-      const collapsed = nds.map((n) => ({ ...n, data: { ...n.data, isExpanded: false } }));
-      return layoutNodes(collapsed);
-    });
-  };
-
   return (
     <div className="bg-gradient-card rounded-xl border border-primary/20 backdrop-blur-sm overflow-hidden w-full h-full flex flex-col">
       <style>{customStyles}</style>
@@ -202,14 +214,6 @@ export const MethodologyMindmap = () => {
         <h3 className="text-lg font-semibold text-card-foreground">
           מתודולוגיית המחקר - תרשים זרימה
         </h3>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={expandAll}>
-            הרחב הכל
-          </Button>
-          <Button variant="outline" size="sm" onClick={collapseAll}>
-            כווץ הכל
-          </Button>
-        </div>
       </div>
       <div className="flex-grow w-full h-full" style={{ minHeight: '600px' }}>
         <ReactFlow
@@ -220,7 +224,7 @@ export const MethodologyMindmap = () => {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          fitViewOptions={{ padding: 0.1 }}
+          fitViewOptions={{ padding: 0.2 }}
           style={{ direction: 'ltr' }}
           proOptions={{ hideAttribution: true }}
         >
@@ -229,7 +233,7 @@ export const MethodologyMindmap = () => {
         </ReactFlow>
       </div>
       <div className="p-4 text-center text-sm text-muted-foreground border-t border-primary/20 flex-shrink-0">
-        לחץ על כל שלב כדי לראות פרטים נוספים • גרור כדי לנווט • זום עם הגלגלת
+        לחץ על שלב כדי להרחיב • גרור כדי לנווט • זום עם הגלגלת
       </div>
     </div>
   );
