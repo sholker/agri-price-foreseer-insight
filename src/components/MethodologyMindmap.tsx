@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -31,7 +31,7 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
   return (
     // We target the source and target handles for custom positioning
     // to ensure the flow is always top-to-bottom.
-    <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
+    <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm transition-all duration-300">
       <div className="flex items-center gap-3 mb-3">
         <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
           <Icon className="w-5 h-5 text-white" />
@@ -63,7 +63,8 @@ const nodeTypes: NodeTypes = {
   methodology: MethodologyNode,
 };
 
-// Define initial nodes for the flowchart in a linear, top-to-bottom layout
+// Define initial nodes for the flowchart. 
+// Y positions are set to 0 and will be calculated dynamically.
 const initialNodes: Node<MethodologyNodeData>[] = [
   {
     id: 'data-collection',
@@ -82,7 +83,7 @@ const initialNodes: Node<MethodologyNodeData>[] = [
   {
     id: 'pca-analysis',
     type: 'methodology',
-    position: { x: 0, y: 200 },
+    position: { x: 0, y: 0 },
     data: {
       label: 'שלב 2: ניתוח רכיבים עיקריים (PCA)',
       description: 'הפחתת מימד הנתונים לזיהוי הרכיבים המשפיעים ביותר על מחירי המזון ויצירת הדמיה תלת-ממדית של הנתונים.',
@@ -96,7 +97,7 @@ const initialNodes: Node<MethodologyNodeData>[] = [
   {
     id: 'ml-prediction',
     type: 'methodology',
-    position: { x: 0, y: 400 },
+    position: { x: 0, y: 0 },
     data: {
       label: 'שלב 3: למידת מכונה וחיזוי',
       description: 'פיתוח מודלים מתקדמים לחיזוי מגמות מחירי המזון באמצעות אלגוריתמי Random Forest וטכניקות אנסמבל.',
@@ -110,7 +111,7 @@ const initialNodes: Node<MethodologyNodeData>[] = [
   {
     id: 'validation',
     type: 'methodology',
-    position: { x: 0, y: 600 },
+    position: { x: 0, y: 0 },
     data: {
       label: 'שלב 4: אימות תוצאות',
       description: 'בדיקת מטריצות קורלציה, ניתוח חשיבות משתנים ואימות התוצאות מול נתונים היסטוריים ידועים.',
@@ -134,25 +135,38 @@ export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 
-  // Callback to toggle node expansion on click
-  const onNodeClick = useCallback((event: React.MouseEvent, node: Node) => {
-    setNodes((nds) =>
-      nds.map((n) => {
-        if (n.id === node.id) {
-          // Toggle the isExpanded state for the clicked node
-          return {
-            ...n,
-            data: {
-              ...n.data,
-              isExpanded: !n.data.isExpanded,
-            },
-          };
+  // Reusable function to calculate node positions for a vertical layout
+  const layoutNodes = useCallback((nodesToLayout: Node<MethodologyNodeData>[]) => {
+    const PADDING = 50;
+    const COLLAPSED_HEIGHT = 100; // Estimated height for a collapsed node
+    const EXPANDED_HEIGHT = 260;  // Estimated height for an expanded node
+    let yOffset = 0;
+    return nodesToLayout.map((node) => {
+      const nodeHeight = node.data.isExpanded ? EXPANDED_HEIGHT : COLLAPSED_HEIGHT;
+      const updatedNode = { ...node, position: { ...node.position, y: yOffset } };
+      yOffset += nodeHeight + PADDING;
+      return updatedNode;
+    });
+  }, []);
+
+  // Apply layout on initial render
+  useEffect(() => {
+    setNodes((nds) => layoutNodes(nds));
+  }, [setNodes, layoutNodes]);
+
+
+  // Callback to toggle node expansion on click and re-layout
+  const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
+    setNodes((nds) => {
+      const toggledNodes = nds.map((n) => {
+        if (n.id === clickedNode.id) {
+          return { ...n, data: { ...n.data, isExpanded: !n.data.isExpanded } };
         }
-        // Keep other nodes as they are
         return n;
-      })
-    );
-  }, [setNodes]);
+      });
+      return layoutNodes(toggledNodes);
+    });
+  }, [setNodes, layoutNodes]);
   
   // CSS for animations
   const customStyles = `
@@ -165,24 +179,20 @@ export const MethodologyMindmap = () => {
     }
   `;
 
-  // Function to expand all nodes
+  // Function to expand all nodes and re-layout
   const expandAll = () => {
-    setNodes((nds) =>
-      nds.map((n) => ({
-        ...n,
-        data: { ...n.data, isExpanded: true },
-      }))
-    );
+    setNodes((nds) => {
+      const expanded = nds.map((n) => ({ ...n, data: { ...n.data, isExpanded: true } }));
+      return layoutNodes(expanded);
+    });
   };
 
-  // Function to collapse all nodes
+  // Function to collapse all nodes and re-layout
   const collapseAll = () => {
-    setNodes((nds) =>
-      nds.map((n) => ({
-        ...n,
-        data: { ...n.data, isExpanded: false },
-      }))
-    );
+    setNodes((nds) => {
+      const collapsed = nds.map((n) => ({ ...n, data: { ...n.data, isExpanded: false } }));
+      return layoutNodes(collapsed);
+    });
   };
 
   return (
@@ -210,10 +220,9 @@ export const MethodologyMindmap = () => {
           onNodeClick={onNodeClick}
           nodeTypes={nodeTypes}
           fitView
-          // fitViewOptions is used to control the initial view, e.g., adding some padding
-          fitViewOptions={{ padding: 0.2 }}
-          style={{ direction: 'ltr' }} // LTR direction for canvas controls
-          proOptions={{ hideAttribution: true }} // Hides the "React Flow" attribution
+          fitViewOptions={{ padding: 0.1 }}
+          style={{ direction: 'ltr' }}
+          proOptions={{ hideAttribution: true }}
         >
           <Background />
           <Controls />
