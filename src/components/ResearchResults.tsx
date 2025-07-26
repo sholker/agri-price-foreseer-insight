@@ -48,9 +48,9 @@ export const ResearchResults = () => {
   const selectedAreaData = predictionData.find(d => d.Area === selectedArea);
   
   // Construct image paths based on the selected area
-  const arimaImgPath = `/lovable-uploads/results/ARIMA/${selectedArea}.png`;
-  const tabpfnImgPath = `/lovable-uploads/results/tabpFN/${selectedArea}.png`;
-  const blendedImgPath = `/lovable-uploads/results/blanded/${selectedArea}.png`;
+  const arimaImgPath = `/lovable-uploads/ARIMA/${selectedArea}.png`;
+  const tabpfnImgPath = `/lovable-uploads/tabpFN/${selectedArea}.png`;
+  const blendedImgPath = `/lovable-uploads/blanded/${selectedArea}.png`;
 
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
