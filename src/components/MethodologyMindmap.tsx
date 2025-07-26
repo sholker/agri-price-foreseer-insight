@@ -74,7 +74,7 @@ const getAllNodes = (): Node<MethodologyNodeData>[] => [
     position: { x: -200, y: 0 },
     data: {
       label: 'Pre Processing',
-      description: 'Data collection, merging, normalization and cleaning processes',
+      description: 'Data preparation pipeline from loading to cleaning',
       details: ['Click to expand and see sub-steps'],
       icon: Database,
       isExpanded: false,
@@ -175,7 +175,7 @@ const getAllNodes = (): Node<MethodologyNodeData>[] => [
     data: {
       label: 'Drop Missing Areas',
       description: 'Drop area rows that do not have data in year 2000-2024 more than 20% for 20% of *_value',
-      details: ['Check data availability', 'Calculate missing percentage', 'Remove insufficient areas'],
+      details: ['Check data availability from 2000-2024', 'Calculate missing percentage threshold', 'Remove areas with >20% missing data'],
       icon: Filter,
       isExpanded: false,
       level: 3,
@@ -192,7 +192,7 @@ const getAllNodes = (): Node<MethodologyNodeData>[] => [
     data: {
       label: 'Drop Missing Years',
       description: 'Drop areas with missing values for years 2000-2024 where missing years are more than 40%',
-      details: ['Analyze temporal coverage', 'Calculate missing year percentage', 'Remove incomplete time series'],
+      details: ['Analyze temporal coverage 2000-2024', 'Calculate missing year percentage', 'Remove areas with >40% missing years'],
       icon: Filter,
       isExpanded: false,
       level: 3,
@@ -209,7 +209,7 @@ const getAllNodes = (): Node<MethodologyNodeData>[] => [
     data: {
       label: 'Remove Non-Food Areas',
       description: 'Remove areas that do not exist in food production datasets',
-      details: ['Cross-reference with food production data', 'Identify non-food producing regions', 'Clean dataset consistency'],
+      details: ['Cross-reference with food production data', 'Identify non-food producing regions', 'Ensure dataset consistency'],
       icon: Filter,
       isExpanded: false,
       level: 3,
@@ -226,7 +226,7 @@ const getAllNodes = (): Node<MethodologyNodeData>[] => [
     data: {
       label: 'Remove Outliers',
       description: 'Remove outliers by mean and standard deviation',
-      details: ['Calculate statistical thresholds', 'Identify extreme values', 'Apply outlier removal'],
+      details: ['Calculate statistical thresholds', 'Identify extreme values using mean ± std', 'Apply outlier removal'],
       icon: Filter,
       isExpanded: false,
       level: 3,
