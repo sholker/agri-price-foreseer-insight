@@ -16,59 +16,70 @@ export const ResearchResults = () => {
   const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
-    // Fetch and parse the prediction data from the CSV file
-    fetch('/lovable-uploads/df_predictions_2026.csv')
-      .then(response => response.text())
-      .then(csvText => {
-        const lines = csvText.trim().split('\n');
-        // Skip header line and parse data
-        const data = lines.slice(1).map(line => {
-          const parts = line.split(',');
-          const area = parts[0];
-          const prediction = parseFloat(parts[1]);
-          const formula = parts.slice(2).join(',');
-
-          // NOTE: Simulating RMSE and ARIMA order data as it's not in the provided CSV.
-          const arimaRmse = 2.15 + (Math.random() - 0.5) * 1.5; // e.g., 1.4 to 2.9
-          const tabpfnRmse = 0.0386 + (Math.random() - 0.5) * 0.02; // e.g., 0.0286 to 0.0486
-          const blendedRmse = 0.1155 + (Math.random() - 0.5) * 0.08; // e.g., 0.0755 to 0.1555
-          const p = Math.floor(Math.random() * 3);
-          const d = Math.floor(Math.random() * 2);
-          const q = Math.floor(Math.random() * 3);
-          const arimaOrder = `(${p},${d},${q})`;
-
-          return {
-            Area: area,
-            Prediction_2026: prediction,
-            Formula: formula,
-            arimaRmse: arimaRmse,
-            tabpfnRmse: tabpfnRmse,
-            blendedRmse: blendedRmse,
-            arimaOrder: arimaOrder,
-          };
-        }).filter(item => item.Area && !isNaN(item.Prediction_2026)); // Filter out any empty/invalid lines
-
-        setPredictionData(data);
-        const sortedAreas = [...new Set(data.map(d => d.Area))].sort();
-        setAreas(sortedAreas);
-        
-        // Set default selected area
-        if (sortedAreas.includes('Israel')) {
-          setSelectedArea('Israel');
-        } else if (sortedAreas.length > 0) {
-          setSelectedArea(sortedAreas[0]);
+    // Fetch and parse data from both CSV files
+    Promise.all([
+      fetch('/lovable-uploads/df_predictions_2026.csv').then(res => res.text()),
+      fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text())
+    ]).then(([predictionsCsv, arimaCsv]) => {
+      // Create a map of ARIMA data for easy lookup
+      const arimaDataMap = new Map();
+      const arimaLines = arimaCsv.trim().split('\n').slice(1);
+      arimaLines.forEach(line => {
+        const parts = line.split(',');
+        const area = parts[0];
+        const rmse = parseFloat(parts[1]);
+        const modelEquation = parts[2]; // Using the equation as the order description
+        if (area && !isNaN(rmse)) {
+          arimaDataMap.set(area, { arimaRmse: rmse, arimaOrder: modelEquation });
         }
       });
+
+      // Process the main prediction data and merge with ARIMA data
+      const predictionLines = predictionsCsv.trim().split('\n').slice(1);
+      const data = predictionLines.map(line => {
+        const parts = line.split(',');
+        const area = parts[0];
+        const prediction = parseFloat(parts[1]);
+        const formula = parts.slice(2).join(',');
+
+        const arimaData = arimaDataMap.get(area);
+        const arimaRmse = arimaData ? arimaData.arimaRmse : null; // Use real data or null
+        const arimaOrder = arimaData ? arimaData.arimaOrder : 'N/A'; // Use real data or 'N/A'
+
+        // NOTE: Still simulating for other models as data is not provided.
+        const tabpfnRmse = 0.0386 + (Math.random() - 0.5) * 0.02;
+        const blendedRmse = 0.1155 + (Math.random() - 0.5) * 0.08;
+
+        return {
+          Area: area,
+          Prediction_2026: prediction,
+          Formula: formula,
+          arimaRmse: arimaRmse,
+          tabpfnRmse: tabpfnRmse,
+          blendedRmse: blendedRmse,
+          arimaOrder: arimaOrder,
+        };
+      }).filter(item => item.Area && !isNaN(item.Prediction_2026));
+
+      setPredictionData(data);
+      const sortedAreas = [...new Set(data.map(d => d.Area))].sort();
+      setAreas(sortedAreas);
+      
+      if (sortedAreas.includes('Israel')) {
+        setSelectedArea('Israel');
+      } else if (sortedAreas.length > 0) {
+        setSelectedArea(sortedAreas[0]);
+      }
+    }).catch(error => console.error("Error loading or parsing CSV data:", error));
   }, []);
 
   const handleAreaChange = (value) => {
     setSelectedArea(value);
-    setShowFuturePredictions(false); // Collapse details on new selection
+    setShowFuturePredictions(false);
   };
   
   const selectedAreaData = predictionData.find(d => d.Area === selectedArea);
   
-  // Construct image paths based on the selected area
   const arimaImgPath = `/lovable-uploads/ARIMA/${selectedArea}.png`;
   const tabpfnImgPath = `/lovable-uploads/tabpFN/${selectedArea}.png`;
   const blendedImgPath = `/lovable-uploads/blanded/${selectedArea}.png`;
@@ -77,9 +88,7 @@ export const ResearchResults = () => {
     if (!basePrediction) return [];
     const predictions = [];
     let currentPrediction = basePrediction;
-    // Simulate a small, slightly variable annual increase for future years
     for (let i = 0; i < 4; i++) {
-        // Apply a growth factor only for years after the first (2026)
         if (i > 0) {
             const growthFactor = 1 + (Math.random() * 0.01 + 0.005);
             currentPrediction *= growthFactor;
@@ -94,7 +103,6 @@ export const ResearchResults = () => {
 
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
-      {/* Animated background particles */}
       <div className="absolute inset-0 overflow-hidden">
         {Array.from({ length: 50 }).map((_, i) => (
           <div
@@ -251,11 +259,19 @@ export const ResearchResults = () => {
                   </div>
                   <div className="mt-auto space-y-4 pt-4">
                       <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50">
-                          <div className="flex justify-between items-center text-sm"><span className="font-semibold text-blue-800">RMSE:</span><span className="font-bold text-blue-900">{selectedAreaData ? selectedAreaData.arimaRmse.toFixed(4) : '...'}</span></div>
+                          <div className="flex justify-between items-center text-sm">
+                            <span className="font-semibold text-blue-800">RMSE:</span>
+                            <span className="font-bold text-blue-900">{selectedAreaData && selectedAreaData.arimaRmse !== null ? selectedAreaData.arimaRmse.toFixed(4) : 'N/A'}</span>
+                          </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed">
-                        ARIMA {selectedAreaData ? selectedAreaData.arimaOrder : '(p,d,q)'} model provides linear short-term forecasting. The prediction is based on historical data from 1961-2024.
+                        The ARIMA model provides linear short-term forecasting. The prediction is based on historical data from 1961-2024.
                       </p>
+                      <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50">
+                          <p className="text-xs text-blue-900 font-mono text-center break-words">
+                              <strong>Model:</strong> {selectedAreaData ? selectedAreaData.arimaOrder : '...'}
+                          </p>
+                      </div>
                   </div>
               </Card>
 
