@@ -17,7 +17,7 @@ export const ResearchResults = () => {
 
   useEffect(() => {
     Promise.all([
-      fetch('/lovable-uploads/df_predictions_2026.csv').then(res => res.text()),
+      fetch('/lovable-uploads/df_predictions_blanded.csv').then(res => res.text()),
       fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text()),
       fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text())
     ]).then(([predictionsCsv, arimaCsv, tabpfnCsv]) => {
