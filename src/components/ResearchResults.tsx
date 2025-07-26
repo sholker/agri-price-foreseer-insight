@@ -79,7 +79,7 @@ export const ResearchResults = () => {
     });
 
       const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedDataMap.keys()]);
-      const sortedAreas = [...allAreas].filter(area => area.trim() !== 'China').sort();
+      const sortedAreas = [...allAreas].filter(area => area.replace(/['"]/g, '').trim() !== 'China').sort();
 
       const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
