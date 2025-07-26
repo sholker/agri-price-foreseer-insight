@@ -20,7 +20,7 @@ export const ResearchResults = () => {
       fetch('/lovable-uploads/df_predictions_blanded.csv').then(res => res.text()),
       fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text()),
       fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text())
-    ]).then(([predictionsCsv, arimaCsv, tabpfnCsv]) => {
+    ]).then(([blendedCsv, arimaCsv, tabpfnCsv]) => {
 
       const arimaDataMap = new Map();
       const arimaLines = arimaCsv.trim().split('\n').slice(1);
@@ -53,35 +53,53 @@ export const ResearchResults = () => {
           });
         }
       });
-
-      const predictionLines = predictionsCsv.trim().split('\n').slice(1);
-      const data = predictionLines.map(line => {
+      
+      const blendedDataMap = new Map();
+      const blendedLines = blendedCsv.trim().split('\n').slice(1);
+       blendedLines.forEach(line => {
         const parts = line.split(',');
         const area = parts[0];
-        const prediction = parseFloat(parts[1]);
-        const formula = parts.slice(2).join(',');
+        // const year = parseInt(parts[1]);
+        const prediction = parseFloat(parts[2]);
+        const formula = parts.slice(3).join(',');
 
+        if (!blendedDataMap.has(area)) {
+            blendedDataMap.set(area, {
+                predictions: [],
+                formula: formula,
+                // NOTE: Blended RMSE is still simulated as it's not in the CSVs
+                blendedRmse: 0.1155 + (Math.random() - 0.5) * 0.08 
+            });
+        }
+        
+        const areaData = blendedDataMap.get(area);
+        if (areaData.predictions.length < 4) {
+             areaData.predictions.push(prediction);
+        }
+    });
+
+      const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedDataMap.keys()]);
+      const sortedAreas = [...allAreas].sort();
+
+      const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
         const tabpfnData = tabpfnDataMap.get(area) || {};
-        
-        // NOTE: Blended RMSE is still simulated
-        const blendedRmse = 0.1155 + (Math.random() - 0.5) * 0.08;
+        const blendedData = blendedDataMap.get(area) || {};
 
         return {
           Area: area,
-          Prediction_2026: prediction,
-          Formula: formula,
           arimaRmse: arimaData.arimaRmse ?? null,
           arimaOrder: arimaData.arimaOrder ?? 'N/A',
           arimaPredictions: arimaData.arimaPredictions ?? [],
           tabpfnRmse: tabpfnData.tabpfnRmse ?? null,
           tabpfnPredictions: tabpfnData.tabpfnPredictions ?? [],
-          blendedRmse: blendedRmse,
+          blendedRmse: blendedData.blendedRmse ?? null,
+          blendedPredictions: blendedData.predictions ?? [],
+          Formula: blendedData.formula ?? 'N/A',
         };
-      }).filter(item => item.Area && !isNaN(item.Prediction_2026));
+      });
 
       setPredictionData(data);
-      const sortedAreas = [...new Set(data.map(d => d.Area))].sort();
       setAreas(sortedAreas);
       
       if (sortedAreas.includes('Israel')) {
@@ -106,23 +124,6 @@ export const ResearchResults = () => {
   const arimaImgPath = `/lovable-uploads/ARIMA/${selectedArea}.png`;
   const tabpfnImgPath = `/lovable-uploads/tabpFN/${selectedArea}.png`;
   const blendedImgPath = `/lovable-uploads/blanded/${selectedArea}.png`;
-
-  const generateFuturePredictions = (basePrediction) => {
-    if (!basePrediction) return [];
-    const predictions = [];
-    let currentPrediction = basePrediction;
-    for (let i = 0; i < 4; i++) {
-        if (i > 0) {
-            const growthFactor = 1 + (Math.random() * 0.01 + 0.005);
-            currentPrediction *= growthFactor;
-        }
-        predictions.push({
-            year: 2024 + i,
-            prediction: currentPrediction,
-        });
-    }
-    return predictions;
-  };
 
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
@@ -372,7 +373,7 @@ export const ResearchResults = () => {
                   </div>
                   <div className="mt-auto space-y-2 pt-4 flex-grow flex flex-col">
                         <div className="bg-purple-50/50 p-3 rounded-lg border border-purple-200/50">
-                            <div className="flex justify-between items-center text-sm"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-purple-900">{selectedAreaData ? selectedAreaData.blendedRmse.toFixed(4) : '...'}</span></div>
+                            <div className="flex justify-between items-center text-sm"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-purple-900">{selectedAreaData && selectedAreaData.blendedRmse ? selectedAreaData.blendedRmse.toFixed(4) : '...'}</span></div>
                         </div>
                         <p className="text-muted-foreground text-xs leading-relaxed flex-grow">Combines ARIMA and TabPFN for optimal balance of stability and accuracy.</p>
                         <Button onClick={() => toggleForecast('blended')} className="w-full mt-auto" variant="outline">
@@ -381,10 +382,10 @@ export const ResearchResults = () => {
                         </Button>
                         {showForecasts.blended && selectedAreaData && (
                             <div className="mt-2 space-y-2 text-sm animate-in fade-in-50 duration-300">
-                                {generateFuturePredictions(selectedAreaData.Prediction_2026).map(p => (
-                                    <div key={p.year} className="flex justify-between items-center bg-purple-50/20 p-2 rounded-md">
-                                        <span className="font-medium">{p.year}:</span>
-                                        <span className="font-bold text-purple-800">{p.prediction.toFixed(4)}</span>
+                                {(selectedAreaData.blendedPredictions || []).map((p, i) => (
+                                    <div key={i} className="flex justify-between items-center bg-purple-50/20 p-2 rounded-md">
+                                        <span className="font-medium">{2024 + i}:</span>
+                                        <span className="font-bold text-purple-800">{p.toFixed(4)}</span>
                                     </div>
                                 ))}
                                 <div className="bg-primary/10 p-3 rounded-lg border border-primary/20 mt-2">
