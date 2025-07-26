@@ -26,19 +26,19 @@ export const ResearchResults = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold text-card-foreground mb-6">
-            תוצאות המחקר
+            Research Results
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            ניתוח מעמיק של נתונים עולמיים חושף דפוסים מרתקים ומאפשר חיזויים מדויקים
+            In-depth analysis of global data reveals fascinating patterns and enables accurate predictions
           </p>
         </div>
 
         <Tabs defaultValue="production" className="max-w-7xl mx-auto">
           <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
-            <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">חיזוי מדד ייצור המזון</TabsTrigger>
-            <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">ניתוח PCA תלת-ממדי</TabsTrigger>
-            <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מטריצת קורלציה</TabsTrigger>
-            <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">מדד ייצור מזון</TabsTrigger>
+            <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index Prediction</TabsTrigger>
+            <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">3D PCA Analysis</TabsTrigger>
+            <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Correlation Matrix</TabsTrigger>
+            <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index</TabsTrigger>
           </TabsList>
 
           <TabsContent value="pca" className="space-y-6">
@@ -49,19 +49,19 @@ export const ResearchResults = () => {
                 </div>
                 <div className="lg:w-1/3 space-y-4">
                   <h3 className="text-2xl font-semibold text-card-foreground">
-                    ניתוח רכיבים עיקריים (PCA)
+                    Principal Component Analysis (PCA)
                   </h3>
                   <Badge variant="secondary" className="text-sm bg-primary/20 text-primary border-primary/30">
-                    3 רכיבים ראשיים
+                    3 Main Components
                   </Badge>
                   <p className="text-muted-foreground leading-relaxed">
-                    הגרף התלת-ממדי מציג את התפלגות המדינות במרחב הרכיבים העיקריים, 
-                    כאשר כל צבע מייצג אזור גיאוגרפי שונה. ניתן לראות קיבוצים ברורים 
-                    המצביעים על דמיון בדפוסי ייצור ושימוש במשאבים חקלאיים.
+                    The 3D plot shows the distribution of countries in the principal component space, 
+                    where each color represents a different geographical region. Clear clusters can be seen 
+                    indicating similarities in production patterns and agricultural resource usage.
                   </p>
                   <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
                     <p className="text-sm text-primary font-medium">
-                      💡 תובנה מרכזית: מדינות באזורים גיאוגרפיים דומים מציגות דפוסים דומים בפרמטרים החקלאיים
+                      💡 Key Insight: Countries in similar geographical regions show similar patterns in agricultural parameters
                     </p>
                   </div>
                 </div>
@@ -77,19 +77,19 @@ export const ResearchResults = () => {
                 </div>
                 <div className="lg:w-1/3 space-y-4">
                   <h3 className="text-2xl font-semibold text-card-foreground">
-                    מדד ייצור מזון לאורך זמן
+                    Food Production Index Over Time
                   </h3>
                   <Badge variant="secondary" className="text-sm bg-accent/20 text-accent border-accent/30">
                     2000-2024
                   </Badge>
                   <p className="text-muted-foreground leading-relaxed">
-                    הגרף מציג את השינויים במדד ייצור המזון ברחבי העולם לאורך 24 שנים. 
-                    ניתן לזהות מגמות עלייה בכמות המדינות, אירועים חריגים כמו משבר המזון 
-                    באפגניסטן ב-2004, ושינויים דרמטיים במדינות ספציפיות.
+                    The chart shows changes in food production index worldwide over 24 years. 
+                    Rising trends can be identified in many countries, exceptional events like the food crisis 
+                    in Afghanistan in 2004, and dramatic changes in specific countries.
                   </p>
                   <div className="bg-accent/10 p-4 rounded-lg border border-accent/20 backdrop-blur-sm">
-                   <p className="text-sm text-white font-medium">
-                     📈 עיקר הממצאים: עלייה כללית בייצור המזון העולמי עם תנודות משמעותיות במדינות מסוימות
+                   <p className="text-sm text-accent font-medium">
+                     📈 Key Findings: General increase in global food production with significant fluctuations in certain countries
                    </p>
                   </div>
                 </div>
@@ -110,19 +110,19 @@ export const ResearchResults = () => {
                 </div>
                 <div className="lg:w-1/3 space-y-4">
                   <h3 className="text-2xl font-semibold text-card-foreground">
-                    מטריצת קורלציה
+                    Correlation Matrix
                   </h3>
                   <Badge variant="secondary" className="text-sm bg-accent/20 text-accent border-accent/30">
-                    7 משתנים
+                    7 Variables
                   </Badge>
                   <p className="text-muted-foreground leading-relaxed">
-                    המטריצה חושפת קשרים חזקים בין משתנים שונים: קורלציה גבוהה (0.92) 
-                    בין תעסוקה לאוכלוסייה, קשר חזק (0.86) בין אוכלוסייה לאמיסות, 
-                    וקשרים מתונים בין שימוש בחומרי הדברה למשתנים אחרים.
+                    The matrix reveals strong relationships between different variables: high correlation (0.92) 
+                    between employment and population, strong relationship (0.86) between population and emissions, 
+                    and moderate relationships between pesticide use and other variables.
                   </p>
                   <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
                     <p className="text-sm text-primary font-medium">
-                      🔗 תובנה מרכזית: קיימים קשרים חזקים בין גורמים דמוגרפיים, כלכליים וסביבתיים
+                      🔗 Key Insight: Strong relationships exist between demographic, economic and environmental factors
                     </p>
                   </div>
                 </div>
@@ -142,10 +142,10 @@ export const ResearchResults = () => {
                       className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
                     />
                     <h3 className="text-xl font-semibold text-card-foreground">
-                      מודל ARIMA
+                      ARIMA Model
                     </h3>
                     <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">
-                      ישראל
+                      Israel
                     </Badge>
                   </div>
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
@@ -155,7 +155,7 @@ export const ResearchResults = () => {
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    מודל ARIMA (1,1,1) מבוסס על נתונים היסטוריים ומספק חיזוי ליניארי לטווח קצר.
+                    ARIMA (1,1,1) model based on historical data provides linear short-term forecasting.
                   </p>
                 </div>
               </Card>
@@ -170,10 +170,10 @@ export const ResearchResults = () => {
                       className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
                     />
                     <h3 className="text-xl font-semibold text-card-foreground">
-                      מודל TabPFN
+                      TabPFN Model
                     </h3>
                     <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">
-                      ישראל
+                      Israel
                     </Badge>
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg border border-green-200">
@@ -183,7 +183,7 @@ export const ResearchResults = () => {
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    מודל TabPFN מציג דיוק גבוה במיוחד בזכות שיטת למידה מתקדמת ואופטימיזציה.
+                    TabPFN model shows exceptionally high accuracy thanks to advanced learning methods and optimization.
                   </p>
                 </div>
               </Card>
@@ -198,10 +198,10 @@ export const ResearchResults = () => {
                       className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
                     />
                     <h3 className="text-xl font-semibold text-card-foreground">
-                      מודל משולב (Blended)
+                      Blended Model
                     </h3>
                     <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">
-                      ישראל
+                      Israel
                     </Badge>
                   </div>
                   <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
@@ -211,7 +211,7 @@ export const ResearchResults = () => {
                     </div>
                   </div>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    שילוב של ARIMA ו-TabPFN המאזן בין יציבות ודיוק לחיזוי אופטימלי.
+                    Combination of ARIMA and TabPFN that balances stability and accuracy for optimal prediction.
                   </p>
                 </div>
               </Card>
