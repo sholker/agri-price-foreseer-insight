@@ -6,13 +6,14 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PCAChart } from "./PCAChart";
 import { FoodProductionChart } from "./FoodProductionChart";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, X } from 'lucide-react';
 
 export const ResearchResults = () => {
   const [areas, setAreas] = useState([]);
   const [predictionData, setPredictionData] = useState([]);
   const [selectedArea, setSelectedArea] = useState('Israel');
   const [showFuturePredictions, setShowFuturePredictions] = useState(false);
+  const [modalImage, setModalImage] = useState(null);
 
   useEffect(() => {
     // Fetch and parse the prediction data from the CSV file
@@ -70,7 +71,7 @@ export const ResearchResults = () => {
             currentPrediction *= growthFactor;
         }
         predictions.push({
-            year: 2026 + i,
+            year: 2024 + i,
             prediction: currentPrediction,
         });
     }
@@ -219,11 +220,20 @@ export const ResearchResults = () => {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {/* ARIMA Card */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                      <img src={arimaImgPath} onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} alt={`ARIMA Forecast for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                      <h3 className="text-xl font-semibold text-card-foreground">ARIMA Model</h3>
-                      <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">{selectedArea}</Badge>
+                    <div className="h-48 w-full mb-4">
+                       <img 
+                        src={arimaImgPath} 
+                        onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} 
+                        alt={`ARIMA Forecast for ${selectedArea}`} 
+                        className="w-full h-full object-cover rounded-lg shadow-glow border border-primary/20 cursor-pointer transition-transform hover:scale-105"
+                        onClick={() => setModalImage(arimaImgPath)}
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold text-card-foreground">ARIMA Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">{selectedArea}</Badge>
                   </div>
                   <div className="mt-auto space-y-4 pt-4">
                       <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50">
@@ -233,11 +243,20 @@ export const ResearchResults = () => {
                   </div>
               </Card>
 
+              {/* TabPFN Card */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                      <img src={tabpfnImgPath} onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} alt={`TabPFN Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                      <h3 className="text-xl font-semibold text-card-foreground">TabPFN Model</h3>
-                      <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">{selectedArea}</Badge>
+                    <div className="h-48 w-full mb-4">
+                      <img 
+                        src={tabpfnImgPath} 
+                        onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} 
+                        alt={`TabPFN Prediction for ${selectedArea}`} 
+                        className="w-full h-full object-cover rounded-lg shadow-glow border border-primary/20 cursor-pointer transition-transform hover:scale-105"
+                        onClick={() => setModalImage(tabpfnImgPath)}
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold text-card-foreground">TabPFN Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">{selectedArea}</Badge>
                   </div>
                   <div className="mt-auto space-y-4 pt-4">
                       <div className="bg-green-50/50 p-3 rounded-lg border border-green-200/50">
@@ -247,11 +266,20 @@ export const ResearchResults = () => {
                   </div>
               </Card>
 
+              {/* Blended Model Card */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                      <img src={blendedImgPath} onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} alt={`Blended Model Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                      <h3 className="text-xl font-semibold text-card-foreground">Blended Model</h3>
-                      <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">{selectedArea}</Badge>
+                    <div className="h-48 w-full mb-4">
+                      <img 
+                        src={blendedImgPath} 
+                        onError={(e) => e.currentTarget.src = 'https://placehold.co/600x400/171431/FFFFFF?text=No+Chart'} 
+                        alt={`Blended Model Prediction for ${selectedArea}`} 
+                        className="w-full h-full object-cover rounded-lg shadow-glow border border-primary/20 cursor-pointer transition-transform hover:scale-105"
+                        onClick={() => setModalImage(blendedImgPath)}
+                      />
+                    </div>
+                    <h3 className="text-xl font-semibold text-card-foreground">Blended Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">{selectedArea}</Badge>
                   </div>
                   <div className="mt-auto space-y-4 pt-4">
                         <div className="bg-purple-50/50 p-3 rounded-lg border border-purple-200/50">
@@ -287,6 +315,25 @@ export const ResearchResults = () => {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Image Modal */}
+      {modalImage && (
+        <div 
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in-50"
+          onClick={() => setModalImage(null)}
+        >
+          <div className="relative max-w-4xl max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
+            <img src={modalImage} alt="Enlarged view" className="w-full h-full object-contain rounded-lg" />
+            <button 
+                onClick={() => setModalImage(null)} 
+                className="absolute -top-3 -right-3 bg-white text-black rounded-full h-8 w-8 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+                aria-label="Close image view"
+            >
+                <X className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
