@@ -79,7 +79,7 @@ export const ResearchResults = () => {
     });
 
       const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedDataMap.keys()]);
-      const sortedAreas = [...allAreas].sort();
+      const sortedAreas = [...allAreas].filter(area => area.trim() !== 'China').sort();
 
       const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
@@ -306,7 +306,7 @@ export const ResearchResults = () => {
                               {(selectedAreaData.arimaPredictions || []).map((p, i) => (
                                   <div key={i} className="flex justify-between items-center bg-blue-50/20 p-2 rounded-md">
                                       <span className="font-medium">{2024 + i}:</span>
-                                      <span className="font-bold text-blue-800">{p.toFixed(4)}</span>
+                                      <span className="font-bold text-blue-600">{p.toFixed(4)}</span>
                                   </div>
                               ))}
                           </div>
@@ -348,7 +348,7 @@ export const ResearchResults = () => {
                               {(selectedAreaData.tabpfnPredictions || []).map((p, i) => (
                                   <div key={i} className="flex justify-between items-center bg-green-50/20 p-2 rounded-md">
                                       <span className="font-medium">{2024 + i}:</span>
-                                      <span className="font-bold text-green-800">{p.toFixed(4)}</span>
+                                      <span className="font-bold text-green-600">{p.toFixed(4)}</span>
                                   </div>
                               ))}
                           </div>
@@ -376,6 +376,11 @@ export const ResearchResults = () => {
                             <div className="flex justify-between items-center text-sm"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-purple-900">{selectedAreaData && selectedAreaData.blendedRmse ? selectedAreaData.blendedRmse.toFixed(4) : '...'}</span></div>
                         </div>
                         <p className="text-muted-foreground text-xs leading-relaxed flex-grow">Combines ARIMA and TabPFN for optimal balance of stability and accuracy.</p>
+                        <div className="bg-primary/10 p-3 rounded-lg border border-primary/20 mt-2">
+                            <p className="text-xs text-primary font-mono text-center break-words">
+                                <strong>Formula:</strong> {selectedAreaData ? selectedAreaData.Formula : 'N/A'}
+                            </p>
+                        </div>
                         <Button onClick={() => toggleForecast('blended')} className="w-full mt-auto" variant="outline">
                             <span className="mr-2">{showForecasts.blended ? 'Hide' : 'Show'} 4-Year Forecast</span>
                             {showForecasts.blended ? <ChevronUp className="h-4 w-4"/> : <ChevronDown className="h-4 w-4"/>}
@@ -385,14 +390,9 @@ export const ResearchResults = () => {
                                 {(selectedAreaData.blendedPredictions || []).map((p, i) => (
                                     <div key={i} className="flex justify-between items-center bg-purple-50/20 p-2 rounded-md">
                                         <span className="font-medium">{2024 + i}:</span>
-                                        <span className="font-bold text-purple-800">{p.toFixed(4)}</span>
+                                        <span className="font-bold text-purple-600">{p.toFixed(4)}</span>
                                     </div>
                                 ))}
-                                <div className="bg-primary/10 p-3 rounded-lg border border-primary/20 mt-2">
-                                    <p className="text-xs text-primary font-mono text-center break-words">
-                                        <strong>Formula:</strong> {selectedAreaData.Formula}
-                                    </p>
-                                </div>
                             </div>
                         )}
                   </div>
