@@ -31,14 +31,9 @@ export const ResearchResults = () => {
         const modelEquation = parts[2];
         const predictions = parts.slice(3, 7).map(p => parseFloat(p));
         if (area && !isNaN(rmse)) {
-          const p = Math.floor(Math.random() * 5);
-          const d = Math.floor(Math.random() * 3);
-          const q = Math.floor(Math.random() * 5);
-          const arimaPDQ = `(${p},${d},${q})`;
           arimaDataMap.set(area, { 
             arimaRmse: rmse, 
             arimaOrder: modelEquation, 
-            arimaPDQ: arimaPDQ,
             arimaPredictions: predictions
           });
         }
@@ -78,7 +73,6 @@ export const ResearchResults = () => {
           Formula: formula,
           arimaRmse: arimaData.arimaRmse ?? null,
           arimaOrder: arimaData.arimaOrder ?? 'N/A',
-          arimaPDQ: arimaData.arimaPDQ ?? '(?, ?, ?)',
           arimaPredictions: arimaData.arimaPredictions ?? [],
           tabpfnRmse: tabpfnData.tabpfnRmse ?? null,
           tabpfnPredictions: tabpfnData.tabpfnPredictions ?? [],
@@ -295,8 +289,13 @@ export const ResearchResults = () => {
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
-                        The prediction is based on historical data from 1961-2024. We use <code className="font-mono bg-blue-200/50 px-1 py-0.5 rounded">auto_arima</code> to find the optimal <code className="font-mono bg-blue-200/50 px-1 py-0.5 rounded">(p,d,q)</code> order.
+                        The prediction is based on historical data from 1961-2024.
                       </p>
+                      <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50 mt-2">
+                          <p className="text-xs text-blue-900 font-mono text-center break-words">
+                              <strong>Model Equation:</strong> {selectedAreaData ? selectedAreaData.arimaOrder : '...'}
+                          </p>
+                      </div>
                       <Button onClick={() => toggleForecast('arima')} className="w-full mt-auto" variant="outline">
                           <span className="mr-2">{showForecasts.arima ? 'Hide' : 'Show'} 4-Year Forecast</span>
                           {showForecasts.arima ? <ChevronUp className="h-4 w-4"/> : <ChevronDown className="h-4 w-4"/>}
