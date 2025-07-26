@@ -28,14 +28,16 @@ export const ResearchResults = () => {
             Prediction_2026: prediction,
             Formula: formula,
           };
-        }).filter(item => item.Area); // Filter out any empty lines
+        }).filter(item => item.Area && !isNaN(item.Prediction_2026)); // Filter out any empty/invalid lines
 
         setPredictionData(data);
-        const sortedAreas = data.map(d => d.Area).sort();
+        const sortedAreas = [...new Set(data.map(d => d.Area))].sort();
         setAreas(sortedAreas);
         
-        // Set default selected area if Israel exists
-        if (!sortedAreas.includes('Israel') && sortedAreas.length > 0) {
+        // Set default selected area
+        if (sortedAreas.includes('Israel')) {
+          setSelectedArea('Israel');
+        } else if (sortedAreas.length > 0) {
           setSelectedArea(sortedAreas[0]);
         }
       });
@@ -48,9 +50,9 @@ export const ResearchResults = () => {
   const selectedAreaData = predictionData.find(d => d.Area === selectedArea);
   
   // Construct image paths based on the selected area
-  const arimaImgPath = `/lovable-uploads/ARIMA/${selectedArea}.png`;
-  const tabpfnImgPath = `/lovable-uploads/tabpFN/${selectedArea}.png`;
-  const blendedImgPath = `/lovable-uploads/blanded/${selectedArea}.png`;
+  const arimaImgPath = `/lovable-uploads/results/ARIMA/${selectedArea}.png`;
+  const tabpfnImgPath = `/lovable-uploads/results/tabpFN/${selectedArea}.png`;
+  const blendedImgPath = `/lovable-uploads/results/bland/${selectedArea}.png`;
 
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
@@ -80,7 +82,7 @@ export const ResearchResults = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="production" className="max-w-7xl mx-auto">
+        <Tabs defaultValue="ml" className="max-w-7xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Correlation Matrix</TabsTrigger>
@@ -180,7 +182,7 @@ export const ResearchResults = () => {
              <div className="mb-8 flex justify-center">
                 <div className="w-full max-w-sm">
                   <label htmlFor="area-select" className="block text-center text-muted-foreground mb-2">Select an Area to View Predictions</label>
-                  <Select onValueChange={handleAreaChange} defaultValue={selectedArea}>
+                  <Select onValueChange={handleAreaChange} value={selectedArea}>
                     <SelectTrigger id="area-select" className="w-full bg-card/80 backdrop-blur-md border-primary/30">
                       <SelectValue placeholder="Select Area..." />
                     </SelectTrigger>
@@ -194,66 +196,61 @@ export const ResearchResults = () => {
             </div>
 
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-                <div className="space-y-4">
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                    <img src={arimaImgPath} alt={`ARIMA Forecast for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                    <h3 className="text-xl font-semibold text-card-foreground">ARIMA Model</h3>
-                    <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">{selectedArea}</Badge>
+                      <img src={arimaImgPath} alt={`ARIMA Forecast for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                      <h3 className="text-xl font-semibold text-card-foreground">ARIMA Model</h3>
+                      <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">{selectedArea}</Badge>
                   </div>
-                  <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div className="flex justify-between items-center"><span className="font-semibold text-blue-800">RMSE:</span><span className="font-bold text-lg text-blue-900">2.15</span></div>
+                  <div className="mt-auto space-y-4 pt-4">
+                      <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50">
+                          <div className="flex justify-between items-center text-sm"><span className="font-semibold text-blue-800">RMSE:</span><span className="font-bold text-blue-900">2.15</span></div>
+                      </div>
+                      <p className="text-muted-foreground text-xs leading-relaxed">ARIMA (1,1,1) model based on historical data provides linear short-term forecasting.</p>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">ARIMA (1,1,1) model based on historical data provides linear short-term forecasting.</p>
-                </div>
               </Card>
 
-              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-                <div className="space-y-4">
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                    <img src={tabpfnImgPath} alt={`TabPFN Food Value Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                    <h3 className="text-xl font-semibold text-card-foreground">TabPFN Model</h3>
-                    <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">{selectedArea}</Badge>
+                      <img src={tabpfnImgPath} alt={`TabPFN Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                      <h3 className="text-xl font-semibold text-card-foreground">TabPFN Model</h3>
+                      <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">{selectedArea}</Badge>
                   </div>
-                  <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <div className="flex justify-between items-center"><span className="font-semibold text-green-800">RMSE:</span><span className="font-bold text-lg text-green-900">0.0386</span></div>
+                  <div className="mt-auto space-y-4 pt-4">
+                      <div className="bg-green-50/50 p-3 rounded-lg border border-green-200/50">
+                          <div className="flex justify-between items-center text-sm"><span className="font-semibold text-green-800">RMSE:</span><span className="font-bold text-green-900">0.0386</span></div>
+                      </div>
+                      <p className="text-muted-foreground text-xs leading-relaxed">TabPFN model shows exceptionally high accuracy thanks to advanced learning methods.</p>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">TabPFN model shows exceptionally high accuracy thanks to advanced learning methods and optimization.</p>
-                </div>
               </Card>
 
-              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-                <div className="space-y-4">
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
                   <div className="text-center">
-                    <img src={blendedImgPath} alt={`Model Prediction Comparison for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
-                    <h3 className="text-xl font-semibold text-card-foreground">Blended Model</h3>
-                    <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">{selectedArea}</Badge>
+                      <img src={blendedImgPath} alt={`Blended Model Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                      <h3 className="text-xl font-semibold text-card-foreground">Blended Model</h3>
+                      <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">{selectedArea}</Badge>
                   </div>
-                  <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <div className="flex justify-between items-center"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-lg text-purple-900">0.1155</span></div>
+                  <div className="mt-auto space-y-4 pt-4">
+                      {selectedAreaData && (
+                        <>
+                          <div className="text-center">
+                              <p className="text-3xl font-bold text-primary">{selectedAreaData.Prediction_2026.toFixed(4)}</p>
+                              <p className="text-xs text-muted-foreground">Predicted Index 2026</p>
+                          </div>
+                          <div className="bg-purple-50/50 p-3 rounded-lg border border-purple-200/50">
+                              <div className="flex justify-between items-center text-sm"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-purple-900">0.1155</span></div>
+                          </div>
+                          <div className="bg-primary/10 p-3 rounded-lg border border-primary/20">
+                              <p className="text-xs text-primary font-mono text-center break-words">
+                                  <strong>Formula:</strong> {selectedAreaData.Formula}
+                              </p>
+                          </div>
+                        </>
+                      )}
+                      <p className="text-muted-foreground text-xs leading-relaxed">Combines ARIMA and TabPFN for optimal balance of stability and accuracy.</p>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">Combination of ARIMA and TabPFN that balances stability and accuracy for optimal prediction.</p>
-                </div>
               </Card>
             </div>
-
-             {selectedAreaData && (
-                <Card className="mt-8 p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
-                    <h3 className="text-2xl font-semibold text-card-foreground text-center mb-4">
-                        2026 Prediction for {selectedArea}
-                    </h3>
-                    <div className="text-center mb-4">
-                        <p className="text-5xl font-bold text-primary">{selectedAreaData.Prediction_2026.toFixed(4)}</p>
-                        <p className="text-sm text-muted-foreground">Predicted Food Production Index</p>
-                    </div>
-                    <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
-                        <p className="text-xs text-primary font-mono text-center break-words">
-                           <strong>Formula:</strong> {selectedAreaData.Formula}
-                        </p>
-                  </div>
-                </Card>
-            )}
-
           </TabsContent>
         </Tabs>
       </div>
