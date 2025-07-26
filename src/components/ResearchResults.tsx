@@ -52,7 +52,7 @@ export const ResearchResults = () => {
   // Construct image paths based on the selected area
   const arimaImgPath = `/lovable-uploads/ARIMA/${selectedArea}.png`;
   const tabpfnImgPath = `/lovable-uploads/tabpFN/${selectedArea}.png`;
-  const blendedImgPath = `/lovable-uploads/bland/${selectedArea}.png`;
+  const blendedImgPath = `/lovable-uploads/blanded/${selectedArea}.png`;
 
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
