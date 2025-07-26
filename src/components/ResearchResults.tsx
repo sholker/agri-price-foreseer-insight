@@ -79,7 +79,18 @@ export const ResearchResults = () => {
     });
 
       const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedDataMap.keys()]);
-      const sortedAreas = [...allAreas].filter(area => area.replace(/['"]/g, '').trim() !== 'China').sort();
+      
+      const hasCleanChina = allAreas.has('China');
+      const sortedAreas = [...allAreas].filter(area => {
+        // If there's a clean 'China' entry, we want to use it and filter out other variations (e.g., '"China"').
+        if (hasCleanChina) {
+          const isChinaVariation = area.replace(/['"]/g, '').trim() === 'China';
+          // If it's a variation of China, only keep it if it's the clean one. Otherwise, keep all non-China areas.
+          return isChinaVariation ? area === 'China' : true;
+        }
+        // If there's no clean 'China' entry, we keep all entries as they are.
+        return true;
+      }).sort();
 
       const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
