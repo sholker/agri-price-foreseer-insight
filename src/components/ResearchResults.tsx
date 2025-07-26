@@ -254,7 +254,7 @@ export const ResearchResults = () => {
                           <div className="flex justify-between items-center text-sm"><span className="font-semibold text-blue-800">RMSE:</span><span className="font-bold text-blue-900">{selectedAreaData ? selectedAreaData.arimaRmse.toFixed(4) : '...'}</span></div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed">
-                        ARIMA {selectedAreaData ? selectedAreaData.arimaOrder : '(p,d,q)'} model based on historical data provides linear short-term forecasting.
+                        ARIMA {selectedAreaData ? selectedAreaData.arimaOrder : '(p,d,q)'} model provides linear short-term forecasting. The prediction is based on historical data from 1961-2024.
                       </p>
                   </div>
               </Card>
@@ -279,7 +279,7 @@ export const ResearchResults = () => {
                           <div className="flex justify-between items-center text-sm"><span className="font-semibold text-green-800">RMSE:</span><span className="font-bold text-green-900">{selectedAreaData ? selectedAreaData.tabpfnRmse.toFixed(4) : '...'}</span></div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed">
-                        TabPFN model shows exceptionally high accuracy. Input data is normalized using the Z-score method to ensure consistent scaling.
+                        TabPFN model shows exceptionally high accuracy. Input data is normalized using the Z-score method, and the model was trained on data from 2000-2024.
                       </p>
                   </div>
               </Card>
