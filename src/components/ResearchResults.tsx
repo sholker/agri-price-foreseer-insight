@@ -1,10 +1,57 @@
+import React, { useState, useEffect } from 'react';
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PCAChart } from "./PCAChart";
 import { FoodProductionChart } from "./FoodProductionChart";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const ResearchResults = () => {
+  const [areas, setAreas] = useState([]);
+  const [predictionData, setPredictionData] = useState([]);
+  const [selectedArea, setSelectedArea] = useState('Israel');
+
+  useEffect(() => {
+    // Fetch and parse the prediction data from the CSV file
+    fetch('/lovable-uploads/df_predictions_2026.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        const lines = csvText.trim().split('\n');
+        // Skip header line and parse data
+        const data = lines.slice(1).map(line => {
+          const parts = line.split(',');
+          const area = parts[0];
+          const prediction = parseFloat(parts[1]);
+          const formula = parts.slice(2).join(',');
+          return {
+            Area: area,
+            Prediction_2026: prediction,
+            Formula: formula,
+          };
+        }).filter(item => item.Area); // Filter out any empty lines
+
+        setPredictionData(data);
+        const sortedAreas = data.map(d => d.Area).sort();
+        setAreas(sortedAreas);
+        
+        // Set default selected area if Israel exists
+        if (!sortedAreas.includes('Israel') && sortedAreas.length > 0) {
+          setSelectedArea(sortedAreas[0]);
+        }
+      });
+  }, []);
+
+  const handleAreaChange = (value) => {
+    setSelectedArea(value);
+  };
+
+  const selectedAreaData = predictionData.find(d => d.Area === selectedArea);
+  
+  // Construct image paths based on the selected area
+  const arimaImgPath = `/lovable-uploads/results/ARIMA/${selectedArea}.png`;
+  const tabpfnImgPath = `/lovable-uploads/results/tabpFN/${selectedArea}.png`;
+  const blendedImgPath = `/lovable-uploads/results/blanded/${selectedArea}.png`;
+
   return (
     <section id="results" className="py-20 bg-gradient-space relative">
       {/* Animated background particles */}
@@ -34,14 +81,14 @@ export const ResearchResults = () => {
         </div>
 
         <Tabs defaultValue="production" className="max-w-7xl mx-auto">
-          <TabsList className="grid w-full grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Correlation Matrix</TabsTrigger>
             <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">3D PCA Analysis</TabsTrigger>
             <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index Prediction</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="pca" className="space-y-6">
+          <TabsContent value="pca">
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
@@ -69,7 +116,7 @@ export const ResearchResults = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="production" className="space-y-6">
+          <TabsContent value="production">
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
@@ -97,8 +144,7 @@ export const ResearchResults = () => {
             </Card>
           </TabsContent>
 
-
-          <TabsContent value="correlation" className="space-y-6">
+          <TabsContent value="correlation">
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
@@ -131,91 +177,83 @@ export const ResearchResults = () => {
           </TabsContent>
 
           <TabsContent value="ml" className="space-y-6">
+             <div className="mb-8 flex justify-center">
+                <div className="w-full max-w-sm">
+                  <label htmlFor="area-select" className="block text-center text-muted-foreground mb-2">Select an Area to View Predictions</label>
+                  <Select onValueChange={handleAreaChange} defaultValue={selectedArea}>
+                    <SelectTrigger id="area-select" className="w-full bg-card/80 backdrop-blur-md border-primary/30">
+                      <SelectValue placeholder="Select Area..." />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card/90 backdrop-blur-md border-primary/30">
+                      {areas.map((area) => (
+                        <SelectItem key={area} value={area}>{area}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+            </div>
+
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {/* ARIMA Model */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
                 <div className="space-y-4">
                   <div className="text-center">
-                    <img 
-                      src="/lovable-uploads/60c9ba67-08ac-4e98-b94e-ec327f04e2cb.png" 
-                      alt="ARIMA Forecast for Israel"
-                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
-                    />
-                    <h3 className="text-xl font-semibold text-card-foreground">
-                      ARIMA Model
-                    </h3>
-                    <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">
-                      Israel
-                    </Badge>
+                    <img src={arimaImgPath} alt={`ARIMA Forecast for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                    <h3 className="text-xl font-semibold text-card-foreground">ARIMA Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-blue-100 text-blue-800 border-blue-300">{selectedArea}</Badge>
                   </div>
                   <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-blue-800">RMSE:</span>
-                      <span className="font-bold text-lg text-blue-900">2.15</span>
-                    </div>
+                    <div className="flex justify-between items-center"><span className="font-semibold text-blue-800">RMSE:</span><span className="font-bold text-lg text-blue-900">2.15</span></div>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    ARIMA (1,1,1) model based on historical data provides linear short-term forecasting.
-                  </p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">ARIMA (1,1,1) model based on historical data provides linear short-term forecasting.</p>
                 </div>
               </Card>
 
-              {/* TabPFN Model */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
                 <div className="space-y-4">
                   <div className="text-center">
-                    <img 
-                      src="/lovable-uploads/1785a728-3266-4093-b1e4-6419a62212b9.png" 
-                      alt="TabPFN Food Value Prediction for Israel"
-                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
-                    />
-                    <h3 className="text-xl font-semibold text-card-foreground">
-                      TabPFN Model
-                    </h3>
-                    <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">
-                      Israel
-                    </Badge>
+                    <img src={tabpfnImgPath} alt={`TabPFN Food Value Prediction for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                    <h3 className="text-xl font-semibold text-card-foreground">TabPFN Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-green-100 text-green-800 border-green-300">{selectedArea}</Badge>
                   </div>
                   <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-green-800">RMSE:</span>
-                      <span className="font-bold text-lg text-green-900">0.0386</span>
-                    </div>
+                    <div className="flex justify-between items-center"><span className="font-semibold text-green-800">RMSE:</span><span className="font-bold text-lg text-green-900">0.0386</span></div>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    TabPFN model shows exceptionally high accuracy thanks to advanced learning methods and optimization.
-                  </p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">TabPFN model shows exceptionally high accuracy thanks to advanced learning methods and optimization.</p>
                 </div>
               </Card>
 
-              {/* Blended Model */}
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
                 <div className="space-y-4">
                   <div className="text-center">
-                    <img 
-                      src="/lovable-uploads/d615e4ca-8ce5-4c7c-8135-0c63c5f28aee.png" 
-                      alt="Model Prediction Comparison for Israel"
-                      className="w-full rounded-lg shadow-glow border border-primary/20 mb-4"
-                    />
-                    <h3 className="text-xl font-semibold text-card-foreground">
-                      Blended Model
-                    </h3>
-                    <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">
-                      Israel
-                    </Badge>
+                    <img src={blendedImgPath} alt={`Model Prediction Comparison for ${selectedArea}`} className="w-full rounded-lg shadow-glow border border-primary/20 mb-4" />
+                    <h3 className="text-xl font-semibold text-card-foreground">Blended Model</h3>
+                    <Badge variant="secondary" className="text-sm bg-purple-100 text-purple-800 border-purple-300">{selectedArea}</Badge>
                   </div>
                   <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-purple-800">RMSE:</span>
-                      <span className="font-bold text-lg text-purple-900">0.1155</span>
-                    </div>
+                    <div className="flex justify-between items-center"><span className="font-semibold text-purple-800">RMSE:</span><span className="font-bold text-lg text-purple-900">0.1155</span></div>
                   </div>
-                  <p className="text-muted-foreground text-sm leading-relaxed">
-                    Combination of ARIMA and TabPFN that balances stability and accuracy for optimal prediction.
-                  </p>
+                  <p className="text-muted-foreground text-sm leading-relaxed">Combination of ARIMA and TabPFN that balances stability and accuracy for optimal prediction.</p>
                 </div>
               </Card>
             </div>
+
+             {selectedAreaData && (
+                <Card className="mt-8 p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+                    <h3 className="text-2xl font-semibold text-card-foreground text-center mb-4">
+                        2026 Prediction for {selectedArea}
+                    </h3>
+                    <div className="text-center mb-4">
+                        <p className="text-5xl font-bold text-primary">{selectedAreaData.Prediction_2026.toFixed(4)}</p>
+                        <p className="text-sm text-muted-foreground">Predicted Food Production Index</p>
+                    </div>
+                    <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
+                        <p className="text-xs text-primary font-mono text-center break-words">
+                           <strong>Formula:</strong> {selectedAreaData.Formula}
+                        </p>
+                  </div>
+                </Card>
+            )}
+
           </TabsContent>
         </Tabs>
       </div>
