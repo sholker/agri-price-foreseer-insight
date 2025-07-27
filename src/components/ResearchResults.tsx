@@ -61,14 +61,14 @@ export const ResearchResults = () => {
         const area = parts[0];
         // const year = parseInt(parts[1]);
         const prediction = parseFloat(parts[2]);
-        const formula = parts.slice(3).join(',');
+        const rmseBlended = parseFloat(parts[3]); // Reading RMSE from the 4th column
+        const formula = parts.slice(4).join(','); // Formula starts from the 5th column
 
         if (!blendedDataMap.has(area)) {
             blendedDataMap.set(area, {
                 predictions: [],
                 formula: formula,
-                // NOTE: Blended RMSE is still simulated as it's not in the CSVs
-                blendedRmse: 0.1155 + (Math.random() - 0.5) * 0.08 
+                blendedRmse: !isNaN(rmseBlended) ? rmseBlended : null
             });
         }
         
