@@ -211,7 +211,7 @@ export const MethodologyMindmap = () => {
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
         </div>
       </div>
-      <div className="flex-grow w-full h-full" style={{ minHeight: '800px' }}>
+      <div className="flex-grow w-full" style={{ height: '800px' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
