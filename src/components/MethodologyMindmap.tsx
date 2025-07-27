@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -8,6 +8,7 @@ import {
   Node,
   Edge,
   NodeTypes,
+  MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Database, Brain, FileText, Merge, Calculator, Filter } from 'lucide-react';
@@ -23,37 +24,75 @@ interface MethodologyNodeData extends Record<string, unknown> {
   isExpanded: boolean;
   level: number;
   parentId?: string;
+  imageUrl?: string;
 }
 
 // Custom Node Component
 const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
   const Icon = data.icon;
-  
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleImageClick = () => {
+    if (data.imageUrl) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
-    <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
-      <div className="flex items-center gap-3 mb-3">
-        <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
-          <Icon className="w-5 h-5 text-white" />
-        </div>
-        <h3 className="text-lg font-semibold text-card-foreground">{data.label}</h3>
-      </div>
-      
-      {data.isExpanded && (
-        <div className="space-y-3 mt-4 animate-fade-in">
-          <p className="text-sm text-muted-foreground leading-relaxed">
-            {data.description}
-          </p>
-          <div className="space-y-2">
-            {data.details.map((detail, index) => (
-              <div key={index} className="flex items-start gap-2 text-xs text-muted-foreground">
-                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
-                <span>{detail}</span>
-              </div>
-            ))}
+    <>
+      <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
+            <Icon className="w-5 h-5 text-white" />
           </div>
+          <h3 className="text-lg font-semibold text-card-foreground">{data.label}</h3>
+        </div>
+        
+        {data.isExpanded && (
+          <div className="space-y-3 mt-4 animate-fade-in">
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              {data.description}
+            </p>
+            <div className="space-y-2">
+              {data.details.map((detail, index) => (
+                <div key={index} className="flex items-start gap-2 text-xs text-muted-foreground">
+                  <div className="w-1.5 h-1.5 bg-primary rounded-full mt-1.5 flex-shrink-0"></div>
+                  <span>{detail}</span>
+                </div>
+              ))}
+            </div>
+            {data.imageUrl && (
+              <div className="mt-4">
+                <img 
+                  src={data.imageUrl} 
+                  alt={data.label} 
+                  className="rounded-lg border border-primary/20 w-full cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={handleImageClick}
+                />
+              </div>
+            )}
+          </div>
+        )}
+      </Card>
+
+      {isModalOpen && (
+        <div 
+          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100]"
+          onClick={closeModal}
+        >
+          <img 
+            src={data.imageUrl} 
+            alt={`${data.label} - Full view`}
+            className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl"
+            onClick={(e) => e.stopPropagation()} // Prevent closing modal when clicking on the image
+          />
         </div>
       )}
-    </Card>
+    </>
   );
 };
 
@@ -90,9 +129,9 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
-    {
-    id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Complete missing values by Random Forest', description: 'Data cleaning and outlier removal processes.', details: ['Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
+  {
+    id: 'complete-missing', type: 'methodology', position: { x: 0, y: 1000 }, hidden: true,
+    data: { parentId: 'preprocessing', label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/randomForest.png' },
   },
   // Level 3 (Children of Clean)
   {
@@ -113,20 +152,21 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
 ];
 
+const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
+const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
+
 const initialEdgesData: Edge[] = [
   // Pre-processing chain
-  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-5', source: 'clean', target: 'complete-missing', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Cleaning chain
-  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true },
-
-  { id: 'e-preg-5' , source: 'Complete missing values by Random Forest',target: 'Complete missing values by Random Fores', type:'smoothstep', animated: true, hidden: true},
-
+  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
 ];
 
 
@@ -135,58 +175,52 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    const isExpanding = !clickedNode.data.isExpanded;
-  
-    const findDescendantIds = (nodeId: string): Set<string> => {
-      const descendants = new Set<string>();
-      const queue: string[] = [nodeId];
-      const visited = new Set<string>([nodeId]);
-  
-      while (queue.length > 0) {
-        const currentId = queue.shift()!;
-        nodes.forEach(n => {
-          if (n.data.parentId === currentId && !visited.has(n.id)) {
-            descendants.add(n.id);
-            queue.push(n.id);
-            visited.add(n.id);
+    setNodes(currentNodes => {
+      const isExpanding = !clickedNode.data.isExpanded;
+
+      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
+        const descendants = new Set<string>();
+        const queue: string[] = [nodeId];
+        while (queue.length > 0) {
+          const currentId = queue.shift()!;
+          const children = allNodes.filter(n => n.data.parentId === currentId);
+          for (const child of children) {
+            descendants.add(child.id);
+            queue.push(child.id);
           }
-        });
-      }
-      return descendants;
-    };
-  
-    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id) : new Set<string>();
-  
-    const newNodes = nodes.map(n => {
-      // Toggle the clicked node's expansion
-      if (n.id === clickedNode.id) {
-        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-      }
-      // Show direct children when expanding
-      if (n.data.parentId === clickedNode.id) {
-        return { ...n, hidden: !isExpanding };
-      }
-      // Hide all descendants when collapsing
-      if (descendantsToCollapse.has(n.id)) {
-        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-      }
-      return n;
+        }
+        return descendants;
+      };
+
+      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
+
+      return currentNodes.map(n => {
+        if (n.id === clickedNode.id) {
+          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+        }
+        if (n.data.parentId === clickedNode.id) {
+          return { ...n, hidden: !isExpanding };
+        }
+        if (descendantsToCollapse.has(n.id)) {
+          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+        }
+        return n;
+      });
     });
-  
-    setNodes(newNodes);
-  
-    setEdges(eds => eds.map(edge => {
-      const sourceNode = newNodes.find(n => n.id === edge.source);
-      const targetNode = newNodes.find(n => n.id === edge.target);
-      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
-      return { ...edge, hidden: isHidden };
-    }));
-  
-  }, [nodes, setNodes, setEdges]);
+  }, [setNodes]);
+
+  useEffect(() => {
+    setEdges(currentEdges =>
+      currentEdges.map(edge => {
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
+      })
+    );
+  }, [nodes, setEdges]);
 
   const expandAll = () => {
     setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
-    setEdges(eds => eds.map(e => ({ ...e, hidden: false })));
   };
 
   const collapseAll = () => {
@@ -195,7 +229,6 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     })));
-    setEdges(eds => eds.map(e => ({ ...e, hidden: true })));
   };
   
   const customStyles = `
