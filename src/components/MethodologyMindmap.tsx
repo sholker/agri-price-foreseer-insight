@@ -202,6 +202,8 @@ const initialEdgesData: Edge[] = [
   // Prediction chain
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  // New connection from preprocessing to prediction model
+  { id: 'e-complete-to-tabpfn', source: 'complete-missing', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
