@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -114,8 +114,6 @@ const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
 const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
 
 const initialEdgesData: Edge[] = [
-  // Main flow connection (always visible)
-  { id: 'e-main-flow', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, style: edgeStyle, markerEnd: edgeMarker },
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -134,58 +132,52 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    const isExpanding = !clickedNode.data.isExpanded;
-  
-    const findDescendantIds = (nodeId: string): Set<string> => {
-      const descendants = new Set<string>();
-      const queue: string[] = [nodeId];
-      const visited = new Set<string>([nodeId]);
-  
-      while (queue.length > 0) {
-        const currentId = queue.shift()!;
-        nodes.forEach(n => {
-          if (n.data.parentId === currentId && !visited.has(n.id)) {
-            descendants.add(n.id);
-            queue.push(n.id);
-            visited.add(n.id);
+    setNodes(currentNodes => {
+      const isExpanding = !clickedNode.data.isExpanded;
+
+      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
+        const descendants = new Set<string>();
+        const queue: string[] = [nodeId];
+        while (queue.length > 0) {
+          const currentId = queue.shift()!;
+          const children = allNodes.filter(n => n.data.parentId === currentId);
+          for (const child of children) {
+            descendants.add(child.id);
+            queue.push(child.id);
           }
-        });
-      }
-      return descendants;
-    };
-  
-    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id) : new Set<string>();
-  
-    const newNodes = nodes.map(n => {
-      // Toggle the clicked node's expansion
-      if (n.id === clickedNode.id) {
-        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-      }
-      // Show direct children when expanding
-      if (n.data.parentId === clickedNode.id) {
-        return { ...n, hidden: !isExpanding };
-      }
-      // Hide all descendants when collapsing
-      if (descendantsToCollapse.has(n.id)) {
-        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-      }
-      return n;
+        }
+        return descendants;
+      };
+
+      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
+
+      return currentNodes.map(n => {
+        if (n.id === clickedNode.id) {
+          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+        }
+        if (n.data.parentId === clickedNode.id) {
+          return { ...n, hidden: !isExpanding };
+        }
+        if (descendantsToCollapse.has(n.id)) {
+          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+        }
+        return n;
+      });
     });
-  
-    setNodes(newNodes);
-  
-    setEdges(eds => eds.map(edge => {
-      const sourceNode = newNodes.find(n => n.id === edge.source);
-      const targetNode = newNodes.find(n => n.id === edge.target);
-      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
-      return { ...edge, hidden: isHidden };
-    }));
-  
-  }, [nodes, setNodes, setEdges]);
+  }, [setNodes]);
+
+  useEffect(() => {
+    setEdges(currentEdges =>
+      currentEdges.map(edge => {
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
+      })
+    );
+  }, [nodes, setEdges]);
 
   const expandAll = () => {
     setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
-    setEdges(eds => eds.map(e => ({ ...e, hidden: false })));
   };
 
   const collapseAll = () => {
@@ -194,7 +186,6 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     })));
-    setEdges(eds => eds.map(e => ({ ...e, hidden: true })));
   };
   
   const customStyles = `
