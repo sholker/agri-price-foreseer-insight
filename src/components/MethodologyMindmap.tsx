@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -109,73 +109,73 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
-    id: 'prediction', type: 'methodology', position: { x: 550, y: 0 },
+    id: 'prediction', type: 'methodology', position: { x: 450, y: 0 },
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Advanced ML algorithms', 'Model validation', 'Performance evaluation'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 1100, y: 0 },
+    id: 'analyse', type: 'methodology', position: { x: 900, y: 0 },
     data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
   // Level 2 (Children of Preprocessing)
   {
-    id: 'loading-data', type: 'methodology', position: { x: -450, y: 250 }, hidden: true,
+    id: 'loading-data', type: 'methodology', position: { x: 0, y: 200 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Loading Data', description: 'Loading various datasets from multiple sources.', details: ['FAO datasets', 'World Bank data'], icon: FileText, isExpanded: false, level: 2 },
   },
   {
-    id: 'merge-datasets', type: 'methodology', position: { x: -225, y: 250 }, hidden: true,
+    id: 'merge-datasets', type: 'methodology', position: { x: 0, y: 400 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Merge Datasets', description: 'Combining all datasets into one unified dataset.', details: ['Joined by country and year'], icon: Merge, isExpanded: false, level: 2 },
   },
   {
-    id: 'normalize', type: 'methodology', position: { x: 0, y: 250 }, hidden: true,
+    id: 'normalize', type: 'methodology', position: { x: 0, y: 600 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false, level: 2 },
   },
   {
-    id: 'clean', type: 'methodology', position: { x: 225, y: 250 }, hidden: true,
+    id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
   {
-    id: 'complete-missing', type: 'methodology', position: { x: 450, y: 250 }, hidden: true,
+    id: 'complete-missing', type: 'methodology', position: { x: 0, y: 1000 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/randomForest.png' },
   },
   // Level 3 (Children of Clean)
   {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 550, y: 450 }, hidden: true,
+    id: 'drop-missing-rows', type: 'methodology', position: { x: 450, y: 800 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'drop-missing-years', type: 'methodology', position: { x: 550, y: 650 }, hidden: true,
+    id: 'drop-missing-years', type: 'methodology', position: { x: 450, y: 1000 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-non-food', type: 'methodology', position: { x: 550, y: 850 }, hidden: true,
+    id: 'remove-non-food', type: 'methodology', position: { x: 450, y: 1200 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-outliers', type: 'methodology', position: { x: 550, y: 1050 }, hidden: true,
+    id: 'remove-outliers', type: 'methodology', position: { x: 450, y: 1400 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
   },
   // Level 2 (Children of Analyse)
   {
-    id: 'pca', type: 'methodology', position: { x: 1100, y: 250 }, hidden: true,
+    id: 'pca', type: 'methodology', position: { x: 900, y: 200 }, hidden: true,
     data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 1100, y: 500 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 900, y: 400 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 700 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 900, y: 600 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 900, y: 900 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 700, y: 800 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1300, y: 900 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 1100, y: 800 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
@@ -186,15 +186,15 @@ const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' 
 const initialEdgesData: Edge[] = [
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-2', source: 'preprocessing', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-3', source: 'preprocessing', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-4', source: 'preprocessing', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-5', source: 'preprocessing', target: 'complete-missing', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-5', source: 'clean', target: 'complete-missing', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-2', source: 'clean', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-3', source: 'clean', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-4', source: 'clean', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Analyse chain
   { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-pca-1', source: 'pca', target: 'clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -209,53 +209,52 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    const nodeFromState = nodes.find(n => n.id === clickedNode.id);
-    if (!nodeFromState) return;
-    const isExpanding = !nodeFromState.data.isExpanded;
+    setNodes(currentNodes => {
+      const isExpanding = !clickedNode.data.isExpanded;
 
-    const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
-      const descendants = new Set<string>();
-      const queue: string[] = [nodeId];
-      while (queue.length > 0) {
-        const currentId = queue.shift()!;
-        const children = allNodes.filter(n => n.data.parentId === currentId);
-        for (const child of children) {
-          descendants.add(child.id);
-          queue.push(child.id);
+      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
+        const descendants = new Set<string>();
+        const queue: string[] = [nodeId];
+        while (queue.length > 0) {
+          const currentId = queue.shift()!;
+          const children = allNodes.filter(n => n.data.parentId === currentId);
+          for (const child of children) {
+            descendants.add(child.id);
+            queue.push(child.id);
+          }
         }
-      }
-      return descendants;
-    };
+        return descendants;
+      };
 
-    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, nodes) : new Set<string>();
+      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
 
-    const newNodes = nodes.map(n => {
-      if (n.id === clickedNode.id) {
-        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-      }
-      if (n.data.parentId === clickedNode.id) {
-        return { ...n, hidden: !isExpanding };
-      }
-      if (descendantsToCollapse.has(n.id)) {
-        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-      }
-      return n;
+      return currentNodes.map(n => {
+        if (n.id === clickedNode.id) {
+          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+        }
+        if (n.data.parentId === clickedNode.id) {
+          return { ...n, hidden: !isExpanding };
+        }
+        if (descendantsToCollapse.has(n.id)) {
+          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+        }
+        return n;
+      });
     });
+  }, [setNodes]);
 
-    const newEdges = edges.map(edge => {
-      const sourceNode = newNodes.find(n => n.id === edge.source);
-      const targetNode = newNodes.find(n => n.id === edge.target);
-      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
-      return { ...edge, hidden: isHidden };
-    });
-
-    setNodes(newNodes);
-    setEdges(newEdges);
-  }, [nodes, edges, setNodes, setEdges]);
+  useEffect(() => {
+    setEdges(currentEdges =>
+      currentEdges.map(edge => {
+        const sourceNode = nodes.find(n => n.id === edge.source);
+        const targetNode = nodes.find(n => n.id === edge.target);
+        return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
+      })
+    );
+  }, [nodes, setEdges]);
 
   const expandAll = () => {
     setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
-    setEdges(eds => eds.map(e => ({...e, hidden: false})));
   };
 
   const collapseAll = () => {
@@ -264,7 +263,6 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     })));
-    setEdges(eds => eds.map(e => ({...e, hidden: true})));
   };
   
   const customStyles = `
