@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -223,78 +223,80 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    setNodes(currentNodes => {
-      const isExpanding = !clickedNode.data.isExpanded;
+    const isExpanding = !clickedNode.data.isExpanded;
   
-      // Helper to find all descendant IDs of a node for deep collapsing
-      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
-        const descendants = new Set<string>();
-        const queue: string[] = [nodeId];
-        const visited = new Set<string>([nodeId]);
+    // Helper to find all descendant IDs of a node for deep collapsing
+    const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
+      const descendants = new Set<string>();
+      const queue: string[] = [nodeId];
+      const visited = new Set<string>([nodeId]);
   
-        while (queue.length > 0) {
-          const currentId = queue.shift()!;
-          allNodes.forEach(n => {
-            if (n.data.parentId === currentId && !visited.has(n.id)) {
-              descendants.add(n.id);
-              queue.push(n.id);
-              visited.add(n.id);
-            }
-          });
-        }
-        return descendants;
-      };
-  
-      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
-  
-      return currentNodes.map(n => {
-        // Toggle the clicked node's expansion state
-        if (n.id === clickedNode.id) {
-          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-        }
-  
-        // Toggle the visibility of direct children
-        if (n.data.parentId === clickedNode.id) {
-          return { ...n, hidden: !isExpanding };
-        }
-  
-        // If collapsing, hide all descendants and reset their expansion state
-        if (descendantsToCollapse.has(n.id)) {
-          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-        }
-  
-        return n;
-      });
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+        allNodes.forEach(n => {
+          if (n.data.parentId === currentId && !visited.has(n.id)) {
+            descendants.add(n.id);
+            queue.push(n.id);
+            visited.add(n.id);
+          }
+        });
+      }
+      return descendants;
+    };
+    
+    // Create the next state for nodes based on the click
+    const newNodes = nodes.map(n => {
+      // Toggle the clicked node's expansion state
+      if (n.id === clickedNode.id) {
+        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+      }
+      
+      // Toggle the visibility of direct children
+      if (n.data.parentId === clickedNode.id) {
+        return { ...n, hidden: !isExpanding };
+      }
+      
+      // If collapsing, find all descendants and hide them
+      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, nodes) : new Set<string>();
+      if (descendantsToCollapse.has(n.id)) {
+        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+      }
+      
+      return n;
     });
-  }, [setNodes]);
+
+    // Create the next state for edges based on the new node state
+    const newEdges = initialEdgesData.map(edge => {
+      const sourceNode = newNodes.find(n => n.id === edge.source);
+      const targetNode = newNodes.find(n => n.id === edge.target);
+      
+      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
+      
+      return { ...edge, hidden: isHidden };
+    });
+
+    // Atomically update both states
+    setNodes(newNodes);
+    setEdges(newEdges);
+
+  }, [nodes, setNodes, setEdges]);
   
-  // This effect hook ensures that edge visibility is always in sync with node visibility.
-  // It runs after every node change, creating a more reliable state update flow.
-  useEffect(() => {
-    setEdges(currentEdges =>
-      initialEdgesData.map(edge => {
-        const sourceNode = nodes.find(n => n.id === edge.source);
-        const targetNode = nodes.find(n => n.id === edge.target);
-        
-        // An edge is hidden if its source or target node is hidden.
-        const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
-        
-        return { ...edge, hidden: isHidden };
-      })
-    );
-  }, [nodes, setEdges]);
-
-
   const expandAll = () => {
-    setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
+    const newNodes = nodes.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } }));
+    const newEdges = edges.map(e => ({ ...e, hidden: false }));
+    setNodes(newNodes);
+    setEdges(newEdges);
   };
 
   const collapseAll = () => {
-    setNodes(nds => nds.map(n => ({
+    const newNodes = nodes.map(n => ({
       ...n,
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
-    })));
+    }));
+    const newEdges = edges.map(e => ({ ...e, hidden: true }));
+    setNodes(newNodes);
+    setEdges(newEdges);
   };
   
   const customStyles = `
