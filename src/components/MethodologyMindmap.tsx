@@ -161,21 +161,21 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 900, y: 400 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 1100, y: 700 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 900, y: 600 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 900 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 700, y: 800 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 900, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1100, y: 800 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 1300, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
