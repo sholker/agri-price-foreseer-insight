@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -8,7 +8,6 @@ import {
   Node,
   Edge,
   NodeTypes,
-  Position,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Database, Brain, FileText, Merge, Calculator, Filter } from 'lucide-react';
@@ -123,57 +122,60 @@ const initialEdgesData: Edge[] = [
   { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true },
 ];
 
+
 export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodesData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    const isExpanding = !clickedNode.data.isExpanded;
-    
-    // Helper to find all descendant IDs of a node
-    const findAllDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]) => {
-      const descendants = new Set<string>();
-      const queue: string[] = [nodeId];
+      const isExpanding = !clickedNode.data.isExpanded;
       
-      while (queue.length > 0) {
-        const currentId = queue.shift()!;
-        const children = allNodes.filter(n => n.data.parentId === currentId);
-        children.forEach(child => {
-          descendants.add(child.id);
-          queue.push(child.id);
-        });
-      }
-      return descendants;
-    };
+      const findDescendants = (nodeId: string, allNodes: Node<MethodologyNodeData>[]) => {
+          const descendants = new Set<string>();
+          const queue: string[] = [nodeId];
+          while (queue.length > 0) {
+              const currentId = queue.shift()!;
+              const children = allNodes.filter(n => n.data.parentId === currentId);
+              for (const child of children) {
+                  descendants.add(child.id);
+                  queue.push(child.id);
+              }
+          }
+          return descendants;
+      };
 
-    const descendantIds = findAllDescendantIds(clickedNode.id, nodes);
-    
-    const updatedNodes = nodes.map(n => {
-      // Toggle the clicked node's expansion state
-      if (n.id === clickedNode.id) {
-        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-      }
-      // Show/hide direct children
-      if (n.data.parentId === clickedNode.id) {
-        return { ...n, hidden: !isExpanding };
-      }
-      // If we are collapsing, hide all descendants and reset their expansion state
-      if (!isExpanding && descendantIds.has(n.id)) {
-        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-      }
-      return n;
-    });
+      let updatedNodes = nodes.map(n => {
+          if (n.id === clickedNode.id) {
+              return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+          }
+          return n;
+      });
 
-    setNodes(updatedNodes);
+      if (!isExpanding) {
+          const descendantsToHide = findDescendants(clickedNode.id, updatedNodes);
+          updatedNodes = updatedNodes.map(n => {
+              if (descendantsToHide.has(n.id)) {
+                  return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+              }
+              return n;
+          });
+      } else {
+           updatedNodes = updatedNodes.map(n => {
+              if (n.data.parentId === clickedNode.id) {
+                  return { ...n, hidden: false };
+              }
+              return n;
+          });
+      }
+      
+      const finalNodes = updatedNodes;
+      setNodes(finalNodes);
+      setEdges(eds => eds.map(edge => {
+          const sourceNode = finalNodes.find(n => n.id === edge.source);
+          const targetNode = finalNodes.find(n => n.id === edge.target);
+          return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
+      }));
 
-    // Update edge visibility based on the new node visibility
-    setEdges(eds =>
-      eds.map(edge => {
-        const sourceVisible = !updatedNodes.find(n => n.id === edge.source)?.hidden;
-        const targetVisible = !updatedNodes.find(n => n.id === edge.target)?.hidden;
-        return { ...edge, hidden: !(sourceVisible && targetVisible) };
-      })
-    );
   }, [nodes, setNodes, setEdges]);
 
   const expandAll = () => {
@@ -233,3 +235,4 @@ export const MethodologyMindmap = () => {
     </div>
   );
 };
+
