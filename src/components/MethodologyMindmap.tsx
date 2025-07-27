@@ -121,10 +121,12 @@ const initialEdgesData: Edge[] = [
   { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true },
-  { id: 'e-preg-5' , source: 'Complete missing values by Random Forest', type:'smoothstep', animated: true, hidden: true},
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true },
   { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true },
   { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true },
+
+  { id: 'e-preg-5' , source: 'Complete missing values by Random Forest',target: 'Complete missing values by Random Fores', type:'smoothstep', animated: true, hidden: true},
+
 ];
 
 
