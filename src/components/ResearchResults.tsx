@@ -56,25 +56,40 @@ export const ResearchResults = () => {
       
       const blendedDataMap = new Map();
       const blendedLines = blendedCsv.trim().split('\n').slice(1);
-       blendedLines.forEach(line => {
-        const parts = line.split(',');
-        const area = parts[0];
-        // const year = parseInt(parts[1]);
-        const prediction = parseFloat(parts[2]);
-        const rmseBlended = parseFloat(parts[3]); // Reading RMSE from the 4th column
-        const formula = parts.slice(4).join(','); // Formula starts from the 5th column
+      // Use a robust regex to handle potential quotes in the formula field
+      const csvRegex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
 
-        if (!blendedDataMap.has(area)) {
-            blendedDataMap.set(area, {
-                predictions: [],
-                formula: formula,
-                blendedRmse: !isNaN(rmseBlended) ? rmseBlended : null
-            });
-        }
+      blendedLines.forEach(line => {
+        if (!line) return;
         
-        const areaData = blendedDataMap.get(area);
-        if (areaData.predictions.length < 4) {
-             areaData.predictions.push(prediction);
+        const values = line.match(csvRegex) || [];
+        // Clean up quotes from the matched values
+        const cleanedValues = values.map(v => v.replace(/^"|"$/g, ''));
+        
+        const [
+            area,          // 0
+            year,          // 1
+            actual,        // 2
+            arimaPred,     // 3
+            tabpfnPred,    // 4
+            blendedPred,   // 5
+            formula,       // 6
+            rmseArima,     // 7
+            rmseTabpfn,    // 8
+            rmseBlended    // 9
+        ] = cleanedValues;
+
+        // Since RMSE and Formula are repeated for each year in this new format,
+        // we only need to capture them once per area.
+        if (area && !blendedDataMap.has(area)) {
+            const rmse = parseFloat(rmseBlended);
+            blendedDataMap.set(area, {
+                // NOTE: The new CSV format provides historical data, not future forecasts.
+                // The `predictions` array is left empty as this data is no longer available in this file.
+                predictions: [], 
+                formula: formula || 'N/A',
+                blendedRmse: !isNaN(rmse) ? rmse : null
+            });
         }
     });
 
@@ -82,13 +97,10 @@ export const ResearchResults = () => {
       
       const hasCleanChina = allAreas.has('China');
       const sortedAreas = [...allAreas].filter(area => {
-        // If there's a clean 'China' entry, we want to use it and filter out other variations (e.g., '"China"').
         if (hasCleanChina) {
           const isChinaVariation = area.replace(/['"]/g, '').trim() === 'China';
-          // If it's a variation of China, only keep it if it's the clean one. Otherwise, keep all non-China areas.
           return isChinaVariation ? area === 'China' : true;
         }
-        // If there's no clean 'China' entry, we keep all entries as they are.
         return true;
       }).sort();
 
