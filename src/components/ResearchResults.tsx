@@ -23,12 +23,14 @@ export const ResearchResults = () => {
       fetch('/lovable-uploads/blanded_model_result.csv').then(res => res.text())
     ]).then(([blendedHistoricalCsv, arimaCsv, tabpfnCsv, blendedForecastCsv]) => {
 
+      const normalizeArea = (area) => area.trim().replace(/^"|"$/g, '');
+
       // --- Parse ARIMA forecast data ---
       const arimaDataMap = new Map();
       const arimaLines = arimaCsv.trim().split('\n').slice(1);
       arimaLines.forEach(line => {
         const parts = line.split(',');
-        const area = parts[0];
+        const area = normalizeArea(parts[0]);
         const rmse = parseFloat(parts[1]);
         const modelEquation = parts[2];
         const predictions = parts.slice(3, 7).map(p => parseFloat(p));
@@ -46,7 +48,7 @@ export const ResearchResults = () => {
       const tabpfnLines = tabpfnCsv.trim().split('\n').slice(1);
       tabpfnLines.forEach(line => {
         const parts = line.split(',');
-        const area = parts[0];
+        const area = normalizeArea(parts[0]);
         const rmse = parseFloat(parts[1]);
         const predictions = parts.slice(2, 6).map(p => parseFloat(p));
         if(area && !isNaN(rmse)) {
@@ -65,7 +67,8 @@ export const ResearchResults = () => {
         if (!line) return;
         const values = line.match(csvRegex) || [];
         const cleanedValues = values.map(v => v.replace(/^"|"$/g, ''));
-        const [area, year, actual, arimaPred, tabpfnPred, blendedPred, formula, rmseArima, rmseTabpfn, rmseBlended] = cleanedValues;
+        const [rawArea, year, actual, arimaPred, tabpfnPred, blendedPred, formula, rmseArima, rmseTabpfn, rmseBlended] = cleanedValues;
+        const area = normalizeArea(rawArea);
         if (area && !blendedHistoricalDataMap.has(area)) {
             const rmse = parseFloat(rmseBlended);
             blendedHistoricalDataMap.set(area, {
@@ -80,26 +83,28 @@ export const ResearchResults = () => {
       const blendedForecastLines = blendedForecastCsv.trim().split('\n').slice(1);
       blendedForecastLines.forEach(line => {
           if (!line) return;
-          // Assuming the structure is Area,Year,Actual,ARIMA_Predicted,TabPFN_Predicted,Blended_Predicted,...
-          // We only need the Blended_Predicted for the forecast display
           const parts = line.split(',');
-          const area = parts[0];
-          const prediction = parseFloat(parts[5]); // Blended_Predicted is at index 5
+          const area = normalizeArea(parts[0]);
+          // The header is Area,Year,Prediction_Blanded,Formula. Prediction is at index 2.
+          const prediction = parseFloat(parts[2]);
 
           if (area && !isNaN(prediction)) {
               if (!blendedForecastDataMap.has(area)) {
                   blendedForecastDataMap.set(area, { predictions: [] });
               }
-              // Collect the 4 years of forecast
               if (blendedForecastDataMap.get(area).predictions.length < 4) {
                   blendedForecastDataMap.get(area).predictions.push(prediction);
               }
           }
       });
 
-
       // --- Combine all data sources ---
-      const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedHistoricalDataMap.keys()]);
+      const allAreas = new Set([
+        ...arimaDataMap.keys(), 
+        ...tabpfnDataMap.keys(), 
+        ...blendedHistoricalDataMap.keys(),
+        ...blendedForecastDataMap.keys() // Ensure all areas are included
+      ]);
       
       const sortedAreas = [...allAreas].sort();
 
