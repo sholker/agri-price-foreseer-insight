@@ -127,7 +127,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   {
     id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
+    data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
   {
     id: 'complete-missing', type: 'methodology', position: { x: 0, y: 1000 }, hidden: true,
