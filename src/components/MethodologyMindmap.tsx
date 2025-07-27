@@ -110,17 +110,20 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
 ];
 
+const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
+const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
+
 const initialEdgesData: Edge[] = [
   // Pre-processing chain
-  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Cleaning chain
-  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
-  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, markerEnd: { type: MarkerType.ArrowClosed } },
+  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
 ];
 
 
@@ -212,7 +215,7 @@ export const MethodologyMindmap = () => {
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
         </div>
       </div>
-      <div className="flex-grow w-full" style={{ height: '800px' }}>
+      <div className="flex-grow w-full h-full" style={{ minHeight: '800px' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
