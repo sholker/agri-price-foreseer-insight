@@ -20,7 +20,6 @@ export const ResearchResults = () => {
       fetch('/lovable-uploads/df_predictions_blanded.csv').then(res => res.text()),
       fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text()),
       fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text()),
-      // Fetch the new blended model forecast results
       fetch('/lovable-uploads/blanded_model_result.csv').then(res => res.text())
     ]).then(([blendedHistoricalCsv, arimaCsv, tabpfnCsv, blendedForecastCsv]) => {
 
