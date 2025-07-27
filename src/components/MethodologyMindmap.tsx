@@ -90,6 +90,10 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
+    {
+    id: 'clean', type: 'methodology', position: { x: 0, y: 800 }, hidden: true,
+    data: { parentId: 'preprocessing', label: 'Complete missing values by Random Forest', description: 'Data cleaning and outlier removal processes.', details: ['Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
+  },
   // Level 3 (Children of Clean)
   {
     id: 'drop-missing-rows', type: 'methodology', position: { x: 450, y: 800 }, hidden: true,
@@ -117,6 +121,7 @@ const initialEdgesData: Edge[] = [
   { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-preg-5' , source: 'Complete missing values by Random Forest', type:'smoothstep', animated: true, hidden: true},
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true },
   { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true },
   { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true },
