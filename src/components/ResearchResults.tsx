@@ -19,9 +19,12 @@ export const ResearchResults = () => {
     Promise.all([
       fetch('/lovable-uploads/df_predictions_blanded.csv').then(res => res.text()),
       fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text()),
-      fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text())
-    ]).then(([blendedCsv, arimaCsv, tabpfnCsv]) => {
+      fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text()),
+      // Fetch the new blended model forecast results
+      fetch('/lovable-uploads/blanded_model_result.csv').then(res => res.text())
+    ]).then(([blendedHistoricalCsv, arimaCsv, tabpfnCsv, blendedForecastCsv]) => {
 
+      // --- Parse ARIMA forecast data ---
       const arimaDataMap = new Map();
       const arimaLines = arimaCsv.trim().split('\n').slice(1);
       arimaLines.forEach(line => {
@@ -39,6 +42,7 @@ export const ResearchResults = () => {
         }
       });
 
+      // --- Parse TabPFN forecast data ---
       const tabpfnDataMap = new Map();
       const tabpfnLines = tabpfnCsv.trim().split('\n').slice(1);
       tabpfnLines.forEach(line => {
@@ -54,60 +58,57 @@ export const ResearchResults = () => {
         }
       });
       
-      const blendedDataMap = new Map();
-      const blendedLines = blendedCsv.trim().split('\n').slice(1);
-      // Use a robust regex to handle potential quotes in the formula field
+      // --- Parse Blended Model HISTORICAL data (for RMSE and Formula) ---
+      const blendedHistoricalDataMap = new Map();
+      const blendedHistoricalLines = blendedHistoricalCsv.trim().split('\n').slice(1);
       const csvRegex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
-
-      blendedLines.forEach(line => {
+      blendedHistoricalLines.forEach(line => {
         if (!line) return;
-        
         const values = line.match(csvRegex) || [];
-        // Clean up quotes from the matched values
         const cleanedValues = values.map(v => v.replace(/^"|"$/g, ''));
-        
-        const [
-            area,          // 0
-            year,          // 1
-            actual,        // 2
-            arimaPred,     // 3
-            tabpfnPred,    // 4
-            blendedPred,   // 5
-            formula,       // 6
-            rmseArima,     // 7
-            rmseTabpfn,    // 8
-            rmseBlended    // 9
-        ] = cleanedValues;
-
-        // Since RMSE and Formula are repeated for each year in this new format,
-        // we only need to capture them once per area.
-        if (area && !blendedDataMap.has(area)) {
+        const [area, year, actual, arimaPred, tabpfnPred, blendedPred, formula, rmseArima, rmseTabpfn, rmseBlended] = cleanedValues;
+        if (area && !blendedHistoricalDataMap.has(area)) {
             const rmse = parseFloat(rmseBlended);
-            blendedDataMap.set(area, {
-                // NOTE: The new CSV format provides historical data, not future forecasts.
-                // The `predictions` array is left empty as this data is no longer available in this file.
-                predictions: [], 
+            blendedHistoricalDataMap.set(area, {
                 formula: formula || 'N/A',
                 blendedRmse: !isNaN(rmse) ? rmse : null
             });
         }
-    });
+      });
 
-      const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedDataMap.keys()]);
+      // --- Parse Blended Model FORECAST data ---
+      const blendedForecastDataMap = new Map();
+      const blendedForecastLines = blendedForecastCsv.trim().split('\n').slice(1);
+      blendedForecastLines.forEach(line => {
+          if (!line) return;
+          // Assuming the structure is Area,Year,Actual,ARIMA_Predicted,TabPFN_Predicted,Blended_Predicted,...
+          // We only need the Blended_Predicted for the forecast display
+          const parts = line.split(',');
+          const area = parts[0];
+          const prediction = parseFloat(parts[5]); // Blended_Predicted is at index 5
+
+          if (area && !isNaN(prediction)) {
+              if (!blendedForecastDataMap.has(area)) {
+                  blendedForecastDataMap.set(area, { predictions: [] });
+              }
+              // Collect the 4 years of forecast
+              if (blendedForecastDataMap.get(area).predictions.length < 4) {
+                  blendedForecastDataMap.get(area).predictions.push(prediction);
+              }
+          }
+      });
+
+
+      // --- Combine all data sources ---
+      const allAreas = new Set([...arimaDataMap.keys(), ...tabpfnDataMap.keys(), ...blendedHistoricalDataMap.keys()]);
       
-      const hasCleanChina = allAreas.has('China');
-      const sortedAreas = [...allAreas].filter(area => {
-        if (hasCleanChina) {
-          const isChinaVariation = area.replace(/['"]/g, '').trim() === 'China';
-          return isChinaVariation ? area === 'China' : true;
-        }
-        return true;
-      }).sort();
+      const sortedAreas = [...allAreas].sort();
 
       const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
         const tabpfnData = tabpfnDataMap.get(area) || {};
-        const blendedData = blendedDataMap.get(area) || {};
+        const blendedHistorical = blendedHistoricalDataMap.get(area) || {};
+        const blendedForecast = blendedForecastDataMap.get(area) || {};
 
         return {
           Area: area,
@@ -116,9 +117,9 @@ export const ResearchResults = () => {
           arimaPredictions: arimaData.arimaPredictions ?? [],
           tabpfnRmse: tabpfnData.tabpfnRmse ?? null,
           tabpfnPredictions: tabpfnData.tabpfnPredictions ?? [],
-          blendedRmse: blendedData.blendedRmse ?? null,
-          blendedPredictions: blendedData.predictions ?? [],
-          Formula: blendedData.formula ?? 'N/A',
+          blendedRmse: blendedHistorical.blendedRmse ?? null,
+          blendedPredictions: blendedForecast.predictions ?? [],
+          Formula: blendedHistorical.formula ?? 'N/A',
         };
       });
 
@@ -410,12 +411,16 @@ export const ResearchResults = () => {
                         </Button>
                         {showForecasts.blended && selectedAreaData && (
                             <div className="mt-2 space-y-2 text-sm animate-in fade-in-50 duration-300">
-                                {(selectedAreaData.blendedPredictions || []).map((p, i) => (
-                                    <div key={i} className="flex justify-between items-center bg-purple-50/20 p-2 rounded-md">
-                                        <span className="font-medium">{2024 + i}:</span>
-                                        <span className="font-bold text-purple-600">{p.toFixed(4)}</span>
-                                    </div>
-                                ))}
+                                {(selectedAreaData.blendedPredictions || []).length > 0 ? (
+                                    (selectedAreaData.blendedPredictions || []).map((p, i) => (
+                                        <div key={i} className="flex justify-between items-center bg-purple-50/20 p-2 rounded-md">
+                                            <span className="font-medium">{2024 + i}:</span>
+                                            <span className="font-bold text-purple-600">{p.toFixed(4)}</span>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <p className="text-xs text-center text-muted-foreground p-2">No forecast data available.</p>
+                                )}
                             </div>
                         )}
                   </div>
