@@ -117,7 +117,7 @@ export const ResearchResults = () => {
           tabpfnRmse: tabpfnData.tabpfnRmse ?? null,
           tabpfnPredictions: tabpfnData.tabpfnPredictions ?? [],
           blendedRmse: blendedData.blendedRmse ?? null,
-          blendedPredictions: blendedData.predictions ?? [],
+          blendedPredictions: blendedData.blendedPred ?? [],
           Formula: blendedData.formula ?? 'N/A',
         };
       });
