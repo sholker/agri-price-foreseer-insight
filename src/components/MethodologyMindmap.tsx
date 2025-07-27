@@ -11,7 +11,7 @@ import {
   MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Database, Brain, FileText, Merge, Calculator, Filter } from 'lucide-react';
+import { Database, Brain, FileText, Merge, Calculator, Filter, BarChart3, Users, GitBranch } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -112,6 +112,10 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'prediction', type: 'methodology', position: { x: 450, y: 0 },
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Advanced ML algorithms', 'Model validation', 'Performance evaluation'], icon: Brain, isExpanded: false, level: 1 },
   },
+  {
+    id: 'analyse', type: 'methodology', position: { x: 900, y: 0 },
+    data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
+  },
   // Level 2 (Children of Preprocessing)
   {
     id: 'loading-data', type: 'methodology', position: { x: 0, y: 200 }, hidden: true,
@@ -150,6 +154,30 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'remove-outliers', type: 'methodology', position: { x: 450, y: 1400 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
   },
+  // Level 2 (Children of Analyse)
+  {
+    id: 'pca', type: 'methodology', position: { x: 900, y: 200 }, hidden: true,
+    data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
+  },
+  // Level 3 (Children of PCA)
+  {
+    id: 'clustering', type: 'methodology', position: { x: 900, y: 400 }, hidden: true,
+    data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
+  },
+  // Level 4 (Children of Clustering)
+  {
+    id: 'kmeans', type: 'methodology', position: { x: 900, y: 600 }, hidden: true,
+    data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
+  },
+  // Level 5 (Children of K-means)
+  {
+    id: 'manual-clustering', type: 'methodology', position: { x: 700, y: 800 }, hidden: true,
+    data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
+  },
+  {
+    id: 'auto-clustering', type: 'methodology', position: { x: 1100, y: 800 }, hidden: true,
+    data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
+  },
 ];
 
 const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
@@ -167,6 +195,12 @@ const initialEdgesData: Edge[] = [
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  // Analyse chain
+  { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-pca-1', source: 'pca', target: 'clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-cluster-1', source: 'clustering', target: 'kmeans', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-kmeans-1', source: 'kmeans', target: 'manual-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
 ];
 
 
