@@ -128,54 +128,53 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-      const isExpanding = !clickedNode.data.isExpanded;
-      
-      const findDescendants = (nodeId: string, allNodes: Node<MethodologyNodeData>[]) => {
-          const descendants = new Set<string>();
-          const queue: string[] = [nodeId];
-          while (queue.length > 0) {
-              const currentId = queue.shift()!;
-              const children = allNodes.filter(n => n.data.parentId === currentId);
-              for (const child of children) {
-                  descendants.add(child.id);
-                  queue.push(child.id);
-              }
+    const isExpanding = !clickedNode.data.isExpanded;
+  
+    const findDescendantIds = (nodeId: string): Set<string> => {
+      const descendants = new Set<string>();
+      const queue: string[] = [nodeId];
+      const visited = new Set<string>([nodeId]);
+  
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+        nodes.forEach(n => {
+          if (n.data.parentId === currentId && !visited.has(n.id)) {
+            descendants.add(n.id);
+            queue.push(n.id);
+            visited.add(n.id);
           }
-          return descendants;
-      };
-
-      let updatedNodes = nodes.map(n => {
-          if (n.id === clickedNode.id) {
-              return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-          }
-          return n;
-      });
-
-      if (!isExpanding) {
-          const descendantsToHide = findDescendants(clickedNode.id, updatedNodes);
-          updatedNodes = updatedNodes.map(n => {
-              if (descendantsToHide.has(n.id)) {
-                  return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-              }
-              return n;
-          });
-      } else {
-           updatedNodes = updatedNodes.map(n => {
-              if (n.data.parentId === clickedNode.id) {
-                  return { ...n, hidden: false };
-              }
-              return n;
-          });
+        });
       }
-      
-      const finalNodes = updatedNodes;
-      setNodes(finalNodes);
-      setEdges(eds => eds.map(edge => {
-          const sourceNode = finalNodes.find(n => n.id === edge.source);
-          const targetNode = finalNodes.find(n => n.id === edge.target);
-          return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
-      }));
-
+      return descendants;
+    };
+  
+    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id) : new Set<string>();
+  
+    const newNodes = nodes.map(n => {
+      // Toggle the clicked node's expansion
+      if (n.id === clickedNode.id) {
+        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+      }
+      // Show direct children when expanding
+      if (n.data.parentId === clickedNode.id) {
+        return { ...n, hidden: !isExpanding };
+      }
+      // Hide all descendants when collapsing
+      if (descendantsToCollapse.has(n.id)) {
+        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+      }
+      return n;
+    });
+  
+    setNodes(newNodes);
+  
+    setEdges(eds => eds.map(edge => {
+      const sourceNode = newNodes.find(n => n.id === edge.source);
+      const targetNode = newNodes.find(n => n.id === edge.target);
+      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
+      return { ...edge, hidden: isHidden };
+    }));
+  
   }, [nodes, setNodes, setEdges]);
 
   const expandAll = () => {
@@ -235,4 +234,3 @@ export const MethodologyMindmap = () => {
     </div>
   );
 };
-
