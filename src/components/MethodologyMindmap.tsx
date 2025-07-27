@@ -110,10 +110,10 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   {
     id: 'prediction', type: 'methodology', position: { x: 450, y: 0 },
-    data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Advanced ML algorithms', 'Model validation', 'Performance evaluation'], icon: Brain, isExpanded: false, level: 1 },
+    data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 900, y: 0 },
+    id: 'analyse', type: 'methodology', position: { x: 1100, y: 0 },
     data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
   // Level 2 (Children of Preprocessing)
@@ -137,6 +137,15 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'complete-missing', type: 'methodology', position: { x: 0, y: 1000 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/randomForest.png' },
   },
+  // Level 2 (Children of Prediction)
+  {
+    id: 'arima-model', type: 'methodology', position: { x: 450, y: 200 }, hidden: true,
+    data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
+  },
+  {
+    id: 'tabpfn-model', type: 'methodology', position: { x: 450, y: 400 }, hidden: true,
+    data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
+  },
   // Level 3 (Children of Clean)
   {
     id: 'drop-missing-rows', type: 'methodology', position: { x: 450, y: 800 }, hidden: true,
@@ -156,26 +165,26 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   // Level 2 (Children of Analyse)
   {
-    id: 'pca', type: 'methodology', position: { x: 900, y: 200 }, hidden: true,
+    id: 'pca', type: 'methodology', position: { x: 1100, y: 200 }, hidden: true,
     data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 1100, y: 700 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 1300, y: 700 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 900 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 1300, y: 900 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 900, y: 1100 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 1100, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1300, y: 1100 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 1500, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
@@ -190,6 +199,9 @@ const initialEdgesData: Edge[] = [
   { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-5', source: 'clean', target: 'complete-missing', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  // Prediction chain
+  { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
