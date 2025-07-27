@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -8,7 +8,6 @@ import {
   Node,
   Edge,
   NodeTypes,
-  MarkerType,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Database, Brain, FileText, Merge, Calculator, Filter } from 'lucide-react';
@@ -110,20 +109,17 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
 ];
 
-const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
-const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
-
 const initialEdgesData: Edge[] = [
   // Pre-processing chain
-  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true },
   // Cleaning chain
-  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true },
+  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true },
 ];
 
 
@@ -132,52 +128,58 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    setNodes(currentNodes => {
-      const isExpanding = !clickedNode.data.isExpanded;
-
-      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
-        const descendants = new Set<string>();
-        const queue: string[] = [nodeId];
-        while (queue.length > 0) {
-          const currentId = queue.shift()!;
-          const children = allNodes.filter(n => n.data.parentId === currentId);
-          for (const child of children) {
-            descendants.add(child.id);
-            queue.push(child.id);
+    const isExpanding = !clickedNode.data.isExpanded;
+  
+    const findDescendantIds = (nodeId: string): Set<string> => {
+      const descendants = new Set<string>();
+      const queue: string[] = [nodeId];
+      const visited = new Set<string>([nodeId]);
+  
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+        nodes.forEach(n => {
+          if (n.data.parentId === currentId && !visited.has(n.id)) {
+            descendants.add(n.id);
+            queue.push(n.id);
+            visited.add(n.id);
           }
-        }
-        return descendants;
-      };
-
-      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
-
-      return currentNodes.map(n => {
-        if (n.id === clickedNode.id) {
-          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-        }
-        if (n.data.parentId === clickedNode.id) {
-          return { ...n, hidden: !isExpanding };
-        }
-        if (descendantsToCollapse.has(n.id)) {
-          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-        }
-        return n;
-      });
+        });
+      }
+      return descendants;
+    };
+  
+    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id) : new Set<string>();
+  
+    const newNodes = nodes.map(n => {
+      // Toggle the clicked node's expansion
+      if (n.id === clickedNode.id) {
+        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+      }
+      // Show direct children when expanding
+      if (n.data.parentId === clickedNode.id) {
+        return { ...n, hidden: !isExpanding };
+      }
+      // Hide all descendants when collapsing
+      if (descendantsToCollapse.has(n.id)) {
+        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+      }
+      return n;
     });
-  }, [setNodes]);
-
-  useEffect(() => {
-    setEdges(currentEdges =>
-      currentEdges.map(edge => {
-        const sourceNode = nodes.find(n => n.id === edge.source);
-        const targetNode = nodes.find(n => n.id === edge.target);
-        return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
-      })
-    );
-  }, [nodes, setEdges]);
+  
+    setNodes(newNodes);
+  
+    setEdges(eds => eds.map(edge => {
+      const sourceNode = newNodes.find(n => n.id === edge.source);
+      const targetNode = newNodes.find(n => n.id === edge.target);
+      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
+      return { ...edge, hidden: isHidden };
+    }));
+  
+  }, [nodes, setNodes, setEdges]);
 
   const expandAll = () => {
     setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
+    setEdges(eds => eds.map(e => ({ ...e, hidden: false })));
   };
 
   const collapseAll = () => {
@@ -186,6 +188,7 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     })));
+    setEdges(eds => eds.map(e => ({ ...e, hidden: true })));
   };
   
   const customStyles = `
@@ -208,7 +211,7 @@ export const MethodologyMindmap = () => {
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
         </div>
       </div>
-      <div className="flex-grow w-full h-full" style={{ minHeight: '800px' }}>
+      <div className="flex-grow w-full" style={{ height: '800px' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
