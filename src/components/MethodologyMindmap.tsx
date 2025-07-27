@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -209,52 +209,53 @@ export const MethodologyMindmap = () => {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
-    setNodes(currentNodes => {
-      const isExpanding = !clickedNode.data.isExpanded;
+    const nodeFromState = nodes.find(n => n.id === clickedNode.id);
+    if (!nodeFromState) return;
+    const isExpanding = !nodeFromState.data.isExpanded;
 
-      const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
-        const descendants = new Set<string>();
-        const queue: string[] = [nodeId];
-        while (queue.length > 0) {
-          const currentId = queue.shift()!;
-          const children = allNodes.filter(n => n.data.parentId === currentId);
-          for (const child of children) {
-            descendants.add(child.id);
-            queue.push(child.id);
-          }
+    const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
+      const descendants = new Set<string>();
+      const queue: string[] = [nodeId];
+      while (queue.length > 0) {
+        const currentId = queue.shift()!;
+        const children = allNodes.filter(n => n.data.parentId === currentId);
+        for (const child of children) {
+          descendants.add(child.id);
+          queue.push(child.id);
         }
-        return descendants;
-      };
+      }
+      return descendants;
+    };
 
-      const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, currentNodes) : new Set<string>();
+    const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, nodes) : new Set<string>();
 
-      return currentNodes.map(n => {
-        if (n.id === clickedNode.id) {
-          return { ...n, data: { ...n.data, isExpanded: isExpanding } };
-        }
-        if (n.data.parentId === clickedNode.id) {
-          return { ...n, hidden: !isExpanding };
-        }
-        if (descendantsToCollapse.has(n.id)) {
-          return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
-        }
-        return n;
-      });
+    const newNodes = nodes.map(n => {
+      if (n.id === clickedNode.id) {
+        return { ...n, data: { ...n.data, isExpanded: isExpanding } };
+      }
+      if (n.data.parentId === clickedNode.id) {
+        return { ...n, hidden: !isExpanding };
+      }
+      if (descendantsToCollapse.has(n.id)) {
+        return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
+      }
+      return n;
     });
-  }, [setNodes]);
 
-  useEffect(() => {
-    setEdges(currentEdges =>
-      currentEdges.map(edge => {
-        const sourceNode = nodes.find(n => n.id === edge.source);
-        const targetNode = nodes.find(n => n.id === edge.target);
-        return { ...edge, hidden: !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden };
-      })
-    );
-  }, [nodes, setEdges]);
+    const newEdges = edges.map(edge => {
+      const sourceNode = newNodes.find(n => n.id === edge.source);
+      const targetNode = newNodes.find(n => n.id === edge.target);
+      const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
+      return { ...edge, hidden: isHidden };
+    });
+
+    setNodes(newNodes);
+    setEdges(newEdges);
+  }, [nodes, edges, setNodes, setEdges]);
 
   const expandAll = () => {
     setNodes(nds => nds.map(n => ({ ...n, hidden: false, data: { ...n.data, isExpanded: true } })));
+    setEdges(eds => eds.map(e => ({...e, hidden: false})));
   };
 
   const collapseAll = () => {
@@ -263,6 +264,7 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     })));
+    setEdges(eds => eds.map(e => ({...e, hidden: true})));
   };
   
   const customStyles = `
