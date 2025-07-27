@@ -166,7 +166,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 1100 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 900 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
