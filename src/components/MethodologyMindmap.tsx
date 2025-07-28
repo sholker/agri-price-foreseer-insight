@@ -9,6 +9,8 @@ import {
   Edge,
   NodeTypes,
   MarkerType,
+  Handle,
+  Position,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Database, Brain, FileText, Merge, Calculator, Filter, BarChart3, Users, GitBranch } from 'lucide-react';
@@ -44,6 +46,8 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
 
   return (
     <>
+      <Handle type="target" position={Position.Left} style={{ background: 'hsl(var(--primary))' }} />
+      <Handle type="source" position={Position.Right} style={{ background: 'hsl(var(--primary))' }} />
       <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
@@ -113,7 +117,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 1300, y: 0 },
+    id: 'analyse', type: 'methodology', position: { x: 1100, y: 0 },
     data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
   // Level 2 (Children of Preprocessing)
@@ -146,23 +150,6 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'tabpfn-model', type: 'methodology', position: { x: 450, y: 400 }, hidden: true,
     data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
   },
-  // Level 3 (Children of ARIMA Model)
-  {
-    id: 'select-order', type: 'methodology', position: { x: 850, y: 200 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Select Order by auto_arima', description: 'Automatically discover the optimal order for the ARIMA model.', details: ['Finds best (p,d,q) values'], icon: GitBranch, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'fit-model', type: 'methodology', position: { x: 850, y: 400 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Fit the Model', description: 'Train the ARIMA model on the historical time series data.', details: ['Uses the selected order'], icon: Brain, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'add-to-history', type: 'methodology', position: { x: 850, y: 600 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Add Prediction to History', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'show-results', type: 'methodology', position: { x: 850, y: 800 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false, level: 3 },
-  },
   // Level 3 (Children of Clean)
   {
     id: 'drop-missing-rows', type: 'methodology', position: { x: 450, y: 800 }, hidden: true,
@@ -182,26 +169,26 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   // Level 2 (Children of Analyse)
   {
-    id: 'pca', type: 'methodology', position: { x: 1300, y: 200 }, hidden: true,
+    id: 'pca', type: 'methodology', position: { x: 1100, y: 200 }, hidden: true,
     data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 1500, y: 700 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 1300, y: 700 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 1500, y: 900 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 1300, y: 900 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 1300, y: 1100 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 1100, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1700, y: 1100 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 1500, y: 1100 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
@@ -210,6 +197,9 @@ const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
 const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
 
 const initialEdgesData: Edge[] = [
+  // Main flow arrows (always visible)
+  // { id: 'e-main-1', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-main-2', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -221,12 +211,6 @@ const initialEdgesData: Edge[] = [
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   // New connection from preprocessing to prediction model
   { id: 'e-complete-to-tabpfn', source: 'complete-missing', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  // ARIMA sub-chain
-  { id: 'e-arima-1', source: 'arima-model', target: 'select-order', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-arima-2', source: 'select-order', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-arima-3', source: 'fit-model', target: 'add-to-history', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-arima-4', source: 'add-to-history', target: 'show-results', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-arima-loop', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -248,6 +232,7 @@ export const MethodologyMindmap = () => {
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
     const isExpanding = !clickedNode.data.isExpanded;
   
+    // Helper to find all descendant IDs of a node for deep collapsing
     const findDescendantIds = (nodeId: string, allNodes: Node<MethodologyNodeData>[]): Set<string> => {
       const descendants = new Set<string>();
       const queue: string[] = [nodeId];
@@ -266,15 +251,19 @@ export const MethodologyMindmap = () => {
       return descendants;
     };
     
+    // Create the next state for nodes based on the click
     const newNodes = nodes.map(n => {
+      // Toggle the clicked node's expansion state
       if (n.id === clickedNode.id) {
         return { ...n, data: { ...n.data, isExpanded: isExpanding } };
       }
       
+      // Toggle the visibility of direct children
       if (n.data.parentId === clickedNode.id) {
         return { ...n, hidden: !isExpanding };
       }
       
+      // If collapsing, find all descendants and hide them
       const descendantsToCollapse = !isExpanding ? findDescendantIds(clickedNode.id, nodes) : new Set<string>();
       if (descendantsToCollapse.has(n.id)) {
         return { ...n, hidden: true, data: { ...n.data, isExpanded: false } };
@@ -283,7 +272,13 @@ export const MethodologyMindmap = () => {
       return n;
     });
 
+    // Create the next state for edges based on the new node state
     const newEdges = initialEdgesData.map(edge => {
+      // Keep main flow arrows always visible
+      if (edge.id === 'e-main-1' || edge.id === 'e-main-2') {
+        return { ...edge, hidden: false };
+      }
+      
       const sourceNode = newNodes.find(n => n.id === edge.source);
       const targetNode = newNodes.find(n => n.id === edge.target);
       
@@ -292,6 +287,7 @@ export const MethodologyMindmap = () => {
       return { ...edge, hidden: isHidden };
     });
 
+    // Atomically update both states
     setNodes(newNodes);
     setEdges(newEdges);
 
@@ -310,7 +306,10 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     }));
-    const newEdges = initialEdgesData.map(e => ({ ...e, hidden: true }));
+    const newEdges = edges.map(e => ({ 
+      ...e, 
+      hidden: e.id !== 'e-main-1' && e.id !== 'e-main-2' 
+    }));
     setNodes(newNodes);
     setEdges(newEdges);
   };
