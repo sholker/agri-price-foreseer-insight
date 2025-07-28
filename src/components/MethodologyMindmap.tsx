@@ -198,7 +198,7 @@ const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' 
 
 const initialEdgesData: Edge[] = [
   // Main flow arrows (always visible)
-  { id: 'e-main-1', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
+  // { id: 'e-main-1', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-main-2', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
