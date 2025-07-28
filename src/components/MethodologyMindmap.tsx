@@ -231,8 +231,8 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'tabpfn-table', type: 'methodology', position: { x: 550, y: 1750 }, hidden: true,
     data: { 
       parentId: 'tabpfn-model', 
-      label: 'Show Table', 
-      description: 'Data is split into training and testing sets for the model.', 
+      label: 'Plane Data', 
+      description: 'Data is split into 80% training and 20% testing sets for the model.', 
       details: [], 
       icon: FileText, 
       isExpanded: false, 
