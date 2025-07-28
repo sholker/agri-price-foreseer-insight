@@ -50,8 +50,13 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
 
   return (
     <>
-      <Handle type="target" position={Position.Left} style={{ background: 'hsl(var(--primary))' }} />
-      <Handle type="source" position={Position.Right} style={{ background: 'hsl(var(--primary))' }} />
+      {/* Default handles for vertical connections */}
+      <Handle type="target" position={Position.Top} style={{ background: 'hsl(var(--primary))' }} />
+      <Handle type="source" position={Position.Bottom} style={{ background: 'hsl(var(--primary))' }} />
+      {/* Specific handles for horizontal connections */}
+      <Handle type="target" position={Position.Left} id="left" style={{ background: 'hsl(var(--primary))' }} />
+      <Handle type="source" position={Position.Right} id="right" style={{ background: 'hsl(var(--primary))' }} />
+
       <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
@@ -322,8 +327,8 @@ const initialEdgesData: Edge[] = [
   { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
 
   // Cross-pillar connections
-  { id: 'e-prep-to-pred', source: 'complete-missing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-pred-to-analyse', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-prep-to-pred', source: 'complete-missing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-pred-to-analyse', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
 ];
 
 
