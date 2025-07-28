@@ -193,6 +193,9 @@ const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
 const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
 
 const initialEdgesData: Edge[] = [
+  // Main flow arrows (always visible)
+  { id: 'e-main-1', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-main-2', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -267,6 +270,11 @@ export const MethodologyMindmap = () => {
 
     // Create the next state for edges based on the new node state
     const newEdges = initialEdgesData.map(edge => {
+      // Keep main flow arrows always visible
+      if (edge.id === 'e-main-1' || edge.id === 'e-main-2') {
+        return { ...edge, hidden: false };
+      }
+      
       const sourceNode = newNodes.find(n => n.id === edge.source);
       const targetNode = newNodes.find(n => n.id === edge.target);
       
@@ -294,7 +302,10 @@ export const MethodologyMindmap = () => {
       hidden: n.data.level > 1,
       data: { ...n.data, isExpanded: false },
     }));
-    const newEdges = edges.map(e => ({ ...e, hidden: true }));
+    const newEdges = edges.map(e => ({ 
+      ...e, 
+      hidden: e.id !== 'e-main-1' && e.id !== 'e-main-2' 
+    }));
     setNodes(newNodes);
     setEdges(newEdges);
   };
