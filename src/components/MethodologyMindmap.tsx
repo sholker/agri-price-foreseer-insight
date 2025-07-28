@@ -142,168 +142,83 @@ const nodeTypes: NodeTypes = {
   methodology: MethodologyNode,
 };
 
-// Define initial nodes for the hierarchical methodology flowchart
+// --- Node and Edge Definitions ---
+// A more organized and logical layout for all nodes and edges.
+
 const initialNodesData: Node<MethodologyNodeData>[] = [
-  // Level 1 - Horizontal Layout
+  // --- Level 1: Main Pillars (Vertical) ---
   {
-    id: 'preprocessing', type: 'methodology', position: { x: 0, y: -900 },
-    data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
+    id: 'preprocessing', type: 'methodology', position: { x: 0, y: 0 },
+    data: { label: 'Pre-processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
-    id: 'prediction', type: 'methodology', position: { x: 0, y: -300 },
-    data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
+    id: 'prediction', type: 'methodology', position: { x: 0, y: 300 },
+    data: { label: 'Prediction Models', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 0, y: 0 },
-    data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
-  },
-
-  // --- Preprocessing Vertical Flow ---
-  // Level 2 (Children of Preprocessing)
-  {
-    id: 'loading-data', type: 'methodology', position: {x: 500, y: -900 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Loading Data', description: 'Loading various datasets from multiple sources.', details: ['FAO datasets', 'World Bank data'], icon: FileText, isExpanded: false, level: 2 },
-  },
-  {
-    id: 'merge-datasets', type: 'methodology', position: { x: 1000, y: -900 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Merge Datasets', description: 'Combining all datasets into one unified dataset.', details: ['Joined by country and year'], icon: Merge, isExpanded: false, level: 2 },
-  },
-  {
-    id: 'normalize', type: 'methodology', position: { x: 1300, y: -900 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false, level: 2 },
-  },
-  {
-    id: 'clean', type: 'methodology', position: { x: 1800, y: -900 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
-  },
-    // Level 3 (Children of Clean)
-  {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 1800, y: -600 }, hidden: true,
-    data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'drop-missing-years', type: 'methodology', position: { x: 1800, y: -500 }, hidden: true,
-    data: { parentId: 'clean', label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'remove-non-food', type: 'methodology', position: { x: 1800, y: -400 }, hidden: true,
-    data: { parentId: 'clean', label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'remove-outliers', type: 'methodology', position: { x: 1800, y: -300 }, hidden: true,
-    data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'complete-missing', type: 'methodology', position: { x: 2400, y: -900 }, hidden: true,
-    data: { parentId: 'preprocessing', label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/randomForest.png' },
+    id: 'analyse', type: 'methodology', position: { x: 0, y: 600 },
+    data: { label: 'Analysis', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
 
-  // --- Prediction Vertical Flow ---
-  // Level 2 (Children of Prediction)
-  {
-    id: 'arima-model', type: 'methodology', position: { x: 550, y: 250 }, hidden: true,
-    data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
-  },
-    // Level 3 (Children of ARIMA Model)
-  {
-    id: 'select-order', type: 'methodology', position: { x: 550, y: 500 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Select Order by auto_arima', description: 'Automatically discover the optimal order for the ARIMA model.', details: ['Finds best (p,d,q) values'], icon: GitBranch, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'fit-model', type: 'methodology', position: { x: 550, y: 750 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Fit the Model', description: 'Train the ARIMA model on the historical time series data.', details: ['Uses the selected order'], icon: Brain, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'add-to-history', type: 'methodology', position: { x: 550, y: 1000 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'show-results', type: 'methodology', position: { x: 550, y: 1250 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'tabpfn-model', type: 'methodology', position: { x: 550, y: 1500 }, hidden: true,
-    data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
-  },
-    // Level 3 (Children of TabPFN Model)
-  {
-    id: 'tabpfn-table', type: 'methodology', position: { x: 550, y: 1750 }, hidden: true,
-    data: { 
-      parentId: 'tabpfn-model', 
-      label: 'Plane Data', 
-      description: 'Data is split into 80% training and 20% testing sets for the model.', 
-      details: [], 
-      icon: FileText, 
-      isExpanded: false, 
-      level: 3,
-      tableData: {
-        headers: ['Train Data', 'Test Data'],
-        rows: [
-          ['X_train, Y_train', 'X_test'],
-          ['(features, target)', <span className="text-amber-400 font-bold text-lg">?</span>],
-        ],
-      }
-    },
-  },
-  {
-    id: 'tabpfn-run', type: 'methodology', position: { x: 550, y: 2000 }, hidden: true,
-    data: { parentId: 'tabpfn-model', label: 'Run TabPFN Model', description: 'The model is trained on the (X_train, Y_train) data.', details: [], icon: Brain, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'tabpfn-predict', type: 'methodology', position: { x: 550, y: 2250 }, hidden: true,
-    data: { parentId: 'tabpfn-model', label: 'Prediction', description: 'The trained model predicts the output for X_test, which is then validated.', details: [], icon: Brain, isExpanded: false, level: 3 },
-  },
-  {
-    id: 'y-test', type: 'methodology', position: { x: 950, y: 2250 }, hidden: true,
-    data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
-  },
+  // --- Level 2+: Sub-flows (Horizontal) ---
+
+  // Pre-processing children
+  { id: 'loading-data', type: 'methodology', position: { x: 450, y: -150 }, hidden: true, data: { parentId: 'preprocessing', level: 2, label: 'Loading Data', description: 'Loading various datasets from multiple sources.', details: ['FAO datasets', 'World Bank data'], icon: FileText, isExpanded: false } },
+  { id: 'merge-datasets', type: 'methodology', position: { x: 900, y: -150 }, hidden: true, data: { parentId: 'preprocessing', level: 2, label: 'Merge Datasets', description: 'Combining all datasets into one unified dataset.', details: ['Joined by country and year'], icon: Merge, isExpanded: false } },
+  { id: 'normalize', type: 'methodology', position: { x: 1350, y: -150 }, hidden: true, data: { parentId: 'preprocessing', level: 2, label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false } },
+  { id: 'clean', type: 'methodology', position: { x: 1800, y: -150 }, hidden: true, data: { parentId: 'preprocessing', level: 2, label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false } },
   
-  // --- Analyse Vertical Flow ---
-  // Level 2 (Children of Analyse)
-  {
-    id: 'pca', type: 'methodology', position: { x: 1100, y: 250 }, hidden: true,
-    data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
-  },
-  // Level 3 (Children of PCA)
-  {
-    id: 'clustering', type: 'methodology', position: { x: 1100, y: 500 }, hidden: true,
-    data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
-  },
-  // Level 4 (Children of Clustering)
-  {
-    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 750 }, hidden: true,
-    data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
-  },
-  // Level 5 (Children of K-means)
-  {
-    id: 'manual-clustering', type: 'methodology', position: { x: 900, y: 1000 }, hidden: true,
-    data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
-  },
-  {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1300, y: 1000 }, hidden: true,
-    data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
-  },
+  // Clean children
+  { id: 'drop-missing-rows', type: 'methodology', position: { x: 1800, y: 100 }, hidden: true, data: { parentId: 'clean', level: 3, label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false } },
+  { id: 'drop-missing-years', type: 'methodology', position: { x: 1800, y: 350 }, hidden: true, data: { parentId: 'clean', level: 3, label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false } },
+  { id: 'remove-non-food', type: 'methodology', position: { x: 1800, y: 600 }, hidden: true, data: { parentId: 'clean', level: 3, label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false } },
+  { id: 'remove-outliers', type: 'methodology', position: { x: 1800, y: 850 }, hidden: true, data: { parentId: 'clean', level: 3, label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false } },
+  
+  { id: 'complete-missing', type: 'methodology', position: { x: 2250, y: -150 }, hidden: true, data: { parentId: 'preprocessing', level: 2, label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, imageUrl: '/lovable-uploads/randomForest.png' } },
+
+  // Prediction children
+  { id: 'arima-model', type: 'methodology', position: { x: 450, y: 150 }, hidden: true, data: { parentId: 'prediction', level: 2, label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false } },
+  { id: 'select-order', type: 'methodology', position: { x: 900, y: 150 }, hidden: true, data: { parentId: 'arima-model', level: 3, label: 'Select Order by auto_arima', description: 'Automatically discover the optimal order for the ARIMA model.', details: ['Finds best (p,d,q) values'], icon: GitBranch, isExpanded: false } },
+  { id: 'fit-model', type: 'methodology', position: { x: 1350, y: 150 }, hidden: true, data: { parentId: 'arima-model', level: 3, label: 'Fit the Model', description: 'Train the ARIMA model on the historical time series data.', details: ['Uses the selected order'], icon: Brain, isExpanded: false } },
+  { id: 'add-to-history', type: 'methodology', position: { x: 1800, y: 150 }, hidden: true, data: { parentId: 'arima-model', level: 3, label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false } },
+  { id: 'show-results', type: 'methodology', position: { x: 2250, y: 150 }, hidden: true, data: { parentId: 'arima-model', level: 3, label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false } },
+
+  { id: 'tabpfn-model', type: 'methodology', position: { x: 450, y: 450 }, hidden: true, data: { parentId: 'prediction', level: 2, label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false } },
+  { id: 'tabpfn-table', type: 'methodology', position: { x: 900, y: 450 }, hidden: true, data: { parentId: 'tabpfn-model', level: 3, label: 'Plane Data', description: 'Data is split into 80% training and 20% testing sets for the model.', details: [], icon: FileText, isExpanded: false, tableData: { headers: ['Train Data', 'Test Data'], rows: [['X_train, Y_train', 'X_test'], ['(features, target)', <span className="text-amber-400 font-bold text-lg">?</span>]] } } },
+  { id: 'tabpfn-run', type: 'methodology', position: { x: 1350, y: 450 }, hidden: true, data: { parentId: 'tabpfn-model', level: 3, label: 'Run TabPFN Model', description: 'The model is trained on the (X_train, Y_train) data.', details: [], icon: Brain, isExpanded: false } },
+  { id: 'tabpfn-predict', type: 'methodology', position: { x: 1800, y: 450 }, hidden: true, data: { parentId: 'tabpfn-model', level: 3, label: 'Prediction', description: 'The trained model predicts the output for X_test, which is then validated.', details: [], icon: Brain, isExpanded: false } },
+  { id: 'y-test', type: 'methodology', position: { x: 2250, y: 450 }, hidden: true, data: { parentId: 'tabpfn-model', level: 3, label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false } },
+
+  // Analyse children
+  { id: 'pca', type: 'methodology', position: { x: 450, y: 600 }, hidden: true, data: { parentId: 'analyse', level: 2, label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, imageUrl: '/lovable-uploads/PCA.png' } },
+  { id: 'clustering', type: 'methodology', position: { x: 900, y: 600 }, hidden: true, data: { parentId: 'analyse', level: 2, label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false } },
+  { id: 'kmeans', type: 'methodology', position: { x: 1350, y: 600 }, hidden: true, data: { parentId: 'analyse', level: 2, label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false } },
+  { id: 'manual-clustering', type: 'methodology', position: { x: 1150, y: 850 }, hidden: true, data: { parentId: 'kmeans', level: 3, label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, imageUrl: '/lovable-uploads/PCA_manually.png' } },
+  { id: 'auto-clustering', type: 'methodology', position: { x: 1550, y: 850 }, hidden: true, data: { parentId: 'kmeans', level: 3, label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, imageUrl: '/lovable-uploads/PCA_auto.png' } },
 ];
 
 const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
 const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
 
 const initialEdgesData: Edge[] = [
-  // Pre-processing chain
+  // --- Main Pillar Connections ---
+  { id: 'e-main-1', source: 'preprocessing', target: 'prediction', type: 'smoothstep', animated: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-main-2', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, style: edgeStyle, markerEnd: edgeMarker },
+
+  // --- Pre-processing Horizontal Flow ---
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-3', source: 'merge-datasets', target: 'normalize', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-4', source: 'normalize', target: 'clean', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-5', source: 'clean', target: 'complete-missing', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-prep-6', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'top', targetHandle: 'bottom' },
-  { id: 'e-prep-7', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-prep-8', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-prep-9', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-
-  { id: 'e-prep-10', source: 'complete-missing', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
-  { id: 'e-prep-11', source: 'complete-missing', target: 'analyse', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-
-  // Prediction chain
+  
+  // Clean Vertical Flow
+  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  { id: 'e-clean-3', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  { id: 'e-clean-4', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  
+  // --- Prediction Horizontal Flow ---
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   
@@ -312,23 +227,23 @@ const initialEdgesData: Edge[] = [
   { id: 'e-arima-2', source: 'select-order', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-arima-3', source: 'fit-model', target: 'add-to-history', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-arima-4', source: 'add-to-history', target: 'show-results', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-
-  { id: 'e-arima-5', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'bottom' },
   { id: 'e-arima-loop', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7, }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'top', targetHandle: 'top' },
   
   // TabPFN sub-chain
   { id: 'e-tabpfn-1', source: 'tabpfn-model', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-tabpfn-2', source: 'tabpfn-table', target: 'tabpfn-run', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-tabpfn-3', source: 'tabpfn-run', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-tabpfn-4', source: 'tabpfn-predict', target: 'y-test', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-tabpfn-loop', source: 'y-test', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f655dbff' }, markerEnd: { ...edgeMarker, color: '#f655dbff' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f655dbff', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'bottom' },
+  { id: 'e-tabpfn-validation', source: 'y-test', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#68d391' }, markerEnd: { ...edgeMarker, color: '#68d391' }, label: 'Validation', labelStyle: { fill: '#68d391', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'left', targetHandle: 'right' },
+  { id: 'e-tabpfn-loop', source: 'tabpfn-predict', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'bottom' },
+
+  // --- Analyse Horizontal Flow ---
+  { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-analyse-2', source: 'pca', target: 'clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-analyse-3', source: 'clustering', target: 'kmeans', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   
-  // Analyse chain
-  { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-pca-1', source: 'pca', target: 'clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-cluster-1', source: 'clustering', target: 'kmeans', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-kmeans-1', source: 'kmeans', target: 'manual-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-  { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  // K-means Vertical Flow
+  { id: 'e-kmeans-1', source: 'kmeans', target: 'manual-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
 ];
 
 
@@ -380,7 +295,8 @@ export const MethodologyMindmap = () => {
       
       const isHidden = !sourceNode || !targetNode || sourceNode.hidden || targetNode.hidden;
 
-      if (edge.id.startsWith('e-prep-to-') || edge.id.startsWith('e-pred-to-')) {
+      // Keep main pillar connections always visible
+      if (edge.id.startsWith('e-main-')) {
           return { ...edge, hidden: false };
       }
       
@@ -407,7 +323,7 @@ export const MethodologyMindmap = () => {
     }));
     const newEdges = initialEdgesData.map(e => ({ 
       ...e, 
-      hidden: !(e.id.startsWith('e-prep-to-') || e.id.startsWith('e-pred-to-'))
+      hidden: !e.id.startsWith('e-main-')
     }));
     setNodes(newNodes);
     setEdges(newEdges);
@@ -433,7 +349,7 @@ export const MethodologyMindmap = () => {
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
         </div>
       </div>
-      <div className="flex-grow w-full" style={{ height: '1200px' }}>
+      <div className="flex-grow w-full" style={{ height: '1500px' }}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
