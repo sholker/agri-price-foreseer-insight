@@ -146,22 +146,22 @@ const nodeTypes: NodeTypes = {
 const initialNodesData: Node<MethodologyNodeData>[] = [
   // Level 1 - Horizontal Layout
   {
-    id: 'preprocessing', type: 'methodology', position: { x: 0, y: -500 },
+    id: 'preprocessing', type: 'methodology', position: { x: 0, y: -900 },
     data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
-    id: 'prediction', type: 'methodology', position: { x: 550, y: 0 },
+    id: 'prediction', type: 'methodology', position: { x: 0, y: -300 },
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 1100, y: 0 },
+    id: 'analyse', type: 'methodology', position: { x: 0, y: 0 },
     data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
 
   // --- Preprocessing Vertical Flow ---
   // Level 2 (Children of Preprocessing)
   {
-    id: 'loading-data', type: 'methodology', position: { x: 0, y: 250 }, hidden: true,
+    id: 'loading-data', type: 'methodology', position: { x: 150, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Loading Data', description: 'Loading various datasets from multiple sources.', details: ['FAO datasets', 'World Bank data'], icon: FileText, isExpanded: false, level: 2 },
   },
   {
