@@ -216,7 +216,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   {
     id: 'add-to-history', type: 'methodology', position: { x: 550, y: 1000 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Add Prediction to History', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
+    data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
   },
   {
     id: 'show-results', type: 'methodology', position: { x: 550, y: 1250 }, hidden: true,
@@ -231,8 +231,8 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'tabpfn-table', type: 'methodology', position: { x: 550, y: 1750 }, hidden: true,
     data: { 
       parentId: 'tabpfn-model', 
-      label: 'Show Table', 
-      description: 'Data is split into training and testing sets for the model.', 
+      label: 'plane the data', 
+      description: 'Data is split into 80% training and 20% testing sets for the model.', 
       details: [], 
       icon: FileText, 
       isExpanded: false, 
@@ -328,7 +328,6 @@ const initialEdgesData: Edge[] = [
 
   // Cross-pillar connections
   { id: 'e-prep-to-pred', source: 'complete-missing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-pred-to-analyse', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
 ];
 
 
