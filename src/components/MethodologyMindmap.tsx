@@ -299,7 +299,10 @@ const initialEdgesData: Edge[] = [
   { id: 'e-prep-7', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-8', source: 'drop-missing-years', target: 'remove-non-food', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-prep-9', source: 'remove-non-food', target: 'remove-outliers', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  
+
+  { id: 'e-prep-10', source: 'complete-missing', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+    { id: 'e-prep-11', source: 'complete-missing', target: 'analyse', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+
   // Prediction chain
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
