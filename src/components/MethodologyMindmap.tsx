@@ -178,19 +178,19 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
     // Level 3 (Children of Clean)
   {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 1800, y: -750 }, hidden: true,
+    id: 'drop-missing-rows', type: 'methodology', position: { x: 1800, y: -600 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'drop-missing-years', type: 'methodology', position: { x: 1800, y: -650 }, hidden: true,
+    id: 'drop-missing-years', type: 'methodology', position: { x: 1800, y: -500 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-non-food', type: 'methodology', position: { x: 1800, y: -550 }, hidden: true,
+    id: 'remove-non-food', type: 'methodology', position: { x: 1800, y: -400 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-outliers', type: 'methodology', position: { x: 1800, y: -450 }, hidden: true,
+    id: 'remove-outliers', type: 'methodology', position: { x: 1800, y: -300 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
