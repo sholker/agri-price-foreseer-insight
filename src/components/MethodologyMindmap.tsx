@@ -146,7 +146,7 @@ const nodeTypes: NodeTypes = {
 const initialNodesData: Node<MethodologyNodeData>[] = [
   // Level 1 - Horizontal Layout
   {
-    id: 'preprocessing', type: 'methodology', position: { x: 0, y: 500 },
+    id: 'preprocessing', type: 'methodology', position: { x: 0, y: -500 },
     data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
