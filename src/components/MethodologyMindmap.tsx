@@ -147,7 +147,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
   },
   {
-    id: 'tabpfn-model', type: 'methodology', position: { x: 450, y: 400 }, hidden: true,
+    id: 'tabpfn-model', type: 'methodology', position: { x: 450, y: 600 }, hidden: true,
     data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
   },
   // Level 3 (Children of ARIMA Model)
@@ -166,6 +166,23 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   {
     id: 'show-results', type: 'methodology', position: { x: 850, y: 800 }, hidden: true,
     data: { parentId: 'arima-model', label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false, level: 3 },
+  },
+  // Level 3 (Children of TabPFN Model)
+  {
+    id: 'tabpfn-table', type: 'methodology', position: { x: 850, y: 600 }, hidden: true,
+    data: { parentId: 'tabpfn-model', label: 'Show Table', description: 'Data is split into training and testing sets for the model.', details: ['X_train | Y_train', 'X_test | ?'], icon: FileText, isExpanded: false, level: 3 },
+  },
+  {
+    id: 'tabpfn-run', type: 'methodology', position: { x: 850, y: 800 }, hidden: true,
+    data: { parentId: 'tabpfn-model', label: 'Run TabPFN Model', description: 'The model is trained on the (X_train, Y_train) data.', details: [], icon: Brain, isExpanded: false, level: 3 },
+  },
+  {
+    id: 'tabpfn-predict', type: 'methodology', position: { x: 850, y: 1000 }, hidden: true,
+    data: { parentId: 'tabpfn-model', label: 'Prediction', description: 'The trained model predicts the output for X_test, which is then validated.', details: [], icon: Brain, isExpanded: false, level: 3 },
+  },
+  {
+    id: 'y-test', type: 'methodology', position: { x: 1250, y: 1000 }, hidden: true,
+    data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
   },
   // Level 3 (Children of Clean)
   {
@@ -232,6 +249,12 @@ const initialEdgesData: Edge[] = [
   { id: 'e-arima-3', source: 'fit-model', target: 'add-to-history', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-arima-4', source: 'add-to-history', target: 'show-results', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-arima-loop', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
+  // TabPFN sub-chain
+  { id: 'e-tabpfn-1', source: 'tabpfn-model', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-tabpfn-2', source: 'tabpfn-table', target: 'tabpfn-run', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-tabpfn-3', source: 'tabpfn-run', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+  { id: 'e-tabpfn-validation', source: 'y-test', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#68d391' }, markerEnd: { ...edgeMarker, color: '#68d391' }, label: 'Validation', labelStyle: { fill: '#68d391', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
+  { id: 'e-tabpfn-loop', source: 'tabpfn-predict', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
   // Cleaning chain
   { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-clean-2', source: 'drop-missing-rows', target: 'drop-missing-years', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
