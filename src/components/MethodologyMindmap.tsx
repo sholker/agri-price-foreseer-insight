@@ -216,7 +216,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   {
     id: 'add-to-history', type: 'methodology', position: { x: 550, y: 1000 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
+    data: { parentId: 'arima-model', label: 'Add Prediction to History', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
   },
   {
     id: 'show-results', type: 'methodology', position: { x: 550, y: 1250 }, hidden: true,
@@ -231,8 +231,8 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'tabpfn-table', type: 'methodology', position: { x: 550, y: 1750 }, hidden: true,
     data: { 
       parentId: 'tabpfn-model', 
-      label: 'plane the data', 
-      description: 'Data is split into 80% training and 20% testing sets for the model.', 
+      label: 'Show Table', 
+      description: 'Data is split into training and testing sets for the model.', 
       details: [], 
       icon: FileText, 
       isExpanded: false, 
@@ -325,9 +325,6 @@ const initialEdgesData: Edge[] = [
   { id: 'e-cluster-1', source: 'clustering', target: 'kmeans', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-kmeans-1', source: 'kmeans', target: 'manual-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
-
-  // Cross-pillar connections
-  { id: 'e-prep-to-pred', source: 'complete-missing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
 ];
 
 
