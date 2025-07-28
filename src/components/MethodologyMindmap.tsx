@@ -178,7 +178,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
     // Level 3 (Children of Clean)
   {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 1800, y: -600 }, hidden: true,
+    id: 'drop-missing-rows', type: 'methodology', position: { x: 850, y: -1000 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
@@ -301,7 +301,7 @@ const initialEdgesData: Edge[] = [
 
   { id: 'e-prep-10', source: 'complete-missing', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
   { id: 'e-prep-11', source: 'complete-missing', target: 'analyse', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'top' },
+  { id: 'e-clean-1', source: 'clean', target: 'drop-missing-rows', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'top', targetHandle: 'bottom' },
 
   // Prediction chain
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
