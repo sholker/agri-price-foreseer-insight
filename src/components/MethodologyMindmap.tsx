@@ -161,40 +161,40 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Preprocessing Vertical Flow ---
   // Level 2 (Children of Preprocessing)
   {
-    id: 'loading-data', type: 'methodology', position: { x: 150, y: -900 }, hidden: true,
+    id: 'loading-data', type: 'methodology', position: { x: 250, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Loading Data', description: 'Loading various datasets from multiple sources.', details: ['FAO datasets', 'World Bank data'], icon: FileText, isExpanded: false, level: 2 },
   },
   {
-    id: 'merge-datasets', type: 'methodology', position: { x: 0, y: 500 }, hidden: true,
+    id: 'merge-datasets', type: 'methodology', position: { x: 300, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Merge Datasets', description: 'Combining all datasets into one unified dataset.', details: ['Joined by country and year'], icon: Merge, isExpanded: false, level: 2 },
   },
   {
-    id: 'normalize', type: 'methodology', position: { x: 0, y: 750 }, hidden: true,
+    id: 'normalize', type: 'methodology', position: { x: 0, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false, level: 2 },
   },
   {
-    id: 'clean', type: 'methodology', position: { x: 0, y: 1000 }, hidden: true,
+    id: 'clean', type: 'methodology', position: { x: 500, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of Clean)
   {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 0, y: 1250 }, hidden: true,
+    id: 'drop-missing-rows', type: 'methodology', position: { x: 500, y: -850 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'drop-missing-years', type: 'methodology', position: { x: 0, y: 1500 }, hidden: true,
+    id: 'drop-missing-years', type: 'methodology', position: { x: 500, y: -850 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-non-food', type: 'methodology', position: { x: 0, y: 1750 }, hidden: true,
+    id: 'remove-non-food', type: 'methodology', position: { x: 500, y: -850 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-outliers', type: 'methodology', position: { x: 0, y: 2000 }, hidden: true,
+    id: 'remove-outliers', type: 'methodology', position: { x: 500, y: -850 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'complete-missing', type: 'methodology', position: { x: 0, y: 2250 }, hidden: true,
+    id: 'complete-missing', type: 'methodology', position: { x: 0, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Complete Missing Values', description: 'Using Random Forest to impute missing data points. The feature importance plot is shown below.', details: ['Click image to enlarge.'], icon: Brain, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/randomForest.png' },
   },
 
