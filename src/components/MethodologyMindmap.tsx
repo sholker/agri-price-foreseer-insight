@@ -50,10 +50,9 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
 
   return (
     <>
-      {/* Default handles for vertical connections */}
-      <Handle type="target" position={Position.Top} style={{ background: 'hsl(var(--primary))' }} />
-      <Handle type="source" position={Position.Bottom} style={{ background: 'hsl(var(--primary))' }} />
-      {/* Specific handles for horizontal connections */}
+      {/* Explicitly ID'd handles for precise connections */}
+      <Handle type="target" position={Position.Top} id="top" style={{ background: 'hsl(var(--primary))' }} />
+      <Handle type="source" position={Position.Bottom} id="bottom" style={{ background: 'hsl(var(--primary))' }} />
       <Handle type="target" position={Position.Left} id="left" style={{ background: 'hsl(var(--primary))' }} />
       <Handle type="source" position={Position.Right} id="right" style={{ background: 'hsl(var(--primary))' }} />
 
@@ -317,7 +316,7 @@ const initialEdgesData: Edge[] = [
   { id: 'e-tabpfn-2', source: 'tabpfn-table', target: 'tabpfn-run', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-tabpfn-3', source: 'tabpfn-run', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-tabpfn-validation', source: 'y-test', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#68d391' }, markerEnd: { ...edgeMarker, color: '#68d391' }, label: 'Validation', labelStyle: { fill: '#68d391', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
-  { id: 'e-tabpfn-loop', source: 'tabpfn-predict', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4 },
+  { id: 'e-tabpfn-loop', source: 'tabpfn-predict', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'top' },
   
   // Analyse chain
   { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
@@ -325,6 +324,10 @@ const initialEdgesData: Edge[] = [
   { id: 'e-cluster-1', source: 'clustering', target: 'kmeans', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-kmeans-1', source: 'kmeans', target: 'manual-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-kmeans-2', source: 'kmeans', target: 'auto-clustering', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
+
+  // Cross-pillar connections
+  { id: 'e-prep-to-pred', source: 'complete-missing', target: 'prediction', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-pred-to-analyse', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
 ];
 
 
