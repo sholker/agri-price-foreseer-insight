@@ -9,6 +9,8 @@ import {
   Edge,
   NodeTypes,
   MarkerType,
+  Handle,
+  Position,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { Database, Brain, FileText, Merge, Calculator, Filter, BarChart3, Users, GitBranch } from 'lucide-react';
@@ -44,6 +46,8 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
 
   return (
     <>
+      <Handle type="target" position={Position.Left} style={{ background: 'hsl(var(--primary))' }} />
+      <Handle type="source" position={Position.Right} style={{ background: 'hsl(var(--primary))' }} />
       <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
