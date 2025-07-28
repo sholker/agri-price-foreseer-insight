@@ -231,7 +231,6 @@ const edgeStyle = { stroke: 'hsl(var(--primary))', strokeWidth: 2 };
 const edgeMarker = { type: MarkerType.ArrowClosed, color: 'hsl(var(--primary))' };
 
 const initialEdgesData: Edge[] = [
-  { id: 'e-main-2', source: 'prediction', target: 'analyse', type: 'smoothstep', animated: true, hidden: false, style: edgeStyle, markerEnd: edgeMarker },
   // Pre-processing chain
   { id: 'e-prep-1', source: 'preprocessing', target: 'loading-data', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
   { id: 'e-prep-2', source: 'loading-data', target: 'merge-datasets', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
