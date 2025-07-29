@@ -45,7 +45,7 @@ const Login = () => {
     const handleSignInSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (username === 'ori' && password === 'shai') {
-            window.location.href = '/'; // Changed to standard browser navigation
+            window.location.href = '/pages/Index'; // Changed to standard browser navigation
         } else {
             setError('Invalid username or password');
         }
