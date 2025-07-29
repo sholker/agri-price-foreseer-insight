@@ -148,11 +148,11 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // Level 1 - Horizontal Layout
   {
     id: 'preprocessing', type: 'methodology', position: { x: 0, y: -900 },
-    data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
+    data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: true, level: 1 },
   },
   {
     id: 'prediction', type: 'methodology', position: { x: 0, y: -300 },
-    data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
+    data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: true, level: 1 },
   },
   {
     id: 'analyse', type: 'methodology', position: { x: 0, y: 0 },
