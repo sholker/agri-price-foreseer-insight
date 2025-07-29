@@ -56,6 +56,7 @@ const Login = () => {
             <style jsx>{`
                 :root {
                     /* COLORS */
+                    --black: #000000ff;
                     --white: #e9e9e9;
                     --grey: #333;
                     --green: #087654;
@@ -229,6 +230,7 @@ const Login = () => {
 
                 .input {
                     background-color: #fff;
+                    font-color: var(--balck);
                     border: none;
                     padding: 0.9rem 0.9rem;
                     margin: 0.5rem 0;
