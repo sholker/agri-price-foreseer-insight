@@ -1,54 +1,45 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-const Login = () => {
-  const [isRightPanelActive, setIsRightPanelActive] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  useEffect(() => {
-    const signUpButton = document.getElementById('signUp');
-    const signInButton = document.getElementById('signIn');
-    const handleSignUpClick = () => setIsRightPanelActive(true);
-    const handleSignInClick = () => {
-      setIsRightPanelActive(false);
-      setError(''); // Clear error when switching panels
-    };
-    if (signUpButton) {
-      signUpButton.addEventListener('click', handleSignUpClick);
-    }
-    if (signInButton) {
-      signInButton.addEventListener('click', handleSignInClick);
-    }
 
-    // Cleanup event listeners on component unmount
-    return () => {
-      if (signUpButton) {
-        signUpButton.removeEventListener('click', handleSignUpClick);
-      }
-      if (signInButton) {
-        signInButton.removeEventListener('click', handleSignInClick);
-      }
+const Login = () => {
+    const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+
+    useEffect(() => {
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+
+        const handleSignUpClick = () => setIsRightPanelActive(true);
+        const handleSignInClick = () => setIsRightPanelActive(false);
+
+        if (signUpButton) {
+            signUpButton.addEventListener('click', handleSignUpClick);
+        }
+        if (signInButton) {
+            signInButton.addEventListener('click', handleSignInClick);
+        }
+
+        // Cleanup event listeners on component unmount
+        return () => {
+            if (signUpButton) {
+                signUpButton.removeEventListener('click', handleSignUpClick);
+            }
+            if (signInButton) {
+                signInButton.removeEventListener('click', handleSignInClick);
+            }
+        };
+    }, []);
+
+    const handleFormSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        // You can add your form submission logic here
     };
-  }, []);
-  const handleSignUpSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Logic for handling user registration
-    console.log("Sign up form submitted");
-  };
-  const handleSignInSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (username === 'ori' && password === 'shai') {
-      window.location.href = '/home'; // Changed to standard browser navigation
-    } else {
-      setError('Invalid username or password');
-    }
-  };
-  return <>
+
+    return (
+        <>
             <style jsx>{`
                 :root {
                     /* COLORS */
-                    --black: #000000ff;
                     --white: #e9e9e9;
                     --grey: #333;
                     --green: #087654;
@@ -221,18 +212,11 @@ const Login = () => {
                 }
 
                 .input {
-                    background-color: #343435ff;
+                    background-color: #fff;
                     border: none;
                     padding: 0.9rem 0.9rem;
                     margin: 0.5rem 0;
                     width: 100%;
-                }
-
-                .error-message {
-                    color: red;
-                    font-size: 0.8rem;
-                    height: 1rem;
-                    margin-bottom: 0.5rem;
                 }
 
                 @keyframes show {
@@ -252,8 +236,8 @@ const Login = () => {
             <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
                 {/* Sign Up */}
                 <div className="container__form container--signup">
-                    <form className="form" id="form1" onSubmit={handleSignUpSubmit}>
-                        <h2 className="form__title text-slate-900">Sign Up</h2>
+                    <form className="form" id="form1" onSubmit={handleFormSubmit}>
+                        <h2 className="form__title">Sign Up</h2>
                         <input type="text" placeholder="Username" className="input" />
                         <input type="email" placeholder="Email" className="input" />
                         <input type="password" placeholder="Password" className="input" />
@@ -262,12 +246,11 @@ const Login = () => {
                 </div>
 
                 {/* Sign In */}
-                <div className="container__form container--signin my-0 py-0 px-0 mx-[2px]">
-                    <form id="form2" onSubmit={handleSignInSubmit} className="form mx-[9px]">
-                        <h2 className="form__title text-slate-900">Sign In</h2>
-                        <div className="error-message">{error}</div>
-                        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} className="input bg-slate-950" />
-                        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="input bg-slate-950" />
+                <div className="container__form container--signin">
+                    <form className="form" id="form2" onSubmit={handleFormSubmit}>
+                        <h2 className="form__title">Sign In</h2>
+                        <input type="email" placeholder="Email" className="input" />
+                        <input type="password" placeholder="Password" className="input" />
                         <a href="#" className="link">Forgot your password?</a>
                         <button className="btn">Sign In</button>
                     </form>
@@ -285,6 +268,8 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </>;
+        </>
+    );
 };
+
 export default Login;
