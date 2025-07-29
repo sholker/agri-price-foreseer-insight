@@ -202,7 +202,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Prediction Vertical Flow ---
   // Level 2 (Children of Prediction)
   {
-    id: 'arima-model', type: 'methodology', position: { x: 550, y: 250 }, hidden: true,
+    id: 'arima-model', type: 'methodology', position: { x: 550, y: 250 }, hidden: false,
     data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of ARIMA Model)
@@ -219,7 +219,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
   },
   {
-    id: 'tabpfn-model', type: 'methodology', position: { x: 550, y: 1500 }, hidden: true,
+    id: 'tabpfn-model', type: 'methodology', position: { x: 550, y: 1500 }, hidden: false,
     data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of TabPFN Model)
@@ -255,7 +255,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
   },
   {
-    id: 'blended-model', type: 'methodology', position: { x: 1100, y: 875 }, hidden: true,
+    id: 'blended-model', type: 'methodology', position: { x: 1100, y: 875 }, hidden: false,
     data: {
       parentId: 'prediction',
       label: 'Blended Model',
