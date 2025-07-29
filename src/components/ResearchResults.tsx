@@ -180,7 +180,7 @@ export const ResearchResults = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="ml" className="max-w-7xl mx-auto">
+        <Tabs defaultValue="production" className="max-w-7xl mx-auto">
           <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Correlation Matrix</TabsTrigger>
