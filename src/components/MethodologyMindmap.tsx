@@ -56,7 +56,7 @@ const MethodologyNode = ({ data }: { data: MethodologyNodeData }) => {
       <Handle type="target" position={Position.Left} id="left" style={{ background: 'hsl(var(--primary))' }} />
       <Handle type="source" position={Position.Right} id="right" style={{ background: 'hsl(var(--primary))' }} />
 
-      <Card className="p-4 w-[350px] bg-gradient-card shadow-space border border-primary/20 backdrop-blur-sm">
+      <Card className={`p-4 w-[350px] bg-gradient-card shadow-space border ${data.id === 'blended-model' ? 'border-pink-500' : 'border-primary/20'} backdrop-blur-sm`}>
         <div className="flex items-center gap-3 mb-3">
           <div className="p-2 bg-gradient-primary rounded-lg shadow-glow">
             <Icon className="w-5 h-5 text-white" />
