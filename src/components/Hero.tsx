@@ -54,7 +54,7 @@ export const Hero = () => {
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
               Agricultural Food
             </span>
-            Price Index
+            Food Production Index
           </h1>
           
           <p className="text-xl md:text-2xl mb-8 text-white/90 max-w-3xl mx-auto leading-relaxed">

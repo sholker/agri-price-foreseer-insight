@@ -24,7 +24,7 @@ export const Footer = () => {
           <div>
             <h3 className="text-xl font-semibold mb-4 text-card-foreground">About the Research</h3>
             <p className="text-muted-foreground leading-relaxed">
-              Innovative research in the field of agricultural food price analysis and prediction 
+              Innovative research in the field of agricultural food production analysis and prediction 
               using advanced machine learning technologies in a global environment.
             </p>
           </div>
@@ -53,7 +53,7 @@ export const Footer = () => {
         </div>
         
         <div className="border-t border-primary/30 mt-8 pt-8 text-center text-muted-foreground">
-          <p>&copy; 2025 Agricultural Food Price Analysis and Prediction Research. All rights reserved.</p>
+          <p>&copy; 2025 Agricultural Food Production Analysis and Prediction Research. All rights reserved.</p>
         </div>
       </div>
     </footer>

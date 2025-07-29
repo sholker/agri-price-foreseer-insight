@@ -23,7 +23,7 @@ const Navigation = () => {
               alt="המרכז האקדמי למשפט ולעסקים" 
               className="h-10 w-auto"
             />
-            <h1 className="text-xl font-bold text-foreground">Food Price Index Research</h1>
+            <h1 className="text-xl font-bold text-foreground">Food Production Index Research</h1>
           </div>
 
           {/* Desktop Menu */}
