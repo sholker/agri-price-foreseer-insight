@@ -1,16 +1,24 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from './pages/Index';
 
 const Login = () => {
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+    const router = useRouter();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         const signUpButton = document.getElementById('signUp');
         const signInButton = document.getElementById('signIn');
 
         const handleSignUpClick = () => setIsRightPanelActive(true);
-        const handleSignInClick = () => setIsRightPanelActive(false);
+        const handleSignInClick = () => {
+            setIsRightPanelActive(false);
+            setError(''); // Clear error when switching panels
+        };
 
         if (signUpButton) {
             signUpButton.addEventListener('click', handleSignUpClick);
@@ -30,9 +38,19 @@ const Login = () => {
         };
     }, []);
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleSignUpSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // You can add your form submission logic here
+        // Logic for handling user registration
+        console.log("Sign up form submitted");
+    };
+
+    const handleSignInSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (username === 'ori' && password === 'shai') {
+            router.push('/');
+        } else {
+            setError('Invalid username or password');
+        }
     };
 
     return (
@@ -219,6 +237,13 @@ const Login = () => {
                     width: 100%;
                 }
 
+                .error-message {
+                    color: red;
+                    font-size: 0.8rem;
+                    height: 1rem;
+                    margin-bottom: 0.5rem;
+                }
+
                 @keyframes show {
                     0%,
                     49.99% {
@@ -236,7 +261,7 @@ const Login = () => {
             <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
                 {/* Sign Up */}
                 <div className="container__form container--signup">
-                    <form className="form" id="form1" onSubmit={handleFormSubmit}>
+                    <form className="form" id="form1" onSubmit={handleSignUpSubmit}>
                         <h2 className="form__title">Sign Up</h2>
                         <input type="text" placeholder="Username" className="input" />
                         <input type="email" placeholder="Email" className="input" />
@@ -247,10 +272,23 @@ const Login = () => {
 
                 {/* Sign In */}
                 <div className="container__form container--signin">
-                    <form className="form" id="form2" onSubmit={handleFormSubmit}>
+                    <form className="form" id="form2" onSubmit={handleSignInSubmit}>
                         <h2 className="form__title">Sign In</h2>
-                        <input type="email" placeholder="Email" className="input" />
-                        <input type="password" placeholder="Password" className="input" />
+                        <div className="error-message">{error}</div>
+                        <input 
+                            type="text" 
+                            placeholder="Username" 
+                            className="input" 
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <input 
+                            type="password" 
+                            placeholder="Password" 
+                            className="input" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                         <a href="#" className="link">Forgot your password?</a>
                         <button className="btn">Sign In</button>
                     </form>
