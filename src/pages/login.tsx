@@ -221,7 +221,7 @@ const Login = () => {
                 }
 
                 .input {
-                    background-color: var(--balck);
+                    background-color: #343435ff;
                     border: none;
                     padding: 0.9rem 0.9rem;
                     margin: 0.5rem 0;
