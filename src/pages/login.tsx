@@ -253,7 +253,7 @@ const Login = () => {
                 {/* Sign Up */}
                 <div className="container__form container--signup">
                     <form className="form" id="form1" onSubmit={handleSignUpSubmit}>
-                        <h2 className="form__title">Sign Up</h2>
+                        <h2 className="form__title text-slate-900">Sign Up</h2>
                         <input type="text" placeholder="Username" className="input" />
                         <input type="email" placeholder="Email" className="input" />
                         <input type="password" placeholder="Password" className="input" />
