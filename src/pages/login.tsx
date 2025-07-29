@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from './pages/Index';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
