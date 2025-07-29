@@ -257,11 +257,6 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'y-test', type: 'methodology', position: { x: 950, y: 2250 }, hidden: true,
     data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
   },
-
-    {
-    id: 'tabpfn-show-results', type: 'methodology', position: { x: 1100, y: 2250 }, hidden: true,
-    data: { parentId: 'tabpfn-model', label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false, level: 3 },
-  },
   
   // --- Analyse Vertical Flow ---
   // Level 2 (Children of Analyse)
@@ -327,7 +322,6 @@ const initialEdgesData: Edge[] = [
   { id: 'e-tabpfn-3', source: 'tabpfn-run', target: 'tabpfn-predict', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'top' },
   { id: 'e-tabpfn-4', source: 'tabpfn-predict', target: 'y-test', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'top' },
   { id: 'e-tabpfn-loop', source: 'y-test', target: 'tabpfn-table', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f655dbff' }, markerEnd: { ...edgeMarker, color: '#f655dbff' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f655dbff', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'left' },
-  { id: 'e-tabpfn-loop', source: 'tabpfn-predict', target: 'tabpfn-show-results', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f655dbff' }, markerEnd: { ...edgeMarker, color: '#66ffe0ff' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#66ffe0ff', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7 }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'right', targetHandle: 'left' },
   
   // Analyse chain
   { id: 'e-analyse-1', source: 'analyse', target: 'pca', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker },
