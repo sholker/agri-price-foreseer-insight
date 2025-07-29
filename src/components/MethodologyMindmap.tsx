@@ -257,6 +257,18 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     id: 'y-test', type: 'methodology', position: { x: 950, y: 2250 }, hidden: true,
     data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
   },
+  {
+    id: 'blended-model', type: 'methodology', position: { x: 1100, y: 875 }, hidden: true,
+    data: {
+      parentId: 'prediction',
+      label: 'Blended Model',
+      description: "This meta-model learns the optimal weighting of ARIMA and TabPFN predictions by using them as inputs to forecast the 'Actual' food production values.",
+      details: ['The result is a powerful formula, such as Final Prediction = Intercept + (Coefficient_ARIMA * ARIMA) + (Coefficient_TabPFN * TabPFN), which precisely combines the strengths of both underlying models.'],
+      icon: Merge,
+      isExpanded: false,
+      level: 2
+    },
+  },
   
   // --- Analyse Vertical Flow ---
   // Level 2 (Children of Analyse)
@@ -306,6 +318,8 @@ const initialEdgesData: Edge[] = [
   // Prediction chain
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-arima-to-blend', source: 'arima-model', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-tabpfn-to-blend', source: 'tabpfn-model', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   
   // ARIMA sub-chain
   { id: 'e-arima-1', source: 'arima-model', target: 'select-order', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
