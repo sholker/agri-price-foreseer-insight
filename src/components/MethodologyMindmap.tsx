@@ -218,10 +218,6 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
   },
   {
-    id: 'show-results', type: 'methodology', position: { x: 550, y: 1250 }, hidden: true,
-    data: { parentId: 'arima-model', label: 'Show Results', description: 'Display the final forecast results.', details: ['Compare predictions with actuals'], icon: BarChart3, isExpanded: false, level: 3 },
-  },
-  {
     id: 'tabpfn-model', type: 'methodology', position: { x: 550, y: 1500 }, hidden: true,
     data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
   },
@@ -263,7 +259,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
       parentId: 'prediction',
       label: 'Blended Model',
       description: "This meta-model learns the optimal weighting of ARIMA and TabPFN predictions by using them as inputs to forecast the 'Actual' food production values.",
-      details: ['The result is a powerful formula, such as Final Prediction = Intercept + (Coefficient_ARIMA * ARIMA) + (Coefficient_TabPFN * TabPFN), which precisely combines the strengths of both underlying models.'],
+      details: ['The result is a powerful formula, such as \nFinal Prediction = Intercept + (Coefficient_ARIMA * ARIMA) + (Coefficient_TabPFN * TabPFN), which precisely combines the strengths of both underlying models.'],
       icon: Merge,
       isExpanded: false,
       level: 2
@@ -318,14 +314,13 @@ const initialEdgesData: Edge[] = [
   // Prediction chain
   { id: 'e-pred-1', source: 'prediction', target: 'arima-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-pred-2', source: 'prediction', target: 'tabpfn-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-arima-to-blend', source: 'arima-model', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
-  { id: 'e-tabpfn-to-blend', source: 'tabpfn-model', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-arima-to-blend', source: 'tabpfn-predict', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
+  { id: 'e-tabpfn-to-blend', source: 'add-to-history', target: 'blended-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'buttom' },
   
   // ARIMA sub-chain
   { id: 'e-arima-1', source: 'arima-model', target: 'select-order', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-arima-2', source: 'select-order', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
   { id: 'e-arima-3', source: 'fit-model', target: 'add-to-history', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'top' },
-  { id: 'e-arima-4', source: 'add-to-history', target: 'show-results', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'right', targetHandle: 'left' },
 
   { id: 'e-arima-5', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: edgeStyle, markerEnd: edgeMarker, sourceHandle: 'bottom', targetHandle: 'bottom' },
   { id: 'e-arima-loop', source: 'add-to-history', target: 'fit-model', type: 'smoothstep', animated: true, hidden: true, style: { ...edgeStyle, stroke: '#f6ad55' }, markerEnd: { ...edgeMarker, color: '#f6ad55' }, label: 'Walk-Forward Validation', labelStyle: { fill: '#f6ad55', fontWeight: 'bold' }, labelBgStyle: { fill: 'hsl(var(--card))', fillOpacity: 0.7, }, labelBgPadding: [8, 4], labelBgBorderRadius: 4, sourceHandle: 'bottom', targetHandle: 'left' },
