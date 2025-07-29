@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   ReactFlow,
   useNodesState,
@@ -336,6 +336,23 @@ export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodesData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
+  // Load saved positions on component mount
+  useEffect(() => {
+    const savedPositions = localStorage.getItem('methodology-node-positions');
+    if (savedPositions) {
+      try {
+        const positions = JSON.parse(savedPositions);
+        const updatedNodes = initialNodesData.map(node => ({
+          ...node,
+          position: positions[node.id] || node.position
+        }));
+        setNodes(updatedNodes);
+      } catch (error) {
+        console.error('Failed to load saved positions:', error);
+      }
+    }
+  }, [setNodes]);
+
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
     const isExpanding = !clickedNode.data.isExpanded;
   
@@ -412,6 +429,20 @@ export const MethodologyMindmap = () => {
     setNodes(newNodes);
     setEdges(newEdges);
   };
+
+  const saveAsDefault = () => {
+    const positions: Record<string, { x: number; y: number }> = {};
+    nodes.forEach(node => {
+      positions[node.id] = node.position;
+    });
+    localStorage.setItem('methodology-node-positions', JSON.stringify(positions));
+  };
+
+  const resetToDefault = () => {
+    localStorage.removeItem('methodology-node-positions');
+    setNodes(initialNodesData);
+    setEdges(initialEdgesData);
+  };
   
   const customStyles = `
     @keyframes fade-in {
@@ -431,6 +462,8 @@ export const MethodologyMindmap = () => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>Expand All</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
+          <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button>
+          <Button variant="outline" size="sm" onClick={resetToDefault}>Reset to Default</Button>
         </div>
       </div>
       <div className="flex-grow w-full" style={{ height: '1200px' }}>
