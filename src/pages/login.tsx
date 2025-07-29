@@ -1,58 +1,50 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-
 const Login = () => {
-    const [isRightPanelActive, setIsRightPanelActive] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-
-    useEffect(() => {
-        const signUpButton = document.getElementById('signUp');
-        const signInButton = document.getElementById('signIn');
-
-        const handleSignUpClick = () => setIsRightPanelActive(true);
-        const handleSignInClick = () => {
-            setIsRightPanelActive(false);
-            setError(''); // Clear error when switching panels
-        };
-
-        if (signUpButton) {
-            signUpButton.addEventListener('click', handleSignUpClick);
-        }
-        if (signInButton) {
-            signInButton.addEventListener('click', handleSignInClick);
-        }
-
-        // Cleanup event listeners on component unmount
-        return () => {
-            if (signUpButton) {
-                signUpButton.removeEventListener('click', handleSignUpClick);
-            }
-            if (signInButton) {
-                signInButton.removeEventListener('click', handleSignInClick);
-            }
-        };
-    }, []);
-
-    const handleSignUpSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Logic for handling user registration
-        console.log("Sign up form submitted");
+  const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  useEffect(() => {
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const handleSignUpClick = () => setIsRightPanelActive(true);
+    const handleSignInClick = () => {
+      setIsRightPanelActive(false);
+      setError(''); // Clear error when switching panels
     };
+    if (signUpButton) {
+      signUpButton.addEventListener('click', handleSignUpClick);
+    }
+    if (signInButton) {
+      signInButton.addEventListener('click', handleSignInClick);
+    }
 
-    const handleSignInSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (username === 'ori' && password === 'shai') {
-            window.location.href = '/home'; // Changed to standard browser navigation
-        } else {
-            setError('Invalid username or password');
-        }
+    // Cleanup event listeners on component unmount
+    return () => {
+      if (signUpButton) {
+        signUpButton.removeEventListener('click', handleSignUpClick);
+      }
+      if (signInButton) {
+        signInButton.removeEventListener('click', handleSignInClick);
+      }
     };
-
-    return (
-        <>
+  }, []);
+  const handleSignUpSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // Logic for handling user registration
+    console.log("Sign up form submitted");
+  };
+  const handleSignInSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === 'ori' && password === 'shai') {
+      window.location.href = '/home'; // Changed to standard browser navigation
+    } else {
+      setError('Invalid username or password');
+    }
+  };
+  return <>
             <style jsx>{`
                 :root {
                     /* COLORS */
@@ -271,24 +263,12 @@ const Login = () => {
                 </div>
 
                 {/* Sign In */}
-                <div className="container__form container--signin">
-                    <form className="form" id="form2" onSubmit={handleSignInSubmit}>
-                        <h2 className="form__title">Sign In</h2>
+                <div className="container__form container--signin my-0 py-0 px-0 mx-[2px]">
+                    <form id="form2" onSubmit={handleSignInSubmit} className="form mx-[9px]">
+                        <h2 className="form__title text-slate-900">Sign In</h2>
                         <div className="error-message">{error}</div>
-                        <input 
-                            type="text" 
-                            placeholder="Username" 
-                            className="input" 
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            className="input" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} className="input bg-slate-950" />
+                        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="input bg-slate-950" />
                         <a href="#" className="link">Forgot your password?</a>
                         <button className="btn">Sign In</button>
                     </form>
@@ -306,8 +286,6 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </>
-    );
+        </>;
 };
-
 export default Login;
