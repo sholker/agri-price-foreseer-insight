@@ -1,11 +1,9 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 const Login = () => {
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
-    const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -47,7 +45,7 @@ const Login = () => {
     const handleSignInSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (username === 'ori' && password === 'shai') {
-            router.push('/');
+            window.location.href = '/'; // Changed to standard browser navigation
         } else {
             setError('Invalid username or password');
         }
