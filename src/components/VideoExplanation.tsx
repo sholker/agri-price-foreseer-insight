@@ -30,7 +30,7 @@ export const VideoExplanation = () => {
             <div className="mt-6 text-center">
               <div className="inline-flex items-center gap-2 text-muted-foreground">
                 <Play className="w-4 h-4" />
-                <span>Explanation video on agricultural food price prediction research</span>
+                <span>Explanation video on agricultural food production prediction research</span>
               </div>
             </div>
           </Card>
