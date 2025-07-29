@@ -385,7 +385,8 @@ export const ResearchResults = () => {
               </Card>
 
               {/* Blended Model Card */}
-              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col">
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-pink-500 flex flex-col">
+              {/* <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30 flex flex-col"> */}
                   <div className="text-center">
                     <div className="h-48 w-full mb-4">
                       <img 
