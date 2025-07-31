@@ -174,7 +174,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'preprocessing', label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false, level: 2 },
   },
   {
-    id: 'clean', type: 'methodology', position: { x: 1800, y: -900 }, hidden: true,
+    id: 'clean', type: 'methodology', position: { x: 1900, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Clean Data', description: 'Data cleaning and outlier removal processes.', details: ['Before: 257 Countries & 64 years', 'After: 193 Countries & 23 years', 'Click to see cleaning steps'], icon: Filter, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of Clean)
