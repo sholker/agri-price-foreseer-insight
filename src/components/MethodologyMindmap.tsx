@@ -424,11 +424,14 @@ export const MethodologyMindmap = () => {
   };
 
   const saveAsDefault = () => {
-    const positions: { [key: string]: { x: number; y: number } } = {};
+    const nodeInfo: { [key: string]: { label: string, position: { x: number; y: number } } } = {};
     nodes.forEach(node => {
-      positions[node.id] = {
-        x: Math.round(node.position.x),
-        y: Math.round(node.position.y)
+      nodeInfo[node.id] = {
+        label: node.data.label,
+        position: {
+          x: Math.round(node.position.x),
+          y: Math.round(node.position.y)
+        }
       };
     });
     
@@ -437,9 +440,9 @@ export const MethodologyMindmap = () => {
     // for each node within the 'initialNodesData' variable in the source code.
     // File: /workspaces/agri-price-foreseer-insight/src/components/MethodologyMindmap.tsx
 
-    // Here are the new positions to copy:
+    // Here are the new positions to copy (node name is included for reference):
     `;
-    console.log(logMessage, JSON.stringify(positions, null, 2));
+    console.log(logMessage, JSON.stringify(nodeInfo, null, 2));
     alert("New node positions have been logged to the developer console. Please follow the instructions in the console to save this layout for all users.");
   };
 
