@@ -170,7 +170,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { parentId: 'preprocessing', label: 'Merge Datasets', description: 'Combining all datasets into one unified dataset.', details: ['Joined by country and year'], icon: Merge, isExpanded: false, level: 2 },
   },
   {
-    id: 'normalize', type: 'methodology', position: { x: 1300, y: -900 }, hidden: true,
+    id: 'normalize', type: 'methodology', position: { x: 1330, y: -900 }, hidden: true,
     data: { parentId: 'preprocessing', label: 'Normalize by Z-score', description: 'z_scores = (data - mean) / std_dev', details: ['Scales all features uniformly'], icon: Calculator, isExpanded: false, level: 2 },
   },
   {
