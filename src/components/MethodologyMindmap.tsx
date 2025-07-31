@@ -151,7 +151,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
-    id: 'prediction', type: 'methodology', position: { x: 0, y: 147 },
+    id: 'prediction', type: 'methodology', position: { x: 0, y: 137 },
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
@@ -202,7 +202,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Prediction Vertical Flow ---
   // Level 2 (Children of Prediction)
   {
-    id: 'arima-model', type: 'methodology', position: { x: 466, y: 414 }, hidden: false,
+    id: 'arima-model', type: 'methodology', position: { x: 458, y: 414 }, hidden: false,
     data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of ARIMA Model)
