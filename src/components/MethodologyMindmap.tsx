@@ -14,7 +14,7 @@ import {
   NodeProps,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { Database, Brain, FileText, Merge, Calculator, Filter, BarChart3, Users, GitBranch } from 'lucide-react';
+import { Database, Brain, FileText, Merge, Calculator, Filter, BarChart3, Users, GitBranch, X } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
@@ -123,15 +123,23 @@ const MethodologyNode = ({ id, data }: NodeProps<MethodologyNodeData>) => {
 
       {isModalOpen && (
         <div 
-          className="fixed inset-0 bg-black/80 flex items-center justify-center z-[100]"
+          className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-[100] p-4"
           onClick={closeModal}
         >
-          <img 
-            src={data.imageUrl} 
-            alt={`${data.label} - Full view`}
-            className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl"
-            onClick={(e) => e.stopPropagation()}
-          />
+          <div className="relative" onClick={(e) => e.stopPropagation()}>
+            <img 
+              src={data.imageUrl} 
+              alt={`${data.label} - Full view`}
+              className="max-w-[90vw] max-h-[90vh] rounded-lg shadow-2xl"
+            />
+            <button
+              onClick={closeModal}
+              className="absolute -top-3 -right-3 bg-white text-black rounded-full h-8 w-8 flex items-center justify-center shadow-lg hover:scale-110 transition-transform"
+              aria-label="Close image view"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
         </div>
       )}
     </>
