@@ -151,7 +151,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { label: 'Pre processing', description: 'Data collection, merging, normalization, and cleaning processes.', details: ['Click to see sub-steps'], icon: Database, isExpanded: false, level: 1 },
   },
   {
-    id: 'prediction', type: 'methodology', position: { x: 0, y: -300 },
+    id: 'prediction', type: 'methodology', position: { x: 0, y: 147 },
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
