@@ -155,7 +155,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     data: { label: 'Prediction Food Production', description: 'Using machine learning models to forecast food production.', details: ['Click to see sub-steps'], icon: Brain, isExpanded: false, level: 1 },
   },
   {
-    id: 'analyse', type: 'methodology', position: { x: 0, y: 0 },
+    id: 'analyse', type: 'methodology', position: { x: 2837, y: -892 },
     data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
 
@@ -179,19 +179,19 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
     // Level 3 (Children of Clean)
   {
-    id: 'drop-missing-rows', type: 'methodology', position: { x: 850, y: -850 }, hidden: true,
+    id: 'drop-missing-rows', type: 'methodology', position: { x: 659, y: -660 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Rows', description: 'Drop area rows not having data for 2000-2024 for more than 20% of values.', details: ['Check data availability', 'Calculate missing percentage'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'drop-missing-years', type: 'methodology', position: { x: 1800, y: -500 }, hidden: true,
+    id: 'drop-missing-years', type: 'methodology', position: { x: 1082, y: -660 }, hidden: true,
     data: { parentId: 'clean', label: 'Drop Missing Years', description: 'Drop areas missing values for years 2000-2024 where missing years > 40%.', details: ['Analyze temporal coverage', 'Remove incomplete time series'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-non-food', type: 'methodology', position: { x: 1800, y: -400 }, hidden: true,
+    id: 'remove-non-food', type: 'methodology', position: { x: 1506, y: -660 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Non-Food Areas', description: 'Remove areas not present in food production datasets.', details: ['Cross-reference with food data', 'Ensure dataset consistency'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
-    id: 'remove-outliers', type: 'methodology', position: { x: 1800, y: -300 }, hidden: true,
+    id: 'remove-outliers', type: 'methodology', position: { x: 1928, y: -660 }, hidden: true,
     data: { parentId: 'clean', label: 'Remove Outliers', description: 'Remove outliers based on mean and standard deviation.', details: ['Calculate statistical thresholds', 'Identify and remove extreme values'], icon: Filter, isExpanded: false, level: 3 },
   },
   {
@@ -202,29 +202,29 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Prediction Vertical Flow ---
   // Level 2 (Children of Prediction)
   {
-    id: 'arima-model', type: 'methodology', position: { x: 550, y: 250 }, hidden: false,
+    id: 'arima-model', type: 'methodology', position: { x: 466, y: 414 }, hidden: false,
     data: { parentId: 'prediction', label: 'ARIMA Model', description: 'ARIMA runs on food production index data only. The prediction is based on historical data.', details: ['Univariate time series model.', 'Data range: 1961-2024.'], icon: Brain, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of ARIMA Model)
   {
-    id: 'select-order', type: 'methodology', position: { x: 550, y: 500 }, hidden: true,
+    id: 'select-order', type: 'methodology', position: { x: 868, y: 426 }, hidden: true,
     data: { parentId: 'arima-model', label: 'Select Order by auto_arima', description: 'Automatically discover the optimal order for the ARIMA model.', details: ['Finds best (p,d,q) values'], icon: GitBranch, isExpanded: false, level: 3 },
   },
   {
-    id: 'fit-model', type: 'methodology', position: { x: 550, y: 750 }, hidden: true,
+    id: 'fit-model', type: 'methodology', position: { x: 1286, y: 426 }, hidden: true,
     data: { parentId: 'arima-model', label: 'Fit the Model', description: 'Train the ARIMA model on the historical time series data.', details: ['Uses the selected order'], icon: Brain, isExpanded: false, level: 3 },
   },
   {
-    id: 'add-to-history', type: 'methodology', position: { x: 550, y: 1000 }, hidden: true,
+    id: 'add-to-history', type: 'methodology', position: { x: 1680, y: 504 }, hidden: true,
     data: { parentId: 'arima-model', label: 'Prediction', description: 'For Walk-Forward validation, the prediction is added to the history for the next iteration.', details: ['Simulates real-world forecasting'], icon: FileText, isExpanded: false, level: 3 },
   },
   {
-    id: 'tabpfn-model', type: 'methodology', position: { x: 550, y: 1500 }, hidden: false,
+    id: 'tabpfn-model', type: 'methodology', position: { x: 458, y: -354 }, hidden: false,
     data: { parentId: 'prediction', label: 'TabPFN Model', description: 'Prediction is based on a wide range of features from the years 2000-2024.', details: ['Features used:', '- Food production index', '- Food security', '- Employment indicators', '- Annual population', '- CO2 emissions', '- Temperature change', '- Pesticides use'], icon: Brain, isExpanded: false, level: 2 },
   },
     // Level 3 (Children of TabPFN Model)
   {
-    id: 'tabpfn-table', type: 'methodology', position: { x: 550, y: 1750 }, hidden: true,
+    id: 'tabpfn-table', type: 'methodology', position: { x: 918, y: -350 }, hidden: true,
     data: { 
       parentId: 'tabpfn-model', 
       label: 'Plane Data', 
@@ -243,19 +243,19 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
     },
   },
   {
-    id: 'tabpfn-run', type: 'methodology', position: { x: 550, y: 2000 }, hidden: true,
+    id: 'tabpfn-run', type: 'methodology', position: { x: 1368, y: -327 }, hidden: true,
     data: { parentId: 'tabpfn-model', label: 'Run TabPFN Model', description: 'The model is trained on the (X_train, Y_train) data.', details: [], icon: Brain, isExpanded: false, level: 3 },
   },
   {
-    id: 'tabpfn-predict', type: 'methodology', position: { x: 550, y: 2250 }, hidden: true,
+    id: 'tabpfn-predict', type: 'methodology', position: { x: 1308, y: 147 }, hidden: true,
     data: { parentId: 'tabpfn-model', label: 'Prediction', description: 'The trained model predicts the output for X_test, which is then validated.', details: [], icon: Brain, isExpanded: false, level: 3 },
   },
   {
-    id: 'y-test', type: 'methodology', position: { x: 950, y: 2250 }, hidden: true,
+    id: 'y-test', type: 'methodology', position: { x: 1164, y: -60 }, hidden: true,
     data: { parentId: 'tabpfn-model', label: 'Y_test', description: 'The actual values from the test set used for validation.', details: [], icon: GitBranch, isExpanded: false, level: 3 },
   },
   {
-    id: 'blended-model', type: 'methodology', position: { x: 1100, y: 875 }, hidden: false,
+    id: 'blended-model', type: 'methodology', position: { x: 456, y: 40 }, hidden: false,
     data: {
       parentId: 'prediction',
       label: 'Blended Model',
@@ -270,26 +270,26 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Analyse Vertical Flow ---
   // Level 2 (Children of Analyse)
   {
-    id: 'pca', type: 'methodology', position: { x: 1100, y: 250 }, hidden: true,
+    id: 'pca', type: 'methodology', position: { x: 2848, y: -668 }, hidden: true,
     data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 1100, y: 500 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 2866, y: -240 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 1100, y: 750 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 2847, y: -58 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 900, y: 1000 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 3044, y: 144 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 1300, y: 1000 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 2670, y: 146 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
@@ -443,7 +443,6 @@ export const MethodologyMindmap = () => {
     // Here are the new positions to copy (node name is included for reference):
     `;
     console.log(logMessage, JSON.stringify(nodeInfo, null, 2));
-    alert("New node positions have been logged to the developer console. Please follow the instructions in the console to save this layout for all users.");
   };
 
   const resetToDefault = () => {
@@ -469,7 +468,7 @@ export const MethodologyMindmap = () => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>Expand All</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
-          <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button>
+          {/* <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button> */}
           <Button variant="outline" size="sm" onClick={resetToDefault}>Reset to Default</Button>
         </div>
       </div>
