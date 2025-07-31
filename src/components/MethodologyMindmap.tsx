@@ -346,23 +346,6 @@ export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodesData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
 
-  // Load saved positions on component mount
-  useEffect(() => {
-    const savedPositions = localStorage.getItem('methodology-node-positions');
-    if (savedPositions) {
-      try {
-        const positions = JSON.parse(savedPositions);
-        const updatedNodes = initialNodesData.map(node => ({
-          ...node,
-          position: positions[node.id] || node.position
-        }));
-        setNodes(updatedNodes);
-      } catch (error) {
-        console.error('Failed to load saved positions:', error);
-      }
-    }
-  }, [setNodes]);
-
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
     const isExpanding = !clickedNode.data.isExpanded;
   
@@ -441,15 +424,26 @@ export const MethodologyMindmap = () => {
   };
 
   const saveAsDefault = () => {
-    const positions: Record<string, { x: number; y: number }> = {};
+    const positions: { [key: string]: { x: number; y: number } } = {};
     nodes.forEach(node => {
-      positions[node.id] = node.position;
+      positions[node.id] = {
+        x: Math.round(node.position.x),
+        y: Math.round(node.position.y)
+      };
     });
-    localStorage.setItem('methodology-node-positions', JSON.stringify(positions));
+    
+    const logMessage = `
+    // To save this layout for all users, a developer must update the 'position' 
+    // for each node within the 'initialNodesData' variable in the source code.
+    // File: /workspaces/agri-price-foreseer-insight/src/components/MethodologyMindmap.tsx
+
+    // Here are the new positions to copy:
+    `;
+    console.log(logMessage, JSON.stringify(positions, null, 2));
+    alert("New node positions have been logged to the developer console. Please follow the instructions in the console to save this layout for all users.");
   };
 
   const resetToDefault = () => {
-    localStorage.removeItem('methodology-node-positions');
     setNodes(initialNodesData);
     setEdges(initialEdgesData);
   };
