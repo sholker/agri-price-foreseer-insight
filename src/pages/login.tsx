@@ -4,51 +4,46 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-
 const Login = () => {
-    const [isRightPanelActive, setIsRightPanelActive] = useState(false);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const {
+    login
+  } = useAuth();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const handleSignUpClick = () => setIsRightPanelActive(true);
+    const handleSignInClick = () => setIsRightPanelActive(false);
+    if (signUpButton) {
+      signUpButton.addEventListener('click', handleSignUpClick);
+    }
+    if (signInButton) {
+      signInButton.addEventListener('click', handleSignInClick);
+    }
 
-    useEffect(() => {
-        const signUpButton = document.getElementById('signUp');
-        const signInButton = document.getElementById('signIn');
-
-        const handleSignUpClick = () => setIsRightPanelActive(true);
-        const handleSignInClick = () => setIsRightPanelActive(false);
-
-        if (signUpButton) {
-            signUpButton.addEventListener('click', handleSignUpClick);
-        }
-        if (signInButton) {
-            signInButton.addEventListener('click', handleSignInClick);
-        }
-
-        // Cleanup event listeners on component unmount
-        return () => {
-            if (signUpButton) {
-                signUpButton.removeEventListener('click', handleSignUpClick);
-            }
-            if (signInButton) {
-                signInButton.removeEventListener('click', handleSignInClick);
-            }
-        };
-    }, []);
-
-    const handleFormSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (login(username, password)) {
-            toast.success('Login successful!');
-            navigate('/');
-        } else {
-            toast.error('Invalid credentials');
-        }
+    // Cleanup event listeners on component unmount
+    return () => {
+      if (signUpButton) {
+        signUpButton.removeEventListener('click', handleSignUpClick);
+      }
+      if (signInButton) {
+        signInButton.removeEventListener('click', handleSignInClick);
+      }
     };
-
-    return (
-        <>
+  }, []);
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (login(username, password)) {
+      toast.success('Login successful!');
+      navigate('/');
+    } else {
+      toast.error('Invalid credentials');
+    }
+  };
+  return <>
             <style>{`
                 :root {
                     /* COLORS */
@@ -261,20 +256,8 @@ const Login = () => {
                 <div className="container__form container--signin">
                     <form className="form" id="form2" onSubmit={handleFormSubmit}>
                         <h2 className="form__title">Sign In</h2>
-                        <input 
-                            type="text" 
-                            placeholder="Username" 
-                            className="input" 
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                        />
-                        <input 
-                            type="password" 
-                            placeholder="Password" 
-                            className="input"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} className="input bg-slate-950" />
+                        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="input bg-slate-950" />
                         <a href="#" className="link">Forgot your password?</a>
                         <button className="btn">Sign In</button>
                     </form>
@@ -292,8 +275,6 @@ const Login = () => {
                     </div>
                 </div>
             </div>
-        </>
-    );
+        </>;
 };
-
 export default Login;
