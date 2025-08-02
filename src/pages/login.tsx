@@ -219,7 +219,7 @@ const Login = () => {
                 }
 
                 .input {
-                    background-color: #fff;
+                    background-color: #252427ff;
                     border: none;
                     padding: 0.9rem 0.9rem;
                     margin: 0.5rem 0;
