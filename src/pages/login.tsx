@@ -87,6 +87,8 @@ const Login = () => {
                 }
 
                 .form__title {
+                    color: var(--grey);
+                    font-size: 1.5rem;
                     font-weight: 300;
                     margin: 0;
                     margin-bottom: 1.25rem;
@@ -263,6 +265,7 @@ const Login = () => {
                 }
             `}</style>
         <div className="flex items-center justify-center min-h-screen bg-background">
+            <h2>A Machine Learning Approach to Forecasting Agricultural Food Production Index Research</h2>
             <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
             {/* Sign Up */}
             <div className="container__form container--signup">
