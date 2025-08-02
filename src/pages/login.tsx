@@ -262,7 +262,8 @@ const Login = () => {
                     }
                 }
             `}</style>
-        <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} flex items-center justify-center min-h-screen bg-slate-10>
+        <div className="flex items-center justify-center min-h-screen bg-background">
+            <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
             {/* Sign Up */}
             <div className="container__form container--signup">
                 <form className="form" id="form1" onSubmit={handleSignUpSubmit}>
@@ -296,6 +297,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     </>;
 };
