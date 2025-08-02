@@ -164,7 +164,7 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   },
   {
     id: 'analyse', type: 'methodology', position: { x: 2837, y: -892 },
-    data: { label: 'Analyse', description: 'Data analysis using dimensionality reduction and clustering.', details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
+    data: { label: 'Exploratory Data Analysis (EDA)', description: "Performing Exploratory Data Analysis (EDA) to uncover patterns and check assumptions. This phase includes dimensionality reduction and clustering to simplify the data's complexity and reveal underlying structures.", details: ['Click to see sub-steps'], icon: BarChart3, isExpanded: false, level: 1 },
   },
 
   // --- Preprocessing Vertical Flow ---
