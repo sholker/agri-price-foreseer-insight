@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   ReactFlow,
   useNodesState,
@@ -35,7 +36,7 @@ interface MethodologyNodeData extends Record<string, unknown> {
 }
 
 // Custom Node Component
-const MethodologyNode = ({ id, data }: NodeProps<MethodologyNodeData>) => {
+const MethodologyNode = ({ id, data }: any) => {
   const Icon = data.icon;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -353,6 +354,7 @@ const initialEdgesData: Edge[] = [
 export const MethodologyMindmap = () => {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodesData);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdgesData);
+  const { user } = useAuth();
 
   const onNodeClick = useCallback((event: React.MouseEvent, clickedNode: Node<MethodologyNodeData>) => {
     const isExpanding = !clickedNode.data.isExpanded;
@@ -476,7 +478,9 @@ export const MethodologyMindmap = () => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>Expand All</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
-          {/* <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button>  */}
+          {user?.role === 'admin' && (
+            <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button>
+          )}
           <Button variant="outline" size="sm" onClick={resetToDefault}>Reset to Default</Button>
         </div>
       </div>

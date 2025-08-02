@@ -1,9 +1,16 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 const Login = () => {
     const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         const signUpButton = document.getElementById('signUp');
@@ -32,12 +39,17 @@ const Login = () => {
 
     const handleFormSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // You can add your form submission logic here
+        if (login(username, password)) {
+            toast.success('Login successful!');
+            navigate('/');
+        } else {
+            toast.error('Invalid credentials');
+        }
     };
 
     return (
         <>
-            <style jsx>{`
+            <style>{`
                 :root {
                     /* COLORS */
                     --white: #e9e9e9;
@@ -249,8 +261,20 @@ const Login = () => {
                 <div className="container__form container--signin">
                     <form className="form" id="form2" onSubmit={handleFormSubmit}>
                         <h2 className="form__title">Sign In</h2>
-                        <input type="email" placeholder="Email" className="input" />
-                        <input type="password" placeholder="Password" className="input" />
+                        <input 
+                            type="text" 
+                            placeholder="Username" 
+                            className="input" 
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                        <input 
+                            type="password" 
+                            placeholder="Password" 
+                            className="input"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                         <a href="#" className="link">Forgot your password?</a>
                         <button className="btn">Sign In</button>
                     </form>
