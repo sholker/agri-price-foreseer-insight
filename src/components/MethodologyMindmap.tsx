@@ -476,7 +476,7 @@ export const MethodologyMindmap = () => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>Expand All</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
-          {/* <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button> */}
+          <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button> 
           <Button variant="outline" size="sm" onClick={resetToDefault}>Reset to Default</Button>
         </div>
       </div>
