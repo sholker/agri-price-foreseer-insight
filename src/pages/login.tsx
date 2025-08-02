@@ -5,46 +5,68 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 const Login = () => {
-  const [isRightPanelActive, setIsRightPanelActive] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const {
-    login
-  } = useAuth();
-  const navigate = useNavigate();
-  useEffect(() => {
-    const signUpButton = document.getElementById('signUp');
-    const signInButton = document.getElementById('signIn');
-    const handleSignUpClick = () => setIsRightPanelActive(true);
-    const handleSignInClick = () => setIsRightPanelActive(false);
-    if (signUpButton) {
-      signUpButton.addEventListener('click', handleSignUpClick);
-    }
-    if (signInButton) {
-      signInButton.addEventListener('click', handleSignInClick);
-    }
+    const [isRightPanelActive, setIsRightPanelActive] = useState(false);
+    // Sign-in state
+    const [signInUsername, setSignInUsername] = useState('');
+    const [signInPassword, setSignInPassword] = useState('');
 
-    // Cleanup event listeners on component unmount
-    return () => {
-      if (signUpButton) {
-        signUpButton.removeEventListener('click', handleSignUpClick);
-      }
-      if (signInButton) {
-        signInButton.removeEventListener('click', handleSignInClick);
-      }
+    // Sign-up state
+    const [signUpUsername, setSignUpUsername] = useState('');
+    const [signUpEmail, setSignUpEmail] = useState(''); // Email is in form but not used in auth logic
+    const [signUpPassword, setSignUpPassword] = useState('');
+
+    const { login, signup } = useAuth();
+    const navigate = useNavigate();
+    useEffect(() => {
+        const signUpButton = document.getElementById('signUp');
+        const signInButton = document.getElementById('signIn');
+        const handleSignUpClick = () => setIsRightPanelActive(true);
+        const handleSignInClick = () => setIsRightPanelActive(false);
+        if (signUpButton) {
+            signUpButton.addEventListener('click', handleSignUpClick);
+        }
+        if (signInButton) {
+            signInButton.addEventListener('click', handleSignInClick);
+        }
+
+        // Cleanup event listeners on component unmount
+        return () => {
+            if (signUpButton) {
+                signUpButton.removeEventListener('click', handleSignUpClick);
+            }
+            if (signInButton) {
+                signInButton.removeEventListener('click', handleSignInClick);
+            }
+        };
+    }, []);
+    const handleSignInSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (login(signInUsername, signInPassword)) {
+            toast.success('Login successful!');
+            navigate('/');
+        } else {
+            toast.error('Invalid credentials');
+        }
     };
-  }, []);
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (login(username, password)) {
-      toast.success('Login successful!');
-      navigate('/');
-    } else {
-      toast.error('Invalid credentials');
-    }
-  };
-  return <>
-            <style>{`
+
+    const handleSignUpSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!signUpUsername || !signUpPassword) {
+            toast.error('Username and password are required.');
+            return;
+        }
+        if (signup(signUpUsername, signUpPassword)) {
+            toast.success('Sign up successful! Please sign in.');
+            setSignUpUsername('');
+            setSignUpEmail('');
+            setSignUpPassword('');
+            setIsRightPanelActive(false); // Switch to sign-in panel
+        } else {
+            toast.error('Username is already taken.');
+        }
+    };
+    return <>
+        <style>{`
                 :root {
                     /* COLORS */
                     --white: #e9e9e9;
@@ -240,41 +262,41 @@ const Login = () => {
                     }
                 }
             `}</style>
-            <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
-                {/* Sign Up */}
-                <div className="container__form container--signup">
-                    <form className="form" id="form1" onSubmit={handleFormSubmit}>
-                        <h2 className="form__title">Sign Up</h2>
-                        <input type="text" placeholder="Username" className="input bg-slate-950" />
-                        <input type="email" placeholder="Email" className="input bg-slate-950" />
-                        <input type="password" placeholder="Password" className="input bg-slate-950" />
-                        <button className="btn">Sign Up</button>
-                    </form>
-                </div>
+        <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`} flex items-center justify-center min-h-screen bg-slate-10>
+            {/* Sign Up */}
+            <div className="container__form container--signup">
+                <form className="form" id="form1" onSubmit={handleSignUpSubmit}>
+                    <h2 className="form__title">Sign Up</h2>
+                    <input type="text" placeholder="Username" value={signUpUsername} onChange={e => setSignUpUsername(e.target.value)} className="input bg-slate-950" />
+                    <input type="email" placeholder="Email" value={signUpEmail} onChange={e => setSignUpEmail(e.target.value)} className="input bg-slate-950" />
+                    <input type="password" placeholder="Password" value={signUpPassword} onChange={e => setSignUpPassword(e.target.value)} className="input bg-slate-950" />
+                    <button className="btn">Sign Up</button>
+                </form>
+            </div>
 
-                {/* Sign In */}
-                <div className="container__form container--signin">
-                    <form className="form" id="form2" onSubmit={handleFormSubmit}>
-                        <h2 className="form__title">Sign In</h2>
-                        <input type="text" placeholder="Username" value={username} onChange={e => setUsername(e.target.value)} className="input bg-slate-950" />
-                        <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} className="input bg-slate-950" />
-                        <a href="#" className="link">Forgot your password?</a>
-                        <button className="btn">Sign In</button>
-                    </form>
-                </div>
+            {/* Sign In */}
+            <div className="container__form container--signin">
+                <form className="form" id="form2" onSubmit={handleSignInSubmit}>
+                    <h2 className="form__title">Sign In</h2>
+                    <input type="text" placeholder="Username" value={signInUsername} onChange={e => setSignInUsername(e.target.value)} className="input bg-slate-950" />
+                    <input type="password" placeholder="Password" value={signInPassword} onChange={e => setSignInPassword(e.target.value)} className="input bg-slate-950" />
+                    <a href="#" className="link">Forgot your password?</a>
+                    <button className="btn">Sign In</button>
+                </form>
+            </div>
 
-                {/* Overlay */}
-                <div className="container__overlay">
-                    <div className="overlay">
-                        <div className="overlay__panel overlay--left">
-                            <button className="btn" id="signIn">Sign In</button>
-                        </div>
-                        <div className="overlay__panel overlay--right">
-                            <button className="btn" id="signUp">Sign Up</button>
-                        </div>
+            {/* Overlay */}
+            <div className="container__overlay">
+                <div className="overlay">
+                    <div className="overlay__panel overlay--left">
+                        <button className="btn" id="signIn">Sign In</button>
+                    </div>
+                    <div className="overlay__panel overlay--right">
+                        <button className="btn" id="signUp">Sign Up</button>
                     </div>
                 </div>
             </div>
-        </>;
+        </div>
+    </>;
 };
 export default Login;
