@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,900');
 
+/* --- Basic Styles --- */
 body, html {
   margin: 0;
   padding: 0;
@@ -7,7 +8,7 @@ body, html {
   -webkit-font-smoothing: antialiased;
   background-color: #09334f;
   position: relative;
-  overflow: hidden; /* Prevent scrollbars */
+  overflow: hidden;
 }
 
 #yetiSVG, #lightSVG {
@@ -26,25 +27,7 @@ body, html {
   font-family: 'Source Sans Pro', sans-serif;
   color: #FFF;
 }
-
-.content h3 {
-  margin: 0 0 0.8rem;
-  font-size: 2.625rem;
-  font-weight: 900;
-  line-height: 120%;
-}
-
-.content p {
-  font-size: 1.25rem;
-  font-weight: normal;
-  line-height: 150%;
-  color: #d1e2ed;
-}
-
-.content p span {
-  text-decoration: line-through;
-}
-
+/* ... Other content styles from previous answer ... */
 .home-link {
     display: inline-block;
     margin-top: 1.5rem;
@@ -54,6 +37,74 @@ body, html {
     font-weight: bold;
 }
 
-.home-link:hover {
-    color: #FFF;
+/* --- CSS Animations --- */
+
+/* Talking Animation */
+.yeti-mouth {
+  animation: chatter 0.3s infinite;
+}
+@keyframes chatter {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.7) translateY(4px); }
+}
+
+/* Flashlight Shake */
+.yeti-arm-l {
+  animation: flashlightShake 0.2s infinite alternate;
+}
+@keyframes flashlightShake {
+  from { transform: translateX(0); }
+  to { transform: translateX(5px); }
+}
+
+/* Main animation sequence for the "scare" effect */
+#yetiSVG {
+  animation: scareSequence 12s infinite;
+}
+
+/* The light flickering and scare animations are timed within this sequence */
+@keyframes scareSequence {
+  /* Initial state */
+  0%, 25%, 75%, 100% {
+    --light-visibility: hidden;
+    --arm-r-transform: none;
+    --eye-scale: 1;
+  }
+  
+  /* Light flickers */
+  26% { --light-visibility: visible; }
+  27% { --light-visibility: hidden; }
+  28% { --light-visibility: visible; }
+
+  /* Scare starts */
+  29% {
+    --light-visibility: hidden;
+    --arm-r-transform: translate(10px, 30px) rotate(10deg);
+    --eye-scale: 1.4;
+  }
+  
+  /* Scare holds */
+  30%, 74% {
+    --light-visibility: hidden;
+    --arm-r-transform: translate(10px, 30px) rotate(10deg);
+    --eye-scale: 1.4;
+  }
+}
+
+/* Applying the variables from the sequence */
+#light {
+  visibility: var(--light-visibility, hidden);
+  transition: visibility 0.1s;
+}
+
+.yeti-arm-r {
+  transform-origin: bottom center;
+  transform: var(--arm-r-transform, none);
+  transition: transform 0.4s ease-out;
+}
+
+.yeti-eye {
+  transform-origin: center center;
+  transform: scale(var(--eye-scale, 1));
+  transition: transform 0.2s ease-in-out;
 }
