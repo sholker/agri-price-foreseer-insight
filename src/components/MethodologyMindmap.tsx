@@ -278,26 +278,26 @@ const initialNodesData: Node<MethodologyNodeData>[] = [
   // --- Analyse Vertical Flow ---
   // Level 2 (Children of Analyse)
   {
-    id: 'pca', type: 'methodology', position: { x: 2848, y: -618 }, hidden: true,
+    id: 'pca', type: 'methodology', position: { x: 2852, y: -584 }, hidden: true,
     data: { parentId: 'analyse', label: 'PCA', description: 'Principal Component Analysis for dimensionality reduction.', details: ['Click to expand and see clustering steps.'], icon: BarChart3, isExpanded: false, level: 2, imageUrl: '/lovable-uploads/PCA.png' },
   },
   // Level 3 (Children of PCA)
   {
-    id: 'clustering', type: 'methodology', position: { x: 2866, y: -190 }, hidden: true,
+    id: 'clustering', type: 'methodology', position: { x: 2866, y: -150 }, hidden: true,
     data: { parentId: 'pca', label: 'Clustering', description: 'Grouping countries based on PCA results.', details: ['Click to expand.'], icon: Users, isExpanded: false, level: 3 },
   },
   // Level 4 (Children of Clustering)
   {
-    id: 'kmeans', type: 'methodology', position: { x: 2847, y: -8 }, hidden: true,
+    id: 'kmeans', type: 'methodology', position: { x: 2875, y: 42 }, hidden: true,
     data: { parentId: 'clustering', label: 'K-means', description: 'Applying K-means algorithm to identify clusters.', details: ['Click to see manual vs auto results.'], icon: GitBranch, isExpanded: false, level: 4 },
   },
   // Level 5 (Children of K-means)
   {
-    id: 'manual-clustering', type: 'methodology', position: { x: 3044, y: 94 }, hidden: true,
+    id: 'manual-clustering', type: 'methodology', position: { x: 3092, y: 254 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Manual Clustering', description: 'Manual grouping based on visual inspection of PCA plot.', details: ['Group 1 (len=7): Brazil, China, China, mainland, India, Indonesia, Russian Federation, United States of America'], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_manually.png' },
   },
   {
-    id: 'auto-clustering', type: 'methodology', position: { x: 2670, y: 96 }, hidden: true,
+    id: 'auto-clustering', type: 'methodology', position: { x: 2690, y: 252 }, hidden: true,
     data: { parentId: 'kmeans', label: 'Auto Clustering (K-means)', description: 'Automatic grouping using K-means algorithm.', details: ["Cluster 1 (len=5): Brazil, China, China, mainland, India, United States of America"], icon: Users, isExpanded: false, level: 5, imageUrl: '/lovable-uploads/PCA_auto.png' },
   },
 ];
@@ -476,7 +476,7 @@ export const MethodologyMindmap = () => {
         <div className="flex gap-2">
           <Button variant="outline" size="sm" onClick={expandAll}>Expand All</Button>
           <Button variant="outline" size="sm" onClick={collapseAll}>Collapse All</Button>
-          <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button> 
+          {/* <Button variant="outline" size="sm" onClick={saveAsDefault}>Save as Default</Button>  */}
           <Button variant="outline" size="sm" onClick={resetToDefault}>Reset to Default</Button>
         </div>
       </div>
