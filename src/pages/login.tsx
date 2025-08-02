@@ -264,8 +264,8 @@ const Login = () => {
                     }
                 }
             `}</style>
-        <div className="flex items-center justify-center min-h-screen bg-background">
-            <h2>A Machine Learning Approach to Forecasting Agricultural Food Production Index Research</h2>
+        <div className="flex flex-col items-center justify-center min-h-screen bg-background">
+            <h2 className="text-2xl font-bold mb-8 text-center">A Machine Learning Approach to Forecasting Agricultural Food Production Index Research</h2>
             <div className={`container ${isRightPanelActive ? 'right-panel-active' : ''}`}>
             {/* Sign Up */}
             <div className="container__form container--signup">
