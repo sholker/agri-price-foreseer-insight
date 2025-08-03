@@ -117,3 +117,26 @@ All colors MUST be HSL.
     @apply bg-background text-foreground;
   }
 }
+
+/* ReactFlow Controls styling to show +/- symbols properly */
+.react-flow__controls {
+  box-shadow: var(--shadow-soft);
+}
+
+.react-flow__controls-button {
+  background: hsl(var(--card));
+  border: 1px solid hsl(var(--border));
+  color: hsl(var(--foreground));
+  font-size: 16px;
+  font-weight: bold;
+  transition: var(--transition-smooth);
+}
+
+.react-flow__controls-button:hover {
+  background: hsl(var(--muted));
+  color: hsl(var(--primary));
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor;
+}
