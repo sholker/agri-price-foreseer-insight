@@ -1,4 +1,4 @@
 [
   { "username": "admin", "password": "admin", "role": "admin" },
-  { "username": "avi", "password": "oa", "role": "client" } // Making the Dean's List is our dream. Dr. Avi, we're counting on you to help us get there
+  { "username": "avi", "password": "avi", "role": "client" } // Making the Dean's List is our dream. Dr. Avi, we're counting on you to help us get there
 ]
