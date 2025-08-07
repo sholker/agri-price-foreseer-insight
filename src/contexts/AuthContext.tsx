@@ -27,6 +27,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [users, setUsers] = useState<StoredUser[]>([]);
 
+  // Helper function to centralize user state and localStorage updates
+  const updateAndPersistUsers = (newUsers: StoredUser[]) => {
+    setUsers(newUsers);
+    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(newUsers));
+  };
+
   // Load users from localStorage on initial render, or from users.json if not present
   useEffect(() => {
     const initializeUsers = async () => {
@@ -43,8 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           throw new Error(`Failed to fetch users.json: ${response.statusText}`);
         }
         const defaultUsers = await response.json();
-        localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(defaultUsers));
-        setUsers(defaultUsers);
+        updateAndPersistUsers(defaultUsers);
       } catch (error) {
         console.error("Failed to load or initialize users:", error);
         // Fallback to an empty array if both localStorage and fetching fail.
@@ -75,9 +80,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Add new user (as a client by default)
     const newUser: StoredUser = { username, password, role: 'client' };
     const updatedUsers = [...users, newUser];
-    
-    setUsers(updatedUsers);
-    localStorage.setItem(USERS_STORAGE_KEY, JSON.stringify(updatedUsers));
+    updateAndPersistUsers(updatedUsers);
     
     return true;
   };
