@@ -2,6 +2,10 @@ import { useEffect, useRef } from 'react';
 // @ts-ignore
 import Plotly from 'plotly.js-dist';
 
+interface PCAChartProps {
+  isKmeans?: boolean;
+}
+
 const rawPcaData = `Area,Year,food_value,food_security_value,employment_value,annual_population_value,emissions_value,temperatur_change_value,pesticides_use_value,PC1,PC2,PC3
 Afghanistan,2001,-0.3195157391933882,-0.7695248674319167,-0.1661533189402647,-0.1073677693314176,-0.2317456324382323,1.0514458532527309,0.0381223299649134,-0.24363421044351252,-0.6131919643924317,0.10778204892864479
 Afghanistan,2002,-0.0789773280636554,-0.7302922595490579,-0.1722673936658763,-0.09973612743635,-0.2315357274443953,1.1687811424732213,0.0381223299649134,-0.2402344452151709,-0.5414737258865305,0.076757159282718
@@ -4449,7 +4453,7 @@ interface PCAData {
   hovertext: string[];
 }
 
-export const PCAChart = () => {
+export const PCAChart = ({ isKmeans = false }: PCAChartProps) => {
   const chartRef = useRef<HTMLDivElement>(null);
 
   function parsePCAData(csvData: string): PCAData {
@@ -4481,19 +4485,87 @@ export const PCAChart = () => {
 
     const pcaData3D = parsePCAData(rawPcaData);
     
-    // --- Manually create a color mapping for each area ---
+    // --- Create color mapping for each area ---
     const uniqueAreas = [...new Set(pcaData3D.area)];
-    const colorPalette = [
-      '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
-      '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
-    ];
-    const colorMap = uniqueAreas.reduce((acc, area, index) => {
-      acc[area] = colorPalette[index % colorPalette.length];
-      return acc;
-    }, {} as Record<string, string>);
+    let colorMap: Record<string, string>;
     
-    // Create a different trace for each area to get a proper legend
-    const traces = uniqueAreas.map(area => {
+    if (isKmeans) {
+      // K-means clustering colors
+      const cluster1Countries = ['Brazil', 'China', 'China, mainland', 'India', 'United States of America'];
+      colorMap = uniqueAreas.reduce((acc, area) => {
+        acc[area] = cluster1Countries.includes(area) ? '#1f77b4' : '#7f7f7f'; // Blue for cluster 1, gray for cluster 2
+        return acc;
+      }, {} as Record<string, string>);
+    } else {
+      // Original geographical color mapping
+      const colorPalette = [
+        '#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd',
+        '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22', '#17becf'
+      ];
+      colorMap = uniqueAreas.reduce((acc, area, index) => {
+        acc[area] = colorPalette[index % colorPalette.length];
+        return acc;
+      }, {} as Record<string, string>);
+    }
+    
+    // Create traces - either by cluster (K-means) or by area (PCA)
+    let traces;
+    
+    if (isKmeans) {
+      // Group by clusters for K-means
+      const cluster1Countries = ['Brazil', 'China', 'China, mainland', 'India', 'United States of America'];
+      const cluster1Data = { x: [] as number[], y: [] as number[], z: [] as number[], text: [] as string[] };
+      const cluster2Data = { x: [] as number[], y: [] as number[], z: [] as number[], text: [] as string[] };
+      
+      pcaData3D.area.forEach((area, i) => {
+        if (cluster1Countries.includes(area)) {
+          cluster1Data.x.push(pcaData3D.pc1[i]);
+          cluster1Data.y.push(pcaData3D.pc2[i]);
+          cluster1Data.z.push(pcaData3D.pc3[i]);
+          cluster1Data.text.push(pcaData3D.hovertext[i]);
+        } else {
+          cluster2Data.x.push(pcaData3D.pc1[i]);
+          cluster2Data.y.push(pcaData3D.pc2[i]);
+          cluster2Data.z.push(pcaData3D.pc3[i]);
+          cluster2Data.text.push(pcaData3D.hovertext[i]);
+        }
+      });
+      
+      traces = [
+        {
+          x: cluster1Data.x,
+          y: cluster1Data.y,
+          z: cluster1Data.z,
+          text: cluster1Data.text,
+          name: 'Cluster 1 - Major Economies',
+          hoverinfo: 'text+name',
+          mode: 'markers',
+          type: 'scatter3d',
+          marker: {
+            size: 6,
+            color: '#1f77b4',
+            opacity: 0.8
+          }
+        },
+        {
+          x: cluster2Data.x,
+          y: cluster2Data.y,
+          z: cluster2Data.z,
+          text: cluster2Data.text,
+          name: 'Cluster 2 - Other Areas',
+          hoverinfo: 'text+name',
+          mode: 'markers',
+          type: 'scatter3d',
+          marker: {
+            size: 6,
+            color: '#7f7f7f',
+            opacity: 0.8
+          }
+        }
+      ];
+    } else {
+      // Original area-based traces for PCA
+      traces = uniqueAreas.map(area => {
         const traceData = {
             x: [] as number[],
             y: [] as number[],
@@ -4525,11 +4597,12 @@ export const PCAChart = () => {
                 opacity: 0.8
             }
         };
-    });
+      });
+    }
 
     const pcaLayout = {
       title: {
-        text: '3D Principal Component Analysis',
+        text: isKmeans ? '3D K-means Clustering Analysis' : '3D Principal Component Analysis',
         font: {
           family: 'Inter, sans-serif',
           size: 18,

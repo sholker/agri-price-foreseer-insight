@@ -181,10 +181,11 @@ export const ResearchResults = () => {
         </div>
 
         <Tabs defaultValue="production" className="max-w-7xl mx-auto">
-          <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
+          <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 mb-8 bg-card/50 backdrop-blur-md border border-primary/20">
             <TabsTrigger value="production" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index</TabsTrigger>
             <TabsTrigger value="correlation" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Correlation Matrix</TabsTrigger>
             <TabsTrigger value="pca" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">3D PCA Analysis</TabsTrigger>
+            <TabsTrigger value="kmeans" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">K-means Clustering</TabsTrigger>
             <TabsTrigger value="ml" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">Food Production Index Prediction</TabsTrigger>
           </TabsList>
           
@@ -208,20 +209,50 @@ export const ResearchResults = () => {
                     indicating similarities in production patterns and agricultural resource usage.
                   </p>
                   
-                  {/* PCA Clustering Information */}
+                  
+                  <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
+                    <p className="text-sm text-primary font-medium">
+                      💡 Key Insight: Countries in similar geographical regions show similar patterns in agricultural parameters
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="kmeans">
+            <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+              <div className="flex flex-col lg:flex-row gap-6">
+                <div className="lg:w-2/3">
+                  <PCAChart isKmeans={true} />
+                </div>
+                <div className="lg:w-1/3 space-y-4">
+                  <h3 className="text-2xl font-semibold text-card-foreground">
+                    K-means Clustering Analysis
+                  </h3>
+                  <Badge variant="secondary" className="text-sm bg-primary/20 text-primary border-primary/30">
+                    2 Clusters
+                  </Badge>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Countries are clustered into two groups based on their agricultural characteristics. 
+                    Cluster 1 (blue) represents major economies with high production volumes, while 
+                    Cluster 2 (gray) includes all other countries with different agricultural patterns.
+                  </p>
+                  
+                  {/* K-means Clustering Information */}
                   <div className="bg-accent/10 p-4 rounded-lg border border-accent/20 backdrop-blur-sm">
-                    <h4 className="text-lg font-semibold text-accent mb-3">PCA Clustering by K-means</h4>
+                    <h4 className="text-lg font-semibold text-accent mb-3">Clustering Results</h4>
                     <div className="space-y-3">
-                      <div className="bg-primary/20 p-3 rounded border border-primary/30">
-                        <p className="text-sm font-medium text-primary mb-2">🟦 Cluster 1 - Major Economies (5 countries):</p>
+                      <div className="bg-blue-50/20 p-3 rounded border border-blue-200/50">
+                        <p className="text-sm font-medium text-blue-800 mb-2">🟦 Cluster 1 - Major Economies (5 countries):</p>
                         <p className="text-sm text-muted-foreground">
                           Brazil, China, China mainland, India, United States of America
                         </p>
                       </div>
-                      <div className="bg-secondary/20 p-3 rounded border border-secondary/30">
-                        <p className="text-sm font-medium text-secondary mb-2">🟪 Cluster 2 - All Other Areas:</p>
+                      <div className="bg-gray-50/20 p-3 rounded border border-gray-200/50">
+                        <p className="text-sm font-medium text-gray-800 mb-2">⚫ Cluster 2 - All Other Areas:</p>
                         <p className="text-sm text-muted-foreground">
-                          Remaining countries and regions grouped based on similar agricultural patterns
+                          Remaining countries and regions with diverse agricultural patterns
                         </p>
                       </div>
                     </div>
@@ -229,7 +260,7 @@ export const ResearchResults = () => {
                   
                   <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
                     <p className="text-sm text-primary font-medium">
-                      💡 Key Insight: Countries in similar geographical regions show similar patterns in agricultural parameters
+                      💡 Key Insight: Major economies form a distinct cluster due to their large-scale agricultural production and similar resource patterns
                     </p>
                   </div>
                 </div>
