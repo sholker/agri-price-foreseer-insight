@@ -1,73 +1,100 @@
-# Welcome to your Lovable project
-
 ## Project info
 
-**URL**: https://lovable.dev/projects/f5e086fb-2ddb-406f-8318-9bffa52ca012
+**A Machine Learning Approach to Forecast the Agricultural Food Production Index**
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## How can I edit this code?
+This project presents an interactive web application to visualize and explore the results of advanced research aimed at predicting agricultural food production trends. It utilizes various data analysis techniques and machine learning models to provide insights into global food security and agricultural economics.
 
-There are several ways of editing your application.
+**Authors:** Ori Shai, Daniel Roei, Neta Tevet  
+**Supervisor:** Dr. Abraham Yosipof  
+*A final project for the Academic Center for Law and Business.*
+---
 
-**Use Lovable**
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/f5e086fb-2ddb-406f-8318-9bffa52ca012) and start prompting.
+## 🌐 Live Demo
+[**Explore the live dashboard here!**](https://your-live-demo-url.com)  *(<-- Replace with your actual deployment URL)*
 
-Changes made via Lovable will be committed automatically to this repo.
+---
 
-**Use your preferred IDE**
+## ✨ Key Features
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+-   **Interactive Dashboard:** Explore research findings through a dynamic and user-friendly interface built with React and Vite.
+-   **Advanced Model Comparison:** Compare the performance and forecasts of three different machine learning models: ARIMA, TabPFN, and a custom Stacking (Blended) model.
+-   **Rich Data Visualization:**
+    -   **Food Production Index:** Track historical and forecasted food production indices for over 180 countries.
+    -   **Correlation Matrix:** Understand the relationships between 7 key variables, including pesticide use, carbon emissions, and population data.
+    -   **3D PCA & K-Means Clustering:** Visualize country clusters and influential components in a 3D space using Plotly.js.
+-   **Interactive Methodology Explorer:** A dynamic flow diagram built with React Flow, detailing every step of the research process from data collection to model validation.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+---
 
-Follow these steps:
+## 🔬 Research Methodology
+Our research follows a comprehensive, multi-stage process:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+1.  **Data Collection & Preprocessing:** Aggregating data from sources like the FAO and World Bank, followed by normalization, cleaning, and imputation of missing values using a Random Forest model.
+2.  **Exploratory Data Analysis (EDA):** Utilizing PCA for dimensionality reduction and K-Means for clustering to uncover hidden patterns and relationships in the data.
+3.  **Predictive Modeling:** Developing and training three distinct models (ARIMA, TabPFN, and a Blended Stacking model) to forecast the Food Production Index.
+4.  **Validation & Analysis:** Rigorously evaluating model performance using RMSE and comparing their predictive power.
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
 
-# Step 3: Install the necessary dependencies.
-npm i
+The entire methodology is visualized in our **interactive flow diagram** within the application, allowing for a deep dive into each specific step.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+
+---
+
+## 🚀 Technology Stack
+
+-   **Frontend:** [React](https://reactjs.org/), [Vite](https://vitejs.dev/), [TypeScript](https://www.typescriptlang.org/)
+-   **UI Framework:** [shadcn-ui](https://ui.shadcn.com/) & [Tailwind CSS](https://tailwindcss.com/)
+-   **Data Visualization:**
+    -   [Recharts](https://recharts.org/) for 2D line charts.
+    -   [Plotly.js](https://plotly.com/javascript/) for 3D PCA and K-Means charts.
+    -   [React Flow](https://reactflow.dev/) for the interactive methodology mindmap.
+-   **Data Fetching & State:** [TanStack Query](https://tanstack.com/query/latest) & React Context API.
+
+---
+
+## 📂 Project Structure
+A brief overview of the key directories:
+
+```
+/
+├── public/              # Static assets and data files (CSVs, images)
+├── src/
+│   ├── components/      # Reusable React components
+│   │   ├── ui/          # UI components from shadcn-ui
+│   │   └── ...          # Feature-specific components (charts, cards, etc.)
+│   ├── contexts/        # React context providers (e.g., AuthContext)
+│   ├── hooks/           # Custom React hooks
+│   ├── lib/             # Utility functions
+│   └── App.tsx          # Main application component
+└── ...                  # Configuration files (vite, tailwind, etc.)
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🤝 Contributing
 
-**Use GitHub Codespaces**
+Contributions are welcome! If you have suggestions for improvements or find any issues, please feel free to open an issue or submit a pull request.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
 
-## What technologies are used for this project?
+---
 
-This project is built with:
+## 📜 License
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This project is distributed under the MIT License. See `LICENSE.txt` for more information.
 
-## How can I deploy this project?
+---
 
-Simply open [Lovable](https://lovable.dev/projects/f5e086fb-2ddb-406f-8318-9bffa52ca012) and click on Share -> Publish.
+## 🙏 Acknowledgments
 
-## Can I connect a custom domain to my Lovable project?
-Making the Dean's List is our dream. Dr. Avi, we're counting on you to help us get there
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+-   Ori Shai
+-   Daniel Roei
+-   Neta Tevet
+-   Dr. Abraham Yosipof (Supervisor)
+-   The Academic Center for Law and Business

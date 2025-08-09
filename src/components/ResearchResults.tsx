@@ -99,14 +99,7 @@ export const ResearchResults = () => {
       });
 
       // --- Combine all data sources ---
-      const allAreas = new Set([
-        ...arimaDataMap.keys(), 
-        ...tabpfnDataMap.keys(), 
-        ...blendedHistoricalDataMap.keys(),
-        ...blendedForecastDataMap.keys() // Ensure all areas are included
-      ]);
-      
-      const sortedAreas = [...allAreas].sort();
+      const sortedAreas = [...blendedHistoricalDataMap.keys()].sort();
 
       const data = sortedAreas.map(area => {
         const arimaData = arimaDataMap.get(area) || {};
