@@ -1,20 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { useAuth } from '@/contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
 
 const Navigation = () => {
-  const { user, logout, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
-
-  const handleAuthAction = () => {
-    if (isAuthenticated) {
-      logout();
-    } else {
-      navigate('/login');
-    }
-  };
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const menuItems = [
@@ -49,20 +37,6 @@ const Navigation = () => {
                 {item.name}
               </a>
             ))}
-            <div className="flex items-center gap-4">
-              {isAuthenticated && (
-                <span className="text-foreground/80">
-                  Welcome, {user?.username} ({user?.role})
-                </span>
-              )}
-              <Button 
-                variant="outline" 
-                className="bg-white/10 border-white/20 text-white hover:bg-white/20"
-                onClick={handleAuthAction}
-              >
-                {isAuthenticated ? 'Logout' : 'Login'}
-              </Button>
-            </div>
           </div>
 
           {/* Mobile menu button */}
