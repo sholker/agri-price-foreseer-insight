@@ -243,15 +243,15 @@ export const ResearchResults = () => {
                   <div className="bg-accent/10 p-4 rounded-lg border border-accent/20 backdrop-blur-sm">
                     <h4 className="text-lg font-semibold text-accent mb-3">Clustering Results</h4>
                     <div className="space-y-3">
-                      <div className="bg-blue-50/20 p-3 rounded border border-blue-200/50">
-                        <p className="text-sm font-medium text-blue-800 mb-2">🟦 Cluster 1 - Major Economies (5 countries):</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div className="bg-blue-500/20 p-3 rounded border border-blue-400/50">
+                        <p className="text-sm font-medium text-blue-300 mb-2">🟦 Cluster 1 - Major Economies (5 countries):</p>
+                        <p className="text-sm text-blue-100">
                           Brazil, China, China mainland, India, United States of America
                         </p>
                       </div>
-                      <div className="bg-gray-50/20 p-3 rounded border border-gray-200/50">
-                        <p className="text-sm font-medium text-gray-800 mb-2">⚫ Cluster 2 - All Other Areas:</p>
-                        <p className="text-sm text-muted-foreground">
+                      <div className="bg-gray-500/20 p-3 rounded border border-gray-400/50">
+                        <p className="text-sm font-medium text-gray-300 mb-2">⚫ Cluster 2 - All Other Areas:</p>
+                        <p className="text-sm text-gray-100">
                           Remaining countries and regions with diverse agricultural patterns
                         </p>
                       </div>
@@ -334,9 +334,9 @@ export const ResearchResults = () => {
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
                 <h3 className="text-2xl font-semibold text-card-foreground mb-4 text-center">Average RMSE Across All Countries</h3>
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="text-center p-4 bg-blue-50/20 rounded-lg border border-blue-200/50">
-                    <h4 className="text-lg font-semibold text-blue-800">ARIMA Model</h4>
-                    <p className="text-2xl font-bold text-blue-900">
+                  <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-400/50">
+                    <h4 className="text-lg font-semibold text-blue-300">ARIMA Model</h4>
+                    <p className="text-2xl font-bold text-blue-100">
                       {predictionData.length > 0 ? 
                         (predictionData
                           .filter(d => d.arimaRmse !== null)
@@ -345,9 +345,9 @@ export const ResearchResults = () => {
                         ).toFixed(4) : 'N/A'}
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-green-50/20 rounded-lg border border-green-200/50">
-                    <h4 className="text-lg font-semibold text-green-800">TabPFN Model</h4>
-                    <p className="text-2xl font-bold text-green-900">
+                  <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-400/50">
+                    <h4 className="text-lg font-semibold text-green-300">TabPFN Model</h4>
+                    <p className="text-2xl font-bold text-green-100">
                       {predictionData.length > 0 ? 
                         (predictionData
                           .filter(d => d.tabpfnRmse !== null)
@@ -356,9 +356,9 @@ export const ResearchResults = () => {
                         ).toFixed(4) : 'N/A'}
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-purple-50/20 rounded-lg border border-purple-200/50">
-                    <h4 className="text-lg font-semibold text-purple-800">Blended Model</h4>
-                    <p className="text-2xl font-bold text-purple-900">
+                  <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-400/50">
+                    <h4 className="text-lg font-semibold text-purple-300">Blended Model</h4>
+                    <p className="text-2xl font-bold text-purple-100">
                       {predictionData.length > 0 ? 
                         (predictionData
                           .filter(d => d.blendedRmse !== null)
