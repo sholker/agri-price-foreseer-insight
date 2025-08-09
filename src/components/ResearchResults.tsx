@@ -334,21 +334,21 @@ export const ResearchResults = () => {
               <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
                 <h3 className="text-2xl font-semibold text-card-foreground mb-4 text-center">Average RMSE Across All Countries</h3>
                 <div className="grid gap-4 md:grid-cols-3">
-                  <div className="text-center p-4 bg-blue-50/20 rounded-lg border border-blue-200/50">
-                    <h4 className="text-lg font-semibold text-blue-800">ARIMA Model</h4>
-                    <p className="text-2xl font-bold text-blue-900">
+                  <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-400/50">
+                    <h4 className="text-lg font-semibold text-blue-300">ARIMA Model</h4>
+                    <p className="text-2xl font-bold text-blue-100">
                         6.3813 
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-green-50/20 rounded-lg border border-green-200/50">
-                    <h4 className="text-lg font-semibold text-green-800">TabPFN Model</h4>
-                    <p className="text-2xl font-bold text-green-900">
+                  <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-400/50">
+                    <h4 className="text-lg font-semibold text-green-300">TabPFN Model</h4>
+                    <p className="text-2xl font-bold text-green-100">
                         0.373 
                     </p>
                   </div>
-                  <div className="text-center p-4 bg-purple-50/20 rounded-lg border border-purple-200/50">
-                    <h4 className="text-lg font-semibold text-purple-800">Stacking Ensemble</h4>
-                    <p className="text-2xl font-bold text-purple-900">
+                  <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-400/50">
+                    <h4 className="text-lg font-semibold text-purple-300">Stacking Model</h4>
+                    <p className="text-2xl font-bold text-purple-100">
                         0.193 
                     </p>
                   </div>
