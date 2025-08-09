@@ -189,7 +189,7 @@ export const ResearchResults = () => {
           </TabsList>
           
           {/* Other Tabs Content... */}
-          <TabsContent value="pca">
+              <TabsContent value="pca">
             <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
               <div className="flex flex-col lg:flex-row gap-6">
                 <div className="lg:w-2/3">
@@ -207,6 +207,26 @@ export const ResearchResults = () => {
                     where each color represents a different geographical region. Clear clusters can be seen 
                     indicating similarities in production patterns and agricultural resource usage.
                   </p>
+                  
+                  {/* PCA Clustering Information */}
+                  <div className="bg-accent/10 p-4 rounded-lg border border-accent/20 backdrop-blur-sm">
+                    <h4 className="text-lg font-semibold text-accent mb-3">PCA Clustering by K-means</h4>
+                    <div className="space-y-3">
+                      <div className="bg-primary/20 p-3 rounded border border-primary/30">
+                        <p className="text-sm font-medium text-primary mb-2">🟦 Cluster 1 - Major Economies (5 countries):</p>
+                        <p className="text-sm text-muted-foreground">
+                          Brazil, China, China mainland, India, United States of America
+                        </p>
+                      </div>
+                      <div className="bg-secondary/20 p-3 rounded border border-secondary/30">
+                        <p className="text-sm font-medium text-secondary mb-2">🟪 Cluster 2 - All Other Areas:</p>
+                        <p className="text-sm text-muted-foreground">
+                          Remaining countries and regions grouped based on similar agricultural patterns
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  
                   <div className="bg-primary/10 p-4 rounded-lg border border-primary/20 backdrop-blur-sm">
                     <p className="text-sm text-primary font-medium">
                       💡 Key Insight: Countries in similar geographical regions show similar patterns in agricultural parameters
