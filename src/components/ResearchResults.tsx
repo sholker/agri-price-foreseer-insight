@@ -236,7 +236,7 @@ export const ResearchResults = () => {
                   <p className="text-muted-foreground leading-relaxed">
                     Countries are clustered into two groups based on their agricultural characteristics. 
                     Cluster 1 (blue) represents major economies with high production volumes, while 
-                    Cluster 2 (green) includes all other countries with different agricultural patterns.
+                    Cluster 2 (gray) includes all other countries with different agricultural patterns.
                   </p>
                   
                   {/* K-means Clustering Information */}
