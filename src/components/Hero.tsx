@@ -52,7 +52,7 @@ export const Hero = () => {
           <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight shadow-space">
             A Machine Learning Approach 
             <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-accent">
-             to Forecasting Agricultural
+             to Forecast Agricultural
             </span>
             Food Production Index
           </h1>
