@@ -278,6 +278,48 @@ export const ResearchResults = () => {
           </TabsContent>
 
           <TabsContent value="ml" className="space-y-6">
+            {/* Average RMSE Summary */}
+            <div className="mb-8">
+              <Card className="p-6 bg-card/80 backdrop-blur-md shadow-space border border-primary/30">
+                <h3 className="text-2xl font-semibold text-card-foreground mb-4 text-center">Average RMSE Across All Countries</h3>
+                <div className="grid gap-4 md:grid-cols-3">
+                  <div className="text-center p-4 bg-blue-50/20 rounded-lg border border-blue-200/50">
+                    <h4 className="text-lg font-semibold text-blue-800">ARIMA Model</h4>
+                    <p className="text-2xl font-bold text-blue-900">
+                      {predictionData.length > 0 ? 
+                        (predictionData
+                          .filter(d => d.arimaRmse !== null)
+                          .reduce((sum, d) => sum + d.arimaRmse, 0) / 
+                         predictionData.filter(d => d.arimaRmse !== null).length
+                        ).toFixed(4) : 'N/A'}
+                    </p>
+                  </div>
+                  <div className="text-center p-4 bg-green-50/20 rounded-lg border border-green-200/50">
+                    <h4 className="text-lg font-semibold text-green-800">TabPFN Model</h4>
+                    <p className="text-2xl font-bold text-green-900">
+                      {predictionData.length > 0 ? 
+                        (predictionData
+                          .filter(d => d.tabpfnRmse !== null)
+                          .reduce((sum, d) => sum + d.tabpfnRmse, 0) / 
+                         predictionData.filter(d => d.tabpfnRmse !== null).length
+                        ).toFixed(4) : 'N/A'}
+                    </p>
+                  </div>
+                  <div className="text-center p-4 bg-purple-50/20 rounded-lg border border-purple-200/50">
+                    <h4 className="text-lg font-semibold text-purple-800">Blended Model</h4>
+                    <p className="text-2xl font-bold text-purple-900">
+                      {predictionData.length > 0 ? 
+                        (predictionData
+                          .filter(d => d.blendedRmse !== null)
+                          .reduce((sum, d) => sum + d.blendedRmse, 0) / 
+                         predictionData.filter(d => d.blendedRmse !== null).length
+                        ).toFixed(4) : 'N/A'}
+                    </p>
+                  </div>
+                </div>
+              </Card>
+            </div>
+
              <div className="mb-8 flex justify-center">
                 <div className="w-full max-w-sm">
                   <label htmlFor="area-select" className="block text-center text-muted-foreground mb-2">Select an Area to View Predictions</label>
