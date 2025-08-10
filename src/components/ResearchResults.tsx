@@ -49,7 +49,7 @@ export const ResearchResults = () => {
       tabpfnLines.forEach(line => {
         const parts = line.split(',');
         const area = normalizeArea(parts[0]);
-        const rmse = parseFloat(parts[4]);
+        const rmse = parseFloat(parts[1]);
         const predictions = parts.slice(2, 6).map(p => parseFloat(p));
         if(area && !isNaN(rmse)) {
           tabpfnDataMap.set(area, {
