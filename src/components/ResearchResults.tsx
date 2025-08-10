@@ -19,9 +19,8 @@ export const ResearchResults = () => {
     Promise.all([
       fetch('/lovable-uploads/df_predictions_blanded.csv').then(res => res.text()),
       fetch('/lovable-uploads/forecast_results_ARIMA.csv').then(res => res.text()),
-      fetch('/lovable-uploads/future_predictions_tabpFN.csv').then(res => res.text()),
       fetch('/lovable-uploads/blanded_model_result.csv').then(res => res.text())
-    ]).then(([blendedHistoricalCsv, arimaCsv, tabpfnCsv, blendedForecastCsv]) => {
+    ]).then(([blendedHistoricalCsv, arimaCsv, blendedForecastCsv]) => {
 
       const normalizeArea = (area) => area.trim().replace(/^"|"$/g, '');
 
@@ -43,18 +42,24 @@ export const ResearchResults = () => {
         }
       });
 
-      // --- Parse TabPFN forecast data ---
+      // --- Parse TabPFN data from blended CSV ---
       const tabpfnDataMap = new Map();
-      const tabpfnLines = tabpfnCsv.trim().split('\n').slice(1);
-      tabpfnLines.forEach(line => {
-        const parts = line.split(',');
-        const area = normalizeArea(parts[0]);
-        const rmse = parseFloat(parts[1]);
-        const predictions = parts.slice(2, 6).map(p => parseFloat(p));
-        if(area && !isNaN(rmse)) {
+      const blendedLines = blendedHistoricalCsv.trim().split('\n');
+      const header = blendedLines[0].split(',');
+      const tabpfnPredIndex = header.findIndex(col => col.includes('TabPFN_Predicted'));
+      const tabpfnRmseIndex = header.findIndex(col => col.includes('RMSE_TabPFN'));
+      
+      blendedLines.slice(1).forEach(line => {
+        const csvRegex = /(".*?"|[^",]+)(?=\s*,|\s*$)/g;
+        const values = line.match(csvRegex) || [];
+        const cleanedValues = values.map(v => v.replace(/^"|"$/g, ''));
+        const area = normalizeArea(cleanedValues[0]);
+        
+        if (area && !tabpfnDataMap.has(area)) {
+          const rmse = parseFloat(cleanedValues[tabpfnRmseIndex]);
           tabpfnDataMap.set(area, {
-            tabpfnRmse: rmse,
-            tabpfnPredictions: predictions
+            tabpfnRmse: !isNaN(rmse) ? rmse : null,
+            tabpfnPredictions: [] // Will be populated from forecast data if available
           });
         }
       });
