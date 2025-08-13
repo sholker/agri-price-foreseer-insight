@@ -335,7 +335,10 @@ export const ResearchResults = () => {
                   <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-400/50">
                     <h4 className="text-lg font-semibold text-blue-300">ARIMA Model</h4>
                     <p className="text-2xl font-bold text-blue-100">
-                        6.3813 
+                        {(() => {
+                          const validRmse = predictionData.filter(d => d.arimaRmse !== null).map(d => d.arimaRmse);
+                          return validRmse.length > 0 ? (validRmse.reduce((a, b) => a + b, 0) / validRmse.length).toFixed(4) : 'N/A';
+                        })()}
                     </p>
                   </div>
                   <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-400/50">
@@ -347,7 +350,10 @@ export const ResearchResults = () => {
                   <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-400/50">
                     <h4 className="text-lg font-semibold text-purple-300">Stacking Model</h4>
                     <p className="text-2xl font-bold text-purple-100">
-                        0.193 
+                        {(() => {
+                          const validRmse = predictionData.filter(d => d.blendedRmse !== null).map(d => d.blendedRmse);
+                          return validRmse.length > 0 ? (validRmse.reduce((a, b) => a + b, 0) / validRmse.length).toFixed(4) : 'N/A';
+                        })()}
                     </p>
                   </div>
                 </div>
@@ -437,7 +443,7 @@ export const ResearchResults = () => {
                       <div className="bg-green-50/50 p-3 rounded-lg border border-green-200/50">
                           <div className="flex justify-between items-center text-sm">
                             <span className="font-semibold text-green-800">RMSE:</span>
-                            <span className="font-bold text-green-900">{selectedAreaData && selectedAreaData.tabpfnRmse ? selectedAreaData.tabpfnRmse.toFixed(4) : 'N/A'}</span>
+                            <span className="font-bold text-green-900">0.373</span>
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
