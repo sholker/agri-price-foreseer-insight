@@ -441,6 +441,7 @@ export const ResearchResults = () => {
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
+                        Input data is Z-score normalized. Trained on data from 2000-2024.
                         Forecasting the Food Production Index using the following indicators:
 
                         Food Security
