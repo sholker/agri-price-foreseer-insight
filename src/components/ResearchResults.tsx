@@ -441,7 +441,19 @@ export const ResearchResults = () => {
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
-                        Input data is Z-score normalized. Trained on data from 2000-2024.
+                        Forecasting the Food Production Index using the following indicators:
+
+                        Food Security
+
+                        Employment Indicators (in agrifood systems)
+
+                        Annual Population
+
+                        Greenhouse Gas Emissions (CO₂)
+
+                        Annual Temperature Change
+
+                        Pesticides Use
                       </p>
                       <Button onClick={() => toggleForecast('tabpfn')} className="w-full mt-auto" variant="outline">
                           <span className="mr-2">{showForecasts.tabpfn ? 'Hide' : 'Show'} 4-Year Forecast</span>
