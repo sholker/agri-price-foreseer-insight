@@ -335,7 +335,7 @@ export const ResearchResults = () => {
                   <div className="text-center p-4 bg-blue-500/20 rounded-lg border border-blue-400/50">
                     <h4 className="text-lg font-semibold text-blue-300">ARIMA Model</h4>
                     <p className="text-2xl font-bold text-blue-100">
-                        2.15
+                        6.3813 
                     </p>
                   </div>
                   <div className="text-center p-4 bg-green-500/20 rounded-lg border border-green-400/50">
@@ -347,7 +347,7 @@ export const ResearchResults = () => {
                   <div className="text-center p-4 bg-purple-500/20 rounded-lg border border-purple-400/50">
                     <h4 className="text-lg font-semibold text-purple-300">Stacking Model</h4>
                     <p className="text-2xl font-bold text-purple-100">
-                        0.1155
+                        0.193 
                     </p>
                   </div>
                 </div>
@@ -390,7 +390,7 @@ export const ResearchResults = () => {
                       <div className="bg-blue-50/50 p-3 rounded-lg border border-blue-200/50">
                           <div className="flex justify-between items-center text-sm">
                             <span className="font-semibold text-blue-800">RMSE:</span>
-                            <span className="font-bold text-blue-900">2.15</span>
+                            <span className="font-bold text-blue-900">{selectedAreaData && selectedAreaData.arimaRmse !== null ? selectedAreaData.arimaRmse.toFixed(4) : 'N/A'}</span>
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
@@ -437,7 +437,7 @@ export const ResearchResults = () => {
                       <div className="bg-green-50/50 p-3 rounded-lg border border-green-200/50">
                           <div className="flex justify-between items-center text-sm">
                             <span className="font-semibold text-green-800">RMSE:</span>
-                            <span className="font-bold text-green-900">0.373</span>
+                            <span className="font-bold text-green-900">{selectedAreaData && selectedAreaData.tabpfnRmse ? selectedAreaData.tabpfnRmse.toFixed(4) : 'N/A'}</span>
                           </div>
                       </div>
                       <p className="text-muted-foreground text-xs leading-relaxed flex-grow">
